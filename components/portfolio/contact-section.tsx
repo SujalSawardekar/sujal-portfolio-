@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react"
 import { useIntersection } from "@/hooks/use-intersection"
 import { Send, Mail, MapPin, Phone, ArrowUpRight, ArrowUp, Linkedin } from "lucide-react"
 import { Footer } from "./footer"
-import { supabase } from "@/lib/supabase"
+import { sendContactMessage } from "@/app/actions/contact"
 
 export function ContactSection() {
   const { ref: titleRef, isVisible: titleVisible } = useIntersection()
@@ -24,47 +24,19 @@ export function ContactSection() {
     setIsSending(true)
     setError(null)
 
-    // Check for placeholder credentials
-    const isPlaceholder = 
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY === "your_supabase_anon_key_here" ||
-      !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-    if (isPlaceholder) {
-      console.error("Supabase Error: Invalid or missing API Key in .env.local")
-      setError("Contact form is not configured. Please add your Supabase API Key to .env.local")
-      setIsSending(false)
-      return
-    }
-    
     try {
-      const { error: dbError } = await supabase
-        .from('contact_messages')
-        .insert([
-          { 
-            name: formState.name, 
-            email: formState.email, 
-            subject: formState.subject || "No Subject",
-            message: formState.message 
-          }
-        ])
+      const result = await sendContactMessage(formState)
 
-      if (dbError) {
-        console.error("Supabase DB Error:", {
-          message: dbError.message,
-          code: dbError.code,
-          details: dbError.details,
-          hint: dbError.hint
-        });
-        throw dbError;
+      if (!result.success) {
+        throw new Error(result.error)
       }
 
       setIsSent(true)
       setFormState({ name: "", email: "", subject: "", message: "" })
       setTimeout(() => setIsSent(false), 3000)
     } catch (err: any) {
-      console.error("Full Error Details:", err)
-      const message = err.message || "Failed to send message. Please try again."
-      setError(message.includes("relation") ? "Error: Database table 'contact_messages' not found." : message)
+      console.error("Submission Error:", err)
+      setError(err.message || "Failed to send message. Please try again.")
     } finally {
       setIsSending(false)
     }

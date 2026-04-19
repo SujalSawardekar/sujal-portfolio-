@@ -25,37 +25,36 @@ export function ScrambleText({
         const scrambleToNext = () => {
             const nextIndex = (currentIndex + 1) % texts.length
             const targetText = texts[nextIndex]
+            const startText = displayText
 
-            let iteration = 0
-            const stepTime = 30
-            const maxLength = Math.max(displayText.length, targetText.length)
+            let frame = 0
+            const totalFrames = Math.floor(duration / 30) // steps of 30ms
 
             interval = setInterval(() => {
+                frame++
+                const progress = frame / totalFrames
+                
                 setDisplayText(() => {
-                    // Create an array of the target text length, padded with random chars if the old text was longer
-                    const currentLength = Math.max(targetText.length, maxLength - iteration)
-                    const tempArr = Array.from({ length: Math.floor(currentLength) })
+                    const length = Math.max(startText.length, targetText.length)
+                    const iteration = Math.floor(progress * length)
 
-                    return tempArr
+                    return Array.from({ length: Math.max(targetText.length, startText.length - iteration) })
                         .map((_, index) => {
                             if (index < iteration && index < targetText.length) {
-                                return targetText[index] // Settled character
+                                return targetText[index]
                             }
-                            // Random scramble character
                             if (targetText[index] === " ") return " "
                             return CHARS[Math.floor(Math.random() * CHARS.length)]
                         })
                         .join("")
                 })
 
-                iteration += targetText.length / (duration / stepTime)
-
-                if (iteration >= targetText.length) {
+                if (frame >= totalFrames) {
                     clearInterval(interval)
                     setDisplayText(targetText)
                     setCurrentIndex(nextIndex)
                 }
-            }, stepTime)
+            }, 30)
         }
 
         timeout = setTimeout(scrambleToNext, delay)

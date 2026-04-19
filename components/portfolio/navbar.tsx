@@ -1,8 +1,7 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { Menu, X } from "lucide-react"
 import Image from "next/image"
+import { motion, AnimatePresence } from "framer-motion"
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -13,7 +12,7 @@ const navLinks = [
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("")
 
   useEffect(() => {
@@ -33,13 +32,22 @@ export function Navbar() {
       }
     }
 
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "unset"
+    }
+
     window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      document.body.style.overflow = "unset"
+    }
+  }, [isMenuOpen])
 
   return (
     <header
-      className={`fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${isScrolled
+      className={`fixed top-0 right-0 left-0 z-[100] transition-all duration-500 ${isScrolled || isMenuOpen
         ? "bg-background/80 shadow-lg shadow-background/20 backdrop-blur-xl"
         : "bg-transparent"
         }`}
@@ -47,7 +55,7 @@ export function Navbar() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <a
           href="#"
-          className="group flex items-center gap-2.5 text-foreground"
+          className="group flex items-center gap-2.5 text-foreground z-[110]"
           data-cursor-hover
         >
           <div className="relative h-12 w-12 transition-transform duration-300 group-hover:scale-110">
@@ -61,70 +69,90 @@ export function Navbar() {
           </div>
         </a>
 
-        <div className="hidden items-center gap-1 lg:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              data-cursor-hover
-              className={`relative px-3.5 py-2 text-sm font-medium tracking-wide uppercase transition-colors duration-300 ${activeSection === link.href.slice(1)
-                ? "text-primary"
-                : "text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              {link.label}
-              {activeSection === link.href.slice(1) && (
-                <span className="absolute bottom-0 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-primary" />
-              )}
-            </a>
-          ))}
+        <div className="flex items-center gap-6 z-[110]">
+          <a
+            href="https://drive.google.com/drive/folders/1VvkGflCJ9cCZjakHM6LSI-qx_NYaTgCD"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-cursor-hover
+            className="hidden sm:block rounded-full border border-primary/30 bg-primary/10 px-6 py-2.5 text-sm font-medium text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground"
+          >
+            {"Resume"}
+          </a>
+
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="flex items-center justify-center p-2 text-foreground transition-transform hover:scale-110 active:scale-95"
+            aria-label="Toggle menu"
+            data-cursor-hover
+          >
+            <div className="relative h-6 w-8">
+              <span className={`absolute left-0 h-0.5 w-8 bg-current transition-all duration-300 ${isMenuOpen ? "top-3 rotate-45" : "top-1"}`} />
+              <span className={`absolute left-0 top-3 h-0.5 w-8 bg-current transition-all duration-300 ${isMenuOpen ? "opacity-0" : "opacity-100"}`} />
+              <span className={`absolute left-0 h-0.5 w-8 bg-current transition-all duration-300 ${isMenuOpen ? "top-3 -rotate-45" : "top-5"}`} />
+            </div>
+          </button>
         </div>
-
-        <a
-          href="https://drive.google.com/drive/folders/1VvkGflCJ9cCZjakHM6LSI-qx_NYaTgCD"
-          target="_blank"
-          rel="noopener noreferrer"
-          data-cursor-hover
-          className="hidden rounded-full border border-primary/30 bg-primary/10 px-6 py-2.5 text-sm font-medium text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground lg:block"
-        >
-          {"Resume"}
-        </a>
-
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="text-foreground lg:hidden"
-          aria-label="Toggle menu"
-          suppressHydrationWarning
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
       </nav>
 
-      {isMobileMenuOpen && (
-        <div className="border-t border-border bg-background/95 backdrop-blur-xl lg:hidden">
-          <div className="flex flex-col gap-1 px-6 py-4">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="rounded-lg px-4 py-3 text-sm font-medium tracking-wide uppercase text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 min-h-screen w-full bg-background/98 flex flex-col items-center justify-center backdrop-blur-3xl z-[105]"
+          >
+            <div className="flex flex-col items-center gap-6 sm:gap-10">
+              {navLinks.map((link, i) => (
+                <motion.a
+                  key={link.href}
+                  href={link.href}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1, duration: 0.5 }}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="group relative overflow-hidden px-4 py-2"
+                >
+                  <span className={`text-4xl sm:text-7xl font-bold tracking-tighter uppercase transition-colors duration-300 ${activeSection === link.href.slice(1) ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}`}>
+                    {link.label}
+                  </span>
+                  <motion.span 
+                    className="absolute bottom-0 left-0 h-1 w-full bg-primary origin-left"
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </motion.a>
+              ))}
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+                className="mt-8 flex flex-col items-center gap-6"
               >
-                {link.label}
-              </a>
-            ))}
-            <a
-              href="https://drive.google.com/drive/folders/1VvkGflCJ9cCZjakHM6LSI-qx_NYaTgCD"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="mt-2 rounded-full bg-primary px-6 py-3 text-center text-sm font-medium text-primary-foreground"
-            >
-              {"Resume"}
-            </a>
-          </div>
-        </div>
-      )}
+                <a
+                  href="https://drive.google.com/drive/folders/1VvkGflCJ9cCZjakHM6LSI-qx_NYaTgCD"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="sm:hidden rounded-full bg-primary px-10 py-4 text-xl font-bold text-primary-foreground uppercase tracking-widest"
+                >
+                  Resume
+                </a>
+                
+                <div className="flex gap-8 text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
+                  <a href="https://www.linkedin.com/in/sujalsawardekar27/" target="_blank" className="hover:text-primary transition-colors">LinkedIn</a>
+                  <a href="https://github.com/SujalSawardekar" target="_blank" className="hover:text-primary transition-colors">GitHub</a>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   )
 }
+

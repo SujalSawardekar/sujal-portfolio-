@@ -88,32 +88,25 @@ export function HeroSection() {
         </div>
 
         {/* Main heading */}
-        <h1 className="animate-fade-up delay-100 mb-2 text-5xl font-bold leading-[1.1] tracking-tighter text-foreground opacity-0 sm:text-7xl lg:text-8xl">
+        <h1 className="animate-fade-up delay-100 mb-8 text-5xl font-bold leading-[1.1] tracking-tighter text-foreground opacity-0 sm:text-7xl lg:text-8xl">
           A User Interface is <br />
           <span className="text-primary">Not a joke</span>
         </h1>
 
         {/* Subtitle */}
-        <p className="animate-fade-up delay-300 mx-auto mb-6 max-w-lg text-sm leading-relaxed text-muted-foreground/60 opacity-0">
+        <p className="animate-fade-up delay-300 mx-auto mb-10 max-w-lg text-sm leading-relaxed text-muted-foreground/60 opacity-0">
           If you have to explain it, it&apos;s not that good.
         </p>
 
         {/* Dynamic Role */}
-        <p className="animate-fade-up delay-200 mx-auto mb-4 max-w-2xl text-lg font-semibold text-primary opacity-0 sm:text-2xl h-8">
+        <p className="animate-fade-up delay-200 mx-auto mb-8 max-w-2xl text-lg font-semibold text-primary opacity-0 sm:text-2xl h-8">
           <ScrambleText texts={["UI/UX Designer", "Product Designer"]} />
         </p>
 
         {/* CTA buttons */}
-        <div className="animate-fade-up delay-400 mb-12 flex flex-col items-center justify-center gap-2 opacity-0 sm:flex-row sm:gap-4">
+        <div className="animate-fade-up delay-400 mb-6 flex flex-col items-center justify-center gap-2 opacity-0 sm:flex-row sm:gap-4">
           <CustomHeroButton text="View Projects" href="#work" />
           <CustomHeroButton text="Get in Touch" href="#contact" />
-        </div>
-
-        {/* Contact Links - Simplified */}
-        <div className="animate-fade-up delay-500 flex items-center justify-center gap-6 opacity-0">
-          <a href="https://www.linkedin.com/in/sujalsawardekar27/" target="_blank" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60 hover:text-primary transition-colors">LinkedIn</a>
-          <span className="w-1 h-1 rounded-full bg-border" />
-          <a href="mailto:sujalsawardekar27@gmail.com" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60 hover:text-primary transition-colors">Mail</a>
         </div>
       </div>
 

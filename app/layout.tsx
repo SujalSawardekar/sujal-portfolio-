@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   description: 'UI/UX Designer, Graphic Designer & 3D Web Enthusiast. Crafting intuitive, bold digital experiences with Figma, Adobe XD, Spline 3D and more.',
   generator: 'v0.app',
   icons: {
-    icon: '/Sujal Logo 2.png',
-    apple: '/apple-icon.png',
+    icon: '/favicon.png',
+    apple: '/favicon.png',
   },
 }
 

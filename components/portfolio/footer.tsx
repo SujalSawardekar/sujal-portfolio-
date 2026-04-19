@@ -1,6 +1,7 @@
 "use client"
 
 import { ArrowUp, Linkedin } from "lucide-react"
+import Image from "next/image"
 
 export function Footer() {
   const scrollToTop = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -17,9 +18,13 @@ export function Footer() {
             {/* Branding - More Premium */}
             <div className="flex flex-col items-center md:items-start gap-4">
               <div className="flex items-center gap-3">
-                <div className="group relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/60 text-primary-foreground font-mono text-xl font-bold transition-transform duration-500 hover:scale-110 shadow-lg shadow-primary/20">
-                  S
-                  <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/20" />
+                <div className="relative h-14 w-14 transition-transform duration-500 hover:scale-110">
+                  <Image
+                    src="/Sujal Logo 2.png"
+                    alt="Sujal Sawardekar"
+                    fill
+                    className="object-contain"
+                  />
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-foreground tracking-tight">Sujal Sawardekar</h3>

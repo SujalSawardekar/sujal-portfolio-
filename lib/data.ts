@@ -97,12 +97,12 @@ export const projects = [
 export const skillData = {
     uiux: {
         orbs: [
-            { name: "Figma", color: "#00ffd0", radius: 120, speed: 8, exp: "2.5+ years", abbr: "FG" },
+            { name: "Figma", color: "#00f2ff", radius: 120, speed: 8, exp: "2.5+ years", abbr: "FG" },
             { name: "Adobe XD", color: "#8b3fff", radius: 155, speed: 11, exp: "1+ years", abbr: "XD" },
-            { name: "Photoshop", color: "#ff9a00", radius: 190, speed: 14, exp: "5+ years", abbr: "PS" },
+            { name: "Photoshop", color: "#ff8c00", radius: 190, speed: 14, exp: "5+ years", abbr: "PS" },
             { name: "Spline 3D", color: "#3d6fff", radius: 135, speed: 9, exp: "1 year", abbr: "SP" },
-            { name: "Webflow", color: "#00c853", radius: 175, speed: 13, exp: "1.5+ years", abbr: "WF" },
-            { name: "Framer", color: "#00bcd4", radius: 210, speed: 16, exp: "1.5+ years", abbr: "FR" },
+            { name: "Webflow", color: "#00ffba", radius: 175, speed: 13, exp: "1.5+ years", abbr: "WF" },
+            { name: "Framer", color: "#8b3fff", radius: 210, speed: 16, exp: "1.5+ years", abbr: "FR" },
         ],
         columns: [
             { title: "Design Tools", items: ["Figma", "Adobe XD", "Photoshop", "Illustrator", "Canva"] },
@@ -112,11 +112,11 @@ export const skillData = {
     },
     graphic: {
         orbs: [
-            { name: "Illustrator", color: "#ff9a00", radius: 120, speed: 8, exp: "4+ years", abbr: "AI" },
-            { name: "Photoshop", color: "#00bcd4", radius: 155, speed: 11, exp: "5+ years", abbr: "PS" },
+            { name: "Illustrator", color: "#ff8c00", radius: 120, speed: 8, exp: "4+ years", abbr: "AI" },
+            { name: "Photoshop", color: "#00f2ff", radius: 155, speed: 11, exp: "5+ years", abbr: "PS" },
             { name: "InDesign", color: "#ff4444", radius: 190, speed: 14, exp: "2+ years", abbr: "ID" },
-            { name: "Canva", color: "#00ffd0", radius: 135, speed: 9, exp: "3+ years", abbr: "CV" },
-            { name: "CorelDraw", color: "#00c853", radius: 175, speed: 13, exp: "2+ years", abbr: "CD" },
+            { name: "Canva", color: "#00ffba", radius: 135, speed: 9, exp: "3+ years", abbr: "CV" },
+            { name: "CorelDraw", color: "#3d6fff", radius: 175, speed: 13, exp: "2+ years", abbr: "CD" },
         ],
         columns: [
             { title: "Visual Design", items: ["Logo Design", "Brand Identity", "Typography", "Color Theory", "Layout Design"] },
@@ -126,16 +126,16 @@ export const skillData = {
     },
     video: {
         orbs: [
-            { name: "Premiere Pro", color: "#ea77ff", radius: 120, speed: 8, exp: "4+ years", abbr: "PR" },
+            { name: "Premiere Pro", color: "#00ffba", radius: 120, speed: 8, exp: "4+ years", abbr: "PR" },
             { name: "After Effects", color: "#8b3fff", radius: 155, speed: 11, exp: "3+ years", abbr: "AE" },
-            { name: "DaVinci Resolve", color: "#ff9a00", radius: 190, speed: 14, exp: "1+ years", abbr: "DR" },
-            { name: "Filmora", color: "#00ffd0", radius: 135, speed: 9, exp: "3+ years", abbr: "FL" },
+            { name: "DaVinci Resolve", color: "#ff8c00", radius: 190, speed: 14, exp: "1+ years", abbr: "DR" },
+            { name: "Filmora", color: "#00f2ff", radius: 135, speed: 9, exp: "3+ years", abbr: "FL" },
             { name: "CapCut", color: "#ffffff", radius: 175, speed: 13, exp: "2+ years", abbr: "CC" },
         ],
         columns: [
-            { title: "Editing", items: ["Cuts & Transitions", "Color Grading", "Audio Mixing", "Motion Graphics", "Storyboarding"] },
-            { title: "Post Production", items: ["VFX", "Green Screen", "Subtitle Sync", "Formatting", "Encoding"] },
-            { title: "Specialization", items: ["YouTube Content", "Social Reels", "Corporate Videos", "Documentaries"] },
+            { title: "Editing Tools", items: ["Cuts & Transitions", "Audio Mixing", "Motion Graphics", "Storyboarding"] },
+            { title: "Content Formats", items: ["Instagram Reels", "YouTube Shorts", "Corporate Videos", "Commercial Ads"] },
+            { title: "Platform Layouts", items: ["Social Media", "Landscape Video", "Vertical Video", "Square Formats"] },
         ]
     }
 }

@@ -23,6 +23,18 @@ export function ContactSection() {
     e.preventDefault()
     setIsSending(true)
     setError(null)
+
+    // Check for placeholder credentials
+    const isPlaceholder = 
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY === "your_supabase_anon_key_here" ||
+      !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (isPlaceholder) {
+      console.error("Supabase Error: Invalid or missing API Key in .env.local")
+      setError("Contact form is not configured. Please add your Supabase API Key to .env.local")
+      setIsSending(false)
+      return
+    }
     
     try {
       const { error: dbError } = await supabase
@@ -36,14 +48,23 @@ export function ContactSection() {
           }
         ])
 
-      if (dbError) throw dbError
+      if (dbError) {
+        console.error("Supabase DB Error:", {
+          message: dbError.message,
+          code: dbError.code,
+          details: dbError.details,
+          hint: dbError.hint
+        });
+        throw dbError;
+      }
 
       setIsSent(true)
       setFormState({ name: "", email: "", subject: "", message: "" })
       setTimeout(() => setIsSent(false), 3000)
     } catch (err: any) {
-      console.error("Error sending message:", err)
-      setError("Failed to send message. Please try again.")
+      console.error("Full Error Details:", err)
+      const message = err.message || "Failed to send message. Please try again."
+      setError(message.includes("relation") ? "Error: Database table 'contact_messages' not found." : message)
     } finally {
       setIsSending(false)
     }

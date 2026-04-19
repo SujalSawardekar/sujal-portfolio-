@@ -159,21 +159,24 @@ export function SkillsSection() {
 
           {/* Grid */}
           <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 max-w-5xl mx-auto">
-            {currentSkills.columns.map((col) => (
-              <div key={col.title} className="rounded-2xl border border-border/40 bg-card/10 p-6 transition-all duration-300 hover:border-primary/20 hover:bg-card/20">
-                <h3 className="font-sans font-bold text-foreground mb-4 pb-2 border-b border-border/50 text-[11px] uppercase tracking-widest" style={{ color: categories.find(c => c.id === localMode)?.color }}>
-                  {col.title}
-                </h3>
-                <ul className="flex flex-col gap-2.5">
-                  {col.items.map((item) => (
-                    <li key={item} className="font-sans text-xs text-muted-foreground/70 hover:text-foreground transition-colors flex items-center gap-2">
-                      <span className="w-1 h-1 rounded-full bg-primary/40 shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {currentSkills.columns.map((col) => {
+              const categoryColor = categories.find(c => c.id === localMode)?.color || 'var(--color-primary)';
+              return (
+                <div key={col.title} className="rounded-2xl border border-border/40 bg-card/10 p-6 transition-all duration-300 hover:border-primary/20 hover:bg-card/20">
+                  <h3 className="font-sans font-bold text-foreground mb-4 pb-2 border-b border-border/50 text-[11px] uppercase tracking-widest" style={{ color: categoryColor }}>
+                    {col.title}
+                  </h3>
+                  <ul className="flex flex-col gap-2.5">
+                    {col.items.map((item) => (
+                      <li key={item} className="font-sans text-xs text-muted-foreground/70 hover:text-foreground transition-colors flex items-center gap-2">
+                        <span className="w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: categoryColor + '66' }} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
           </div>
         </motion.div>
       </AnimatePresence>

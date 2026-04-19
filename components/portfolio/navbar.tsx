@@ -81,7 +81,9 @@ export function Navbar() {
         </div>
 
         <a
-          href="#"
+          href="https://drive.google.com/drive/folders/1VvkGflCJ9cCZjakHM6LSI-qx_NYaTgCD"
+          target="_blank"
+          rel="noopener noreferrer"
           data-cursor-hover
           className="hidden rounded-full border border-primary/30 bg-primary/10 px-6 py-2.5 text-sm font-medium text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground lg:block"
         >
@@ -112,7 +114,9 @@ export function Navbar() {
               </a>
             ))}
             <a
-              href="#"
+              href="https://drive.google.com/drive/folders/1VvkGflCJ9cCZjakHM6LSI-qx_NYaTgCD"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setIsMobileMenuOpen(false)}
               className="mt-2 rounded-full bg-primary px-6 py-3 text-center text-sm font-medium text-primary-foreground"
             >

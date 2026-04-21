@@ -53,7 +53,7 @@ export function FigmaShowcaseSection() {
         <section 
             id="figma-showcase" 
             ref={sectionRef}
-            className={`mx-6 my-12 rounded-2xl bg-black py-24 px-8 border border-white/5 transition-all duration-1000 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
+            className={`mx-2 md:mx-6 my-6 md:my-12 rounded-2xl bg-black py-12 md:py-24 px-4 md:px-8 border border-white/5 transition-all duration-1000 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
         >
             <div className="mx-auto max-w-7xl">
                 {/* Header */}

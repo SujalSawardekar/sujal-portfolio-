@@ -45,7 +45,7 @@ export function ContactSection() {
     <section
       id="contact"
       ref={sectionRef}
-      className={`mx-6 my-4 rounded-[2.5rem] bg-[#F4F4F5] py-12 px-10 border border-zinc-200 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+      className={`mx-2 md:mx-6 my-4 rounded-[2rem] md:rounded-[2.5rem] bg-[#F4F4F5] py-8 md:py-12 px-4 md:px-10 border border-zinc-200 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
     >
       <div className="mx-auto max-w-7xl">
         {/* Section heading */}

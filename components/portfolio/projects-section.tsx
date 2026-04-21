@@ -148,7 +148,6 @@ export function ProjectsSection() {
     <section 
       id="work" 
       className="relative w-full bg-[#F4F4F5] pt-32 pb-24 rounded-[2.5rem] mx-6 my-12 border border-zinc-200"
-      style={{ width: "calc(100% - 3rem)" }}
     >
       <div className="mx-auto max-w-5xl flex flex-col items-center text-center px-6 mb-8">
         <span className="mb-4 block text-[10px] font-bold tracking-[0.3em] text-indigo-500 uppercase">

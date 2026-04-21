@@ -59,11 +59,13 @@
 @layer base {
   html {
     @apply bg-background;
+    overflow-x: hidden;
   }
 
   body {
     @apply text-foreground antialiased;
     background: transparent;
+    overflow-x: hidden;
   }
 }
 

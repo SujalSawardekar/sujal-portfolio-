@@ -1,123 +1,156 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import { ArrowDown } from "lucide-react"
-import { motion } from "framer-motion"
-import { ScrambleText } from "./scramble-text"
-
-function CustomHeroButton({ text, href }: { text: string; href: string }) {
-  return (
-    <div className="btn-wrapper group relative flex items-center justify-center p-[0.9rem_1.1rem]">
-      <div className="line horizontal top absolute top-[-0.5px] h-[1px] w-full origin-top-left rotate-[5deg] scale-x-0 transition-all duration-300 group-hover:rotate-0 group-hover:scale-x-100 group-hover:duration-[0.35s] group-hover:delay-[0.28s]"
-        style={{ backgroundImage: "repeating-linear-gradient(90deg, transparent 0 2px, var(--color-primary) 2px 4px)" }}></div>
-      <div className="line vertical right absolute right-[-0.5px] h-full w-[1px] origin-top-right rotate-[5deg] scale-y-0 transition-all duration-300 group-hover:rotate-0 group-hover:scale-y-100 group-hover:duration-[0.35s] group-hover:delay-[0.49s]"
-        style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent 0 2px, var(--color-primary) 2px 4px)" }}></div>
-      <div className="line horizontal bottom absolute bottom-[-0.5px] h-[1px] w-full origin-bottom-right rotate-[5deg] scale-x-0 transition-all duration-300 group-hover:rotate-0 group-hover:scale-x-100 group-hover:duration-[0.35s] group-hover:delay-[0.70s]"
-        style={{ backgroundImage: "repeating-linear-gradient(90deg, transparent 0 2px, var(--color-primary) 2px 4px)" }}></div>
-      <div className="line vertical left absolute left-[-0.5px] h-full w-[1px] origin-bottom-left rotate-[5deg] scale-y-0 transition-all duration-300 group-hover:rotate-0 group-hover:scale-y-100 group-hover:duration-[0.35s] group-hover:delay-[0.84s]"
-        style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent 0 2px, var(--color-primary) 2px 4px)" }}></div>
-
-      {/* Dots */}
-      <div className="dot top left absolute top-1/2 left-[20%] aspect-square w-[6px] rounded-full bg-primary opacity-0 transition-all duration-300 group-hover:top-[-3px] group-hover:left-[-3px] group-hover:opacity-100 group-hover:duration-[0.35s]"></div>
-      <div className="dot top right absolute top-1/2 right-[20%] aspect-square w-[6px] rounded-full bg-primary opacity-0 transition-all duration-300 group-hover:top-[-3px] group-hover:right-[-3px] group-hover:opacity-100 group-hover:duration-[0.35s] group-hover:delay-[0.21s]"></div>
-      <div className="dot bottom right absolute right-[20%] bottom-1/2 aspect-square w-[6px] rounded-full bg-primary opacity-0 transition-all duration-300 group-hover:right-[-3px] group-hover:bottom-[-3px] group-hover:opacity-100 group-hover:duration-[0.35s] group-hover:delay-[0.42s]"></div>
-      <div className="dot bottom left absolute bottom-1/2 left-[20%] aspect-square w-[6px] rounded-full bg-primary opacity-0 transition-all duration-300 group-hover:bottom-[-3px] group-hover:left-[-3px] group-hover:opacity-100 group-hover:duration-[0.35s] group-hover:delay-[0.63s]"></div>
-
-      <a
-        href={href}
-        className="btn relative flex cursor-pointer items-center justify-center rounded-[30%/200%] border-none bg-primary px-8 py-3.5 font-sans text-[15px] font-semibold tracking-wide text-primary-foreground uppercase shadow-[0_0_0_1px_rgba(0,0,0,0.2),0_1px_1px_rgba(3,7,18,0.02),0_5px_4px_rgba(3,7,18,0.04),0_12px_9px_rgba(3,7,18,0.06),0_20px_15px_rgba(3,7,18,0.08),0_32px_24px_rgba(3,7,18,0.1)] transition-all duration-200 ease-in-out hover:scale-105 hover:rounded-[10%/200%] hover:bg-white active:scale-95 active:rounded-[20%/200%] active:bg-primary"
-        style={{ backgroundImage: "linear-gradient(transparent, rgba(0,0,0,0.1))" }}
-      >
-        <span className="btn-text">{text}</span>
-      </a>
-
-      {/* Hover background glow */}
-      <div className="absolute inset-0 -z-10 rounded-lg bg-transparent transition-colors duration-300 ease-in-out group-hover:bg-primary/20 group-hover:duration-[1.4s]"></div>
-    </div>
-  )
-}
+import { motion, useScroll, useTransform } from "framer-motion"
+import { LucideIcon, Star, ArrowRight } from "lucide-react"
 
 export function HeroSection() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [currentTime, setCurrentTime] = useState("11:11 PM")
+  const [jokeHover, setJokeHover] = useState(false)
   const heroRef = useRef<HTMLElement>(null)
+  const { scrollY } = useScroll()
+  
+  const yParallax = useTransform(scrollY, [0, 800], [0, 320])
+  const opacityParallax = useTransform(scrollY, [0, 600], [1, 0])
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!heroRef.current) return
-      const rect = heroRef.current.getBoundingClientRect()
-      setMousePos({
-        x: ((e.clientX - rect.left) / rect.width - 0.5) * 2,
-        y: ((e.clientY - rect.top) / rect.height - 0.5) * 2,
-      })
+    const updateTime = () => {
+      const now = new Date()
+      let hours = now.getHours()
+      const minutes = now.getMinutes().toString().padStart(2, "0")
+      const ampm = hours >= 12 ? "PM" : "AM"
+      hours = hours % 12
+      hours = hours ? hours : 12
+      setCurrentTime(`${hours}:${minutes} ${ampm}`)
     }
-
-    window.addEventListener("mousemove", handleMouseMove)
-    return () => window.removeEventListener("mousemove", handleMouseMove)
+    
+    updateTime()
+    const timer = setInterval(updateTime, 60000)
+    return () => clearInterval(timer)
   }, [])
 
   return (
-    <section
+    <section 
       ref={heroRef}
-      className="relative flex min-h-screen items-center justify-center overflow-hidden px-6"
+      className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-32 pb-20 bg-black rounded-b-[2.5rem]"
     >
-      {/* Spline background constrained to the Hero section */}
-      <div className="absolute inset-0 -z-10 overflow-hidden bg-black">
-        <div className="relative h-full w-full">
-          <iframe
-            src="https://my.spline.design/motiontrails-HNAoSu4e1lIjBPtCbd2OC3fz/"
-            frameBorder="0"
-            width="100%"
-            height="100%"
-            title="Spline Hero Background"
-            className="pointer-events-none absolute top-0 left-0 h-[calc(100%+48px)] w-full transition-all duration-1000"
-            loading="lazy"
-          ></iframe>
+      {/* Background Atmosphere */}
+      <div className="absolute inset-0 z-0 pointer-events-none select-none">
+        <div className="absolute top-0 left-0 w-full h-full opacity-60 mix-blend-screen overflow-hidden">
+          <img 
+            src="https://framerusercontent.com/images/9zvwRJAavKKacVyhFCwHyXW1U.png?width=1536&height=1024" 
+            alt="Atmosphere" 
+            className="w-full h-full object-cover object-center opacity-80 brightness-[0.5] hue-rotate-[200deg] contrast-[1.2]"
+          />
         </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black z-10" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-5xl text-center">
-        {/* Status badge */}
-        <div className="animate-fade-up mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 opacity-0">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-          </span>
-          <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
-            Open to opportunities
-          </span>
+      {/* Floating Surrealist Elements */}
+      <motion.div 
+        className="absolute -left-[10%] top-[-10%] md:left-[-5%] md:top-[-15%] w-[50vw] md:w-[40vw] max-w-[800px] z-10 pointer-events-none mix-blend-hard-light opacity-80"
+        animate={{
+          y: [0, -20, 0],
+          rotate: [0, 2, 0],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      >
+        <img 
+          src="https://framerusercontent.com/images/KNhiA5A2ykNYqNkj04Hk6BVg5A.png?width=1540&height=1320" 
+          alt="Hand Reaching" 
+          className="w-full h-auto object-contain brightness-90 grayscale-[0.5]"
+        />
+      </motion.div>
+
+      <motion.div 
+        className="absolute -right-[10%] bottom-[-10%] md:right-[-5%] md:bottom-[-5%] w-[45vw] md:w-[35vw] max-w-[700px] z-10 pointer-events-none mix-blend-hard-light opacity-80"
+        animate={{
+          y: [0, 20, 0],
+          rotate: [0, -2, 0],
+        }}
+        transition={{
+          duration: 14,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      >
+        <img 
+          src="https://framerusercontent.com/images/X89VFCABCEjjZ4oLGa3PjbOmsA.png?width=1542&height=1002" 
+          alt="Hand Receiving" 
+          className="w-full h-auto object-contain brightness-90 grayscale-[0.5]"
+        />
+      </motion.div>
+
+      {/* Hero Content */}
+      <motion.div 
+        style={{ y: yParallax, opacity: opacityParallax }}
+        className="container mx-auto px-6 relative z-20 text-center flex flex-col items-center justify-center h-full"
+      >
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true }}
+          >
+            <h1 className="text-5xl md:text-7xl font-medium leading-[1.1] tracking-tight mb-16 font-serif text-white" 
+                style={{ textShadow: "0 0 20px rgba(255,255,255,0.2)" }}>
+              <span className="text-white/40">A User Interface is</span> <br />
+              <span className="text-6xl md:text-8xl font-bold transition-all">Not a{" "}
+                <span className="italic font-serif">
+                  joke.
+                </span>
+              </span> <br />
+              <span className="text-2xl md:text-3xl italic font-light text-white/40">If you have to explain it, it&apos;s not that good.</span>
+            </h1>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true }}
+            className="flex flex-col items-center gap-6"
+          >
+            {/* Status badge - Indigo Refinement */}
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/5 px-4 py-1.5 backdrop-blur-sm">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-500 opacity-75" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-indigo-500" />
+              </span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-500">
+                Open to opportunities
+              </span>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <a href="#work" className="group relative flex items-center gap-6 rounded-full bg-white pl-8 pr-2 py-2 shadow-[0_10px_30px_rgba(255,255,255,0.1)] hover:scale-105 transition-all duration-300">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-900">View Projects</span>
+                <div className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center transition-colors group-hover:bg-zinc-700">
+                   <ArrowRight size={16} className="text-white group-hover:translate-x-1 transition-transform" />
+                </div>
+              </a>
+
+              <a href="#contact" className="group relative flex items-center gap-6 rounded-full bg-white/5 border border-white/10 pl-8 pr-2 py-2 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:scale-105 transition-all duration-300">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">Get in Touch</span>
+                <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center transition-colors group-hover:bg-white/20">
+                   <ArrowRight size={16} className="text-white group-hover:translate-x-1 transition-transform" />
+                </div>
+              </a>
+            </div>
+          </motion.div>
         </div>
+      </motion.div>
 
-        {/* Main heading */}
-        <h1 className="animate-fade-up delay-100 mb-8 text-5xl font-bold leading-[1.1] tracking-tighter text-foreground opacity-0 sm:text-7xl lg:text-8xl">
-          A User Interface is <br />
-          <span className="text-primary">Not a joke</span>
-        </h1>
-
-        {/* Subtitle */}
-        <p className="animate-fade-up delay-300 mx-auto mb-10 max-w-lg text-sm leading-relaxed text-muted-foreground/60 opacity-0">
-          If you have to explain it, it&apos;s not that good.
-        </p>
-
-        {/* Dynamic Role */}
-        <p className="animate-fade-up delay-200 mx-auto mb-8 max-w-2xl text-lg font-semibold text-primary opacity-0 sm:text-2xl h-8">
-          <ScrambleText texts={["UI/UX Designer", "Product Designer"]} />
-        </p>
-
-        {/* CTA buttons */}
-        <div className="animate-fade-up delay-400 mb-6 flex flex-col items-center justify-center gap-2 opacity-0 sm:flex-row sm:gap-4">
-          <CustomHeroButton text="View Projects" href="#work" />
-          <CustomHeroButton text="Get in Touch" href="#contact" />
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="animate-fade-in delay-800 absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0">
-        <a
-          href="#work"
-          className="flex flex-col items-center gap-1.5 text-muted-foreground/40 transition-colors hover:text-primary"
-        >
-          <ArrowDown size={14} className="animate-bounce" />
-        </a>
+      {/* Massive Background Text from Spec */}
+      <div className="absolute inset-x-0 bottom-0 flex justify-center translate-y-1/2 pointer-events-none select-none overflow-hidden h-[30vh] z-0">
+        <span className="text-[20vw] leading-none font-bold text-white/[0.03] blur-[2px] whitespace-nowrap">
+          DESIGN
+        </span>
       </div>
     </section>
   )

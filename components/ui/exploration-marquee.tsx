@@ -26,7 +26,7 @@ function MarqueeRow({ images, direction = "left", duration = 40 }: MarqueeRowPro
         {[...images, ...images, ...images].map((src, i) => (
           <div
             key={`${direction}-${i}`}
-            className="relative h-40 w-64 shrink-0 overflow-hidden rounded-xl border border-border/40 bg-card shadow-sm sm:h-52 sm:w-80"
+            className="relative h-40 w-64 shrink-0 overflow-hidden rounded-md border border-border/40 bg-card shadow-sm sm:h-52 sm:w-80"
           >
             <img
               src={src}

@@ -2,10 +2,9 @@
 
 import { useState, useRef } from "react"
 import Image from "next/image"
-import { ArrowUpRight, Play, Eye } from "lucide-react"
+import { ArrowUpRight, Play } from "lucide-react"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { projects, type PortfolioMode } from "@/lib/data"
-
+import { projects } from "@/lib/data"
 
 function StickyProjectCard({
   project,
@@ -45,7 +44,7 @@ function StickyProjectCard({
   return (
     <div
       ref={container}
-      className="sticky top-0 flex h-screen w-full items-center justify-center px-6"
+      className="sticky top-0 flex h-[100vh] w-full items-start pt-[20vh] justify-center px-6"
     >
       <motion.div
         ref={cardRef}
@@ -54,29 +53,15 @@ function StickyProjectCard({
         onMouseLeave={handleMouseLeave}
         style={{
           scale,
-          top: `calc(5vh + ${i * 30}px)`,
+          top: `calc(${i * 30}px)`,
           transform: `perspective(1200px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg) translateZ(0)`,
           transition: isHovered ? "none" : "transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)",
           isolation: "isolate",
-          WebkitMaskImage: "-webkit-radial-gradient(white, black)",
         }}
-        className={`group relative flex w-full max-w-5xl origin-top flex-col gap-8 overflow-hidden rounded-[2.5rem] border border-border/50 bg-card p-6 shadow-2xl lg:max-h-[700px] lg:min-h-[500px] lg:flex-row lg:gap-12 lg:p-10 ${isReversed ? "lg:flex-row-reverse" : ""
-          }`}
+        className={`group relative flex w-full max-w-5xl origin-top flex-col gap-8 overflow-hidden rounded-[2.5rem] bg-white p-6 border-t-[1px] border-zinc-200/80 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] lg:min-h-[500px] lg:max-h-[700px] lg:flex-row lg:gap-12 lg:p-10 ${isReversed ? "lg:flex-row-reverse" : ""}`}
       >
-        <div
-          className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{
-            background: `radial-gradient(800px circle at ${tilt.x * 50 + 50
-              }% ${tilt.y * -50 + 50}%, var(--color-primary), transparent 40%)`,
-            opacity: isHovered ? 0.15 : 0,
-          }}
-        />
         <div 
-          className="group relative w-full overflow-hidden rounded-2xl lg:w-[55%] aspect-[16/10] bg-secondary shrink-0"
-          style={{ 
-            transform: "translateZ(0)",
-            WebkitMaskImage: "-webkit-radial-gradient(white, black)",
-          }}
+          className="group relative w-full overflow-hidden rounded-2xl lg:w-[55%] aspect-[16/10] bg-zinc-50 shrink-0"
         >
           <Image
             src={project.image}
@@ -84,64 +69,39 @@ function StickyProjectCard({
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-background/20 transition-opacity duration-500 group-hover:opacity-0" />
-          {project.videoUrl ? (
-            <a 
-              href={project.videoUrl} 
-              target="_blank" 
-              className="absolute inset-0 flex items-center justify-center bg-background/80 opacity-0 backdrop-blur-sm transition-opacity duration-500 group-hover:opacity-100"
-            >
-              <div className="flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">
-                <Play size={16} fill="currentColor" /> Watch Video
-              </div>
-            </a>
-          ) : (
-            <a 
-              href={`/case-studies/${project.slug}`} 
-              className="absolute inset-0 flex items-center justify-center bg-background/80 opacity-0 backdrop-blur-sm transition-opacity duration-500 group-hover:opacity-100"
-            >
-              <div className="flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">
-                View Case Study <ArrowUpRight size={16} />
-              </div>
-            </a>
-          )}
+          <div className="absolute inset-0 bg-white/10 transition-opacity duration-500 group-hover:opacity-0" />
+          
+          <a 
+            href={project.videoUrl || `/case-studies/${project.slug}`} 
+            target={project.videoUrl ? "_blank" : "_self"}
+            className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-sm"
+            rel="noreferrer"
+          >
+            <div className="flex items-center gap-3 rounded-full bg-indigo-600 px-8 py-3 text-sm font-bold text-white uppercase tracking-widest shadow-xl">
+              {project.videoUrl ? <><Play size={16} fill="white" /> Watch Video</> : <>Explore Case <ArrowUpRight size={16} /></>}
+            </div>
+          </a>
         </div>
 
-        <div className="w-full lg:w-[45%] flex flex-col justify-center overflow-y-auto pr-2 custom-scrollbar">
-          <span className="mb-3 block text-sm font-medium tracking-widest text-primary uppercase">
-            {project.category}
+        <div className="w-full lg:w-[45%] flex flex-col justify-center">
+          <span className="mb-4 block text-[10px] font-bold tracking-[0.3em] text-indigo-500 uppercase">
+            {project.category} — 0{i + 1}
           </span>
-          <h3 className="mb-5 text-3xl font-bold text-foreground sm:text-4xl">
+          <h3 className="mb-6 text-4xl font-serif text-zinc-900 tracking-tight leading-tight">
             {project.title}
           </h3>
 
-          <div className="mb-4">
-            <h4 className="mb-1.5 text-xs font-semibold tracking-widest text-muted-foreground/70 uppercase">Problem</h4>
-            <p className="text-sm leading-relaxed text-muted-foreground">{project.problem}</p>
+          <div className="space-y-4 mb-8">
+            <h4 className="text-xs font-bold tracking-widest text-zinc-400 uppercase">Challenge</h4>
+            <p className="text-sm leading-relaxed text-zinc-500 font-light">
+               {project.problem}
+            </p>
           </div>
 
-          <div className="mb-4">
-            <h4 className="mb-1.5 text-xs font-semibold tracking-widest text-muted-foreground/70 uppercase">Solution</h4>
-            <p className="text-sm leading-relaxed text-muted-foreground">{project.solution}</p>
-          </div>
-
-          <div className="mb-5">
-            <h4 className="mb-1.5 text-xs font-semibold tracking-widest text-muted-foreground/70 uppercase">Outcome</h4>
-            <p className="text-sm leading-relaxed text-muted-foreground">{project.outcome}</p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-4 mt-auto pt-6">
-            {!project.videoUrl && (
-              <a 
-                href={`/case-studies/${project.slug}`} 
-                className="inline-flex items-center gap-2 text-sm font-bold text-primary uppercase tracking-widest hover:underline"
-              >
-                Full Case Study <ArrowUpRight size={14} />
-              </a>
-            )}
-            <div className="flex flex-wrap gap-2 ml-auto">
-              {project.tools.map((tool: string) => (
-                <span key={tool} className="rounded-full border border-border/50 bg-secondary/50 px-3 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+          <div className="flex flex-wrap items-center gap-4 mt-auto">
+            <div className="flex flex-wrap gap-2">
+              {project.tools.slice(0, 3).map((tool: string) => (
+                <span key={tool} className="rounded-full border border-zinc-100 bg-zinc-50 px-4 py-1.5 text-[10px] font-bold text-zinc-500 uppercase tracking-widest transition-colors hover:bg-indigo-50 hover:text-indigo-600">
                   {tool}
                 </span>
               ))}
@@ -162,9 +122,10 @@ function StickyProjectsList({ projects }: { projects: any[] }) {
   })
 
   return (
-    <main ref={container} className="relative flex w-full flex-col items-center justify-center pb-[5vh] pt-[15vh]">
+    <main ref={container} className="relative flex w-full flex-col items-center justify-center pb-[5vh] pt-0">
       {projects.map((project, i) => {
         const targetScale = Math.max(0.85, 1 - (projects.length - i - 1) * 0.05)
+        
         return (
           <StickyProjectCard
             key={project.slug}
@@ -183,19 +144,21 @@ function StickyProjectsList({ projects }: { projects: any[] }) {
 export function ProjectsSection() {
   const filteredProjects = projects.filter(p => p.type === 'uiux')
 
-  const header = { label: "Case Studies", title: "Featured Projects", sub: "Deep dives into UX challenges." }
-
   return (
-    <section id="work" className="relative w-full text-foreground py-20 md:py-28">
-      <div className="mx-auto max-w-5xl flex flex-col items-center text-center px-6 animate-fade-up">
-        <span className="mb-2 block text-xs font-bold tracking-widest text-primary uppercase">
-          {header.label}
+    <section 
+      id="work" 
+      className="relative w-full bg-[#F4F4F5] pt-32 pb-24 rounded-[2.5rem] mx-6 my-12 border border-zinc-200"
+      style={{ width: "calc(100% - 3rem)" }}
+    >
+      <div className="mx-auto max-w-5xl flex flex-col items-center text-center px-6 mb-8">
+        <span className="mb-4 block text-[10px] font-bold tracking-[0.3em] text-indigo-500 uppercase">
+           WORK — SELECTED
         </span>
-        <h2 className="mb-2 text-4xl font-bold text-foreground sm:text-5xl">
-          {header.title}
+        <h2 className="text-5xl md:text-6xl font-serif text-zinc-900 tracking-tight mb-6">
+           Featured <span className="italic font-light text-zinc-500">Case Studies.</span>
         </h2>
-        <p className="mx-auto max-w-xl text-sm leading-relaxed text-muted-foreground/70">
-          {header.sub}
+        <p className="mx-auto max-w-xl text-zinc-500 font-light text-xl leading-relaxed">
+          Deep dives into complex digital challenges and user-centric solutions.
         </p>
       </div>
 

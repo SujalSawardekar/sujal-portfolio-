@@ -21,48 +21,46 @@ const posts = [
     },
     {
         shortcode: "Cw-iuMWMbjx",
-        title: "Shreeman Legend Album Song Poster",
+        title: "Shreeman Legend Poster",
         href: "https://www.instagram.com/p/Cw-iuMWMbjx/?hl=en",
     },
 ]
 
 export function SocialSection() {
-    const { ref: headRef, isVisible: headVisible } = useIntersection()
-    const { ref: gridRef, isVisible: gridVisible } = useIntersection()
+    const { ref: sectionRef, isVisible } = useIntersection()
 
     return (
-        <section id="social" className="px-6 py-20 md:py-28">
+        <section 
+            id="social" 
+            ref={sectionRef}
+            className={`mx-6 my-12 rounded-[2.5rem] bg-[#F4F4F5] py-24 px-8 border border-zinc-200 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+        >
             <div className="mx-auto max-w-7xl">
                 {/* Section header */}
-                <div
-                    ref={headRef}
-                    className={`mb-10 flex flex-col items-center text-center ${headVisible ? "animate-fade-up" : "opacity-0"}`}
-                >
-                    <span className="mb-2 block text-xs font-bold tracking-widest text-primary uppercase">
-                        Social Feed
+                <div className="mb-20 flex flex-col items-center text-center">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-indigo-600 mb-6 block">
+                        06 — SOCIAL FEED
                     </span>
-                    <h2 className="mb-2 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-                        LATEST POSTS
+                    <h2 className="text-5xl font-serif text-zinc-900 tracking-tight leading-tight mb-8">
+                       Latest Design <span className="italic font-light text-zinc-500">Explorations.</span>
                     </h2>
-                    <p className="mx-auto text-sm text-muted-foreground/70 max-w-xl">
-                        Check out some of my recent design explorations and creative work over on Instagram.
+                    <p className="mx-auto text-zinc-500 font-light text-lg max-w-xl">
+                        A glimpse into my creative laboratory and recent visual experiments.
                     </p>
                 </div>
 
                 {/* Posts grid */}
-                <div
-                    ref={gridRef}
-                    className={`grid gap-4 sm:grid-cols-2 lg:grid-cols-4 ${gridVisible ? "animate-fade-up" : "opacity-0"}`}
-                    style={{ animationDelay: "200ms" }}
-                >
-                    {posts.map((post) => (
-                        <div key={post.shortcode} className="flex flex-col gap-2">
-                            {/* Instagram embedded iframe */}
-                            <div className="overflow-hidden rounded-xl border border-border/40 bg-card/20">
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    {posts.map((post, i) => (
+                        <div 
+                            key={post.shortcode} 
+                            className="flex flex-col gap-4"
+                        >
+                            {/* Instagram Container - White Bento Card style */}
+                            <div className="group overflow-hidden rounded-[2rem] bg-white p-2 border border-zinc-100 shadow-sm aspect-[1/1.2] flex items-center justify-center transition-all hover:shadow-lg hover:-translate-y-1 cursor-pointer">
                                 <iframe
                                     src={`https://www.instagram.com/p/${post.shortcode}/embed/`}
-                                    className="w-full"
-                                    height="330"
+                                    className="w-full h-full rounded-[1.8rem] grayscale transition-all duration-700 group-hover:grayscale-0"
                                     frameBorder={0}
                                     scrolling="no"
                                     title={post.title}
@@ -74,33 +72,29 @@ export function SocialSection() {
                                 href={post.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                data-cursor-hover
-                                className="group flex items-center gap-1.5 text-xs font-bold text-foreground transition-colors hover:text-primary uppercase tracking-wider"
+                                className="group flex items-center justify-between px-2"
                             >
-                                {post.title}
-                                <ExternalLink
-                                    size={10}
-                                    className="text-muted-foreground/50 transition-all duration-300 group-hover:text-primary group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                                />
+                                <span className="text-[10px] font-bold text-zinc-400 group-hover:text-indigo-600 transition-colors uppercase tracking-[0.2em]">
+                                    {post.title}
+                                </span>
+                                <ExternalLink size={12} className="text-zinc-300 group-hover:text-indigo-600 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                             </a>
                         </div>
                     ))}
                 </div>
 
-                {/* CTA */}
-                <div
-                    className={`mt-10 flex justify-center ${gridVisible ? "animate-fade-up" : "opacity-0"}`}
-                    style={{ animationDelay: "400ms" }}
-                >
+                {/* CTA - Interactive Action Button Style */}
+                <div className="mt-20 flex justify-center">
                     <a
                         href="https://www.instagram.com/graphics.by_ss/?hl=en"
                         target="_blank"
                         rel="noopener noreferrer"
-                        data-cursor-hover
-                        className="group inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                        className="group relative flex items-center gap-6 rounded-full bg-white pl-8 pr-2 py-2 border border-zinc-100 shadow-sm hover:scale-105 transition-all duration-300"
                     >
-                        View all on Instagram
-                        <ExternalLink size={13} className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-900">Follow Journey</span>
+                        <div className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center transition-colors group-hover:bg-zinc-700">
+                           <ExternalLink size={14} className="text-white" />
+                        </div>
                     </a>
                 </div>
             </div>

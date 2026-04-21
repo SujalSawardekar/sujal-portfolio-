@@ -2,13 +2,12 @@
 
 import { useState, type FormEvent } from "react"
 import { useIntersection } from "@/hooks/use-intersection"
-import { Send, Mail, MapPin, Phone, ArrowUpRight, ArrowUp, Linkedin } from "lucide-react"
+import { Mail, MapPin, Phone, ArrowUpRight } from "lucide-react"
 import { Footer } from "./footer"
 import { sendContactMessage } from "@/app/actions/contact"
 
 export function ContactSection() {
-  const { ref: titleRef, isVisible: titleVisible } = useIntersection()
-  const { ref: formRef, isVisible: formVisible } = useIntersection()
+  const { ref: sectionRef, isVisible } = useIntersection()
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -42,136 +41,114 @@ export function ContactSection() {
     }
   }
 
-  const scrollToTop = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
-
   return (
-    <section id="contact" className="relative overflow-hidden px-6 pt-20 md:pt-28 pb-20">
+    <section
+      id="contact"
+      ref={sectionRef}
+      className={`mx-6 my-4 rounded-[2.5rem] bg-[#F4F4F5] py-12 px-10 border border-zinc-200 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+    >
       <div className="mx-auto max-w-7xl">
-        {/* Section heading - Standardized gap */}
-        <div
-          ref={titleRef}
-          className={`mb-10 flex flex-col items-center text-center ${titleVisible ? "animate-fade-up" : "opacity-0"}`}
-        >
-          <span className="mb-2 block text-sm font-medium tracking-widest text-primary uppercase">
-            Get in Touch
+        {/* Section heading */}
+        <div className="mb-10 flex flex-col items-center text-center">
+          <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-indigo-600 mb-4 block">
+            07 — CONNECT
           </span>
-          <h2 className="mb-2 text-4xl font-bold text-foreground sm:text-5xl">
-            {"Let's Build Something Better."}
+          <h2 className="text-4xl font-serif text-zinc-900 tracking-tight mb-3">
+            Let&apos;s Build <span className="italic font-light text-zinc-500">Something Better.</span>
           </h2>
-          <p className="mx-auto max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Have a project in mind or want to collaborate?
+          <p className="mx-auto max-w-xl text-zinc-500 font-light text-sm leading-relaxed">
+            Have a project in mind or want to collaborate? I&apos;m ready to transform your vision.
           </p>
         </div>
 
-        <div
-          ref={formRef}
-          className={`grid gap-8 lg:grid-cols-5 ${formVisible ? "animate-fade-up" : "opacity-0"}`}
-        >
-          {/* Left side - Info */}
-          <div className="flex flex-col gap-4 lg:col-span-2">
+        <div className="grid gap-6 lg:grid-cols-5 mb-0">
+          {/* Left side - Info Info cards in Light Bento style */}
+          <div className="flex flex-col gap-5 lg:col-span-2">
             {[
-              { icon: Phone, label: "Phone", value: "+91 7249232712", href: "tel:+917249232712" },
+              { icon: Phone, label: "Phone", value: "+91 72492 32712", href: "tel:+917249232712" },
               { icon: Mail, label: "Email", value: "sujalsawardekar27@gmail.com", href: "mailto:sujalsawardekar27@gmail.com" },
-              { icon: MapPin, label: "Location", value: "Chiplun, Maharashtra", href: null },
+              { icon: MapPin, label: "Location", value: "Ratnagiri, Maharashtra", href: null },
             ].map((item, i) => (
-              <div key={item.label} className="flex items-center gap-4 p-4 rounded-xl bg-card/20 border border-border/20 backdrop-blur-sm">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <item.icon size={18} />
+              <div
+                key={item.label}
+                className="bg-white rounded-[2rem] p-6 flex items-center gap-5 group hover:bg-zinc-50 transition-colors border border-zinc-100 shadow-sm"
+                style={{ transitionDelay: `${i * 100}ms` }}
+              >
+                <div className="w-12 h-12 rounded-2xl bg-zinc-50 border border-zinc-100 flex items-center justify-center group-hover:rotate-12 transition-transform shrink-0">
+                  <item.icon className="text-indigo-600 w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground/60">{item.label}</p>
+                  <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.2em] mb-1">{item.label}</p>
                   {item.href ? (
-                    <a href={item.href} className="text-sm font-semibold text-foreground hover:text-primary transition-colors">{item.value}</a>
+                    <a href={item.href} className="text-sm font-medium text-zinc-900 hover:text-indigo-600 transition-colors">{item.value}</a>
                   ) : (
-                    <p className="text-sm font-semibold text-foreground">{item.value}</p>
+                    <p className="text-sm font-medium text-zinc-900">{item.value}</p>
                   )}
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Right side - Form - More compact */}
+          {/* Right side - Form - White Bento Card focus */}
           <div className="lg:col-span-3">
             <form
               onSubmit={handleSubmit}
-              className="rounded-2xl border border-border/40 bg-card/30 p-6 sm:p-7 backdrop-blur-md shadow-xl shadow-primary/5"
-              suppressHydrationWarning
+              className="bg-white rounded-[2rem] p-10 border border-zinc-100 shadow-sm h-full flex flex-col gap-4"
             >
-              <div className="mb-4 grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label htmlFor="name" className="mb-1.5 block text-xs font-semibold text-muted-foreground uppercase tracking-wider">Name</label>
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-3">
+                  <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.2em]">Name</label>
                   <input
-                    id="name"
                     type="text"
                     required
+                    suppressHydrationWarning
                     value={formState.name}
                     onChange={(e) => setFormState((s) => ({ ...s, name: e.target.value }))}
-                    placeholder="Your name"
-                    className="w-full rounded-lg border border-border/30 bg-background/40 px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/20"
-                    suppressHydrationWarning
+                    placeholder="Enter your name"
+                    className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-6 py-4 text-zinc-900 text-sm focus:border-indigo-600 transition-colors outline-none"
                   />
                 </div>
-                <div>
-                  <label htmlFor="email" className="mb-1.5 block text-xs font-semibold text-muted-foreground uppercase tracking-wider">Email</label>
+                <div className="space-y-3">
+                  <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.2em]">Email</label>
                   <input
-                    id="email"
                     type="email"
                     required
+                    suppressHydrationWarning
                     value={formState.email}
                     onChange={(e) => setFormState((s) => ({ ...s, email: e.target.value }))}
-                    placeholder="you@example.com"
-                    className="w-full rounded-lg border border-border/30 bg-background/40 px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/20"
-                    suppressHydrationWarning
+                    placeholder="Email address"
+                    className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-6 py-4 text-zinc-900 text-sm focus:border-indigo-600 transition-colors outline-none"
                   />
                 </div>
               </div>
-              <div className="mb-4">
-                <label htmlFor="subject" className="mb-1.5 block text-xs font-semibold text-muted-foreground uppercase tracking-wider">Subject</label>
-                <input
-                  id="subject"
-                  type="text"
-                  value={formState.subject}
-                  onChange={(e) => setFormState((s) => ({ ...s, subject: e.target.value }))}
-                  placeholder="What is this about?"
-                  className="w-full rounded-lg border border-border/30 bg-background/40 px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/20"
-                  suppressHydrationWarning
-                />
-              </div>
-              <div className="mb-5">
-                <label htmlFor="message" className="mb-1.5 block text-xs font-semibold text-muted-foreground uppercase tracking-wider">Message</label>
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.2em]">Message</label>
                 <textarea
-                  id="message"
                   required
-                  rows={3}
+                  rows={4}
                   value={formState.message}
                   onChange={(e) => setFormState((s) => ({ ...s, message: e.target.value }))}
                   placeholder="Tell me about your project..."
-                  className="w-full resize-none rounded-lg border border-border/30 bg-background/40 px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/20"
-                  suppressHydrationWarning
+                  className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-6 py-4 text-zinc-900 text-sm focus:border-indigo-600 transition-colors outline-none resize-none"
                 />
               </div>
+
+              {/* Interactive Action Button Style */}
               <button
                 type="submit"
-                disabled={isSending}
-                data-cursor-hover
-                className="group flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-xs font-bold text-primary-foreground transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 active:scale-[0.98]"
                 suppressHydrationWarning
+                disabled={isSending}
+                className="group relative flex w-full items-center justify-between gap-6 rounded-full bg-zinc-900 pl-8 pr-1.5 py-1.5 hover:bg-zinc-800 transition-all duration-300 disabled:opacity-50 mt-auto"
               >
-                  {isSending ? "Sending..." : isSent ? "Sent!" : (
-                  <>
-                    Send Message
-                    <Send size={14} className="transition-transform group-hover:translate-x-1" />
-                  </>
-                )}
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white">
+                  {isSending ? "In Transit..." : isSent ? "Succeed" : "Send Inquiry"}
+                </span>
+                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center transition-transform group-hover:scale-95 group-active:scale-90">
+                  <ArrowUpRight size={16} className="text-black" />
+                </div>
               </button>
-              {error && (
-                <p className="mt-3 text-center text-xs font-medium text-destructive animate-fade-in">
-                  {error}
-                </p>
-              )}
+
+              {error && <p className="mt-4 text-center text-xs text-red-500 font-medium">{error}</p>}
             </form>
           </div>
         </div>

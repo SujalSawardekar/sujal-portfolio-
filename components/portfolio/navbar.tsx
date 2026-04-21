@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Menu, X } from "lucide-react"
+import { Menu, X, ArrowUpRight } from "lucide-react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -21,17 +21,19 @@ export function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
 
+      let currentSection = ""
       const sections = navLinks.map((link) => link.href.slice(1))
       for (const section of [...sections].reverse()) {
         const el = document.getElementById(section)
         if (el) {
           const rect = el.getBoundingClientRect()
-          if (rect.top <= 150) {
-            setActiveSection(section)
+          if (rect.top <= 250) {
+            currentSection = section
             break
           }
         }
       }
+      setActiveSection(currentSection)
     }
 
     if (isMenuOpen) {
@@ -48,108 +50,101 @@ export function Navbar() {
   }, [isMenuOpen])
 
   return (
-    <header
-      className={`fixed top-0 right-0 left-0 z-[100] transition-all duration-500 ${isScrolled || isMenuOpen
-        ? "bg-background/80 shadow-lg shadow-background/20 backdrop-blur-xl"
-        : "bg-transparent"
-        }`}
-    >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-        <a
-          href="#"
-          className="group flex items-center gap-2.5 text-foreground z-[110]"
-          data-cursor-hover
-        >
-          <div className="relative h-12 w-12 transition-transform duration-300 group-hover:scale-110">
+    <header className="fixed top-6 left-0 right-0 z-[999] px-6 pointer-events-none">
+      <nav className={`mx-auto flex max-w-fit items-center gap-8 rounded-full p-1.5 transition-all duration-500 pointer-events-auto ${
+        isScrolled 
+        ? "bg-white/70 backdrop-blur-lg border border-zinc-200/50 scale-95 shadow-xl shadow-zinc-200/20" 
+        : "glass-20 border border-white/10 scale-100"
+      }`}>
+        {/* Logo */}
+        <a href="#" className="flex items-center pl-3">
+          <div className="relative h-8 w-8">
             <Image
               src="/Sujal Logo 2.png"
               alt="Graphics by SS"
               fill
-              className="object-contain"
+              className={`object-contain transition-all duration-500 ${isScrolled ? "invert opacity-80" : ""}`}
               priority
             />
           </div>
         </a>
 
-        <div className="flex items-center gap-6 z-[110]">
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-1">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className={`px-5 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors duration-300 ${
+                activeSection === link.href.slice(1) 
+                ? isScrolled ? "text-indigo-600" : "text-white" 
+                : isScrolled 
+                  ? "text-zinc-500/50 hover:text-zinc-900" 
+                  : "text-white/50 hover:text-white"
+              }`}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        {/* Action Button */}
+        <div className="flex items-center gap-2 pr-1.5">
           <a
             href="https://drive.google.com/drive/folders/1VvkGflCJ9cCZjakHM6LSI-qx_NYaTgCD"
             target="_blank"
             rel="noopener noreferrer"
-            data-cursor-hover
-            className="hidden sm:block rounded-full border border-primary/30 bg-primary/10 px-6 py-2.5 text-sm font-medium text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground"
+            className={`hidden sm:flex items-center gap-2 rounded-full px-5 py-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
+              isScrolled 
+              ? "bg-indigo-600 text-white hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/20" 
+              : "bg-white text-black hover:bg-zinc-200"
+            }`}
           >
-            {"Resume"}
+            <span>Resume</span>
+            <ArrowUpRight className="w-3 h-3" />
           </a>
 
+          {/* Mobile Menu Trigger */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex items-center justify-center p-2 text-foreground transition-transform hover:scale-110 active:scale-95"
+            className={`flex md:hidden items-center justify-center p-2 transition-transform hover:scale-110 ${isScrolled ? "text-zinc-900" : "text-white"}`}
             aria-label="Toggle menu"
-            data-cursor-hover
           >
-            <div className="relative h-6 w-8">
-              <span className={`absolute left-0 h-0.5 w-8 bg-current transition-all duration-300 ${isMenuOpen ? "top-3 rotate-45" : "top-1"}`} />
-              <span className={`absolute left-0 top-3 h-0.5 w-8 bg-current transition-all duration-300 ${isMenuOpen ? "opacity-0" : "opacity-100"}`} />
-              <span className={`absolute left-0 h-0.5 w-8 bg-current transition-all duration-300 ${isMenuOpen ? "top-3 -rotate-45" : "top-5"}`} />
-            </div>
+            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </nav>
 
+      {/* Full-screen Mobile Menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 min-h-screen w-full bg-background/98 flex flex-col items-center justify-center backdrop-blur-3xl z-[105]"
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(32px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            className="fixed inset-0 min-h-screen w-full bg-black/90 flex flex-col items-center justify-center z-[105]"
           >
-            <div className="flex flex-col items-center gap-6 sm:gap-10">
+             <button
+              onClick={() => setIsMenuOpen(false)}
+              className="absolute top-10 right-10 p-4 text-white hover:rotate-90 transition-transform"
+            >
+              <X size={32} />
+            </button>
+
+            <div className="flex flex-col items-center gap-8">
               {navLinks.map((link, i) => (
                 <motion.a
                   key={link.href}
                   href={link.href}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + i * 0.1, duration: 0.5 }}
+                  transition={{ delay: i * 0.1 }}
                   onClick={() => setIsMenuOpen(false)}
-                  className="group relative overflow-hidden px-4 py-2"
+                  className="text-4xl font-serif text-white hover:text-primary transition-colors"
                 >
-                  <span className={`text-4xl sm:text-7xl font-bold tracking-tighter uppercase transition-colors duration-300 ${activeSection === link.href.slice(1) ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}`}>
-                    {link.label}
-                  </span>
-                  <motion.span 
-                    className="absolute bottom-0 left-0 h-1 w-full bg-primary origin-left"
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
+                  {link.label}
                 </motion.a>
               ))}
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.5 }}
-                className="mt-8 flex flex-col items-center gap-6"
-              >
-                <a
-                  href="https://drive.google.com/drive/folders/1VvkGflCJ9cCZjakHM6LSI-qx_NYaTgCD"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="sm:hidden rounded-full bg-primary px-10 py-4 text-xl font-bold text-primary-foreground uppercase tracking-widest"
-                >
-                  Resume
-                </a>
-                
-                <div className="flex gap-8 text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
-                  <a href="https://www.linkedin.com/in/sujalsawardekar27/" target="_blank" className="hover:text-primary transition-colors">LinkedIn</a>
-                  <a href="https://github.com/SujalSawardekar" target="_blank" className="hover:text-primary transition-colors">GitHub</a>
-                </div>
-              </motion.div>
             </div>
           </motion.div>
         )}
@@ -157,4 +152,3 @@ export function Navbar() {
     </header>
   )
 }
-

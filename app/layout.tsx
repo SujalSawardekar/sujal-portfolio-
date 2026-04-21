@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Space_Grotesk } from 'next/font/google'
+import { Inter, Space_Grotesk, Playfair_Display } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { NoiseOverlay } from '@/components/portfolio/noise-overlay'
 import './globals.css'
 
 const inter = Inter({
@@ -11,6 +12,11 @@ const inter = Inter({
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-space-grotesk',
+})
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
 })
 
 export const metadata: Metadata = {
@@ -33,8 +39,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${playfair.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased" suppressHydrationWarning>
+        <NoiseOverlay />
         {children}
         <Analytics />
       </body>

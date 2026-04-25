@@ -5,14 +5,14 @@ import { motion } from "framer-motion"
 
 const experiences = [
   {
-    period: "Jul 2025 – Sep 2025",
-    role: "UI/UX Design Intern",
+    period: "15 Jul 2025 – 15 Sep 2025",
+    role: "UI/UX Designer & Social Media Design Intern",
     company: "JAPFA Pvt. Ltd., Pune",
     description: [
-      "Contributed to user interface improvements across digital platforms",
-      "Designed digital creatives and brand communication materials",
-      "Assisted in improving online visual identity and marketing content",
-      "Collaborated with marketing and product teams on design deliverables",
+      "Designed and delivered 25+ UI screens for the BestClub platform, creating responsive web layouts and improving overall usability",
+      "Developed UI for Japfa Best B2B app with a focus on structured, user-friendly interface design",
+      "Created 10+ social media creatives and digital assets aligned with brand communication",
+      "Collaborated with product, marketing, and development teams to execute design solutions and maintain visual consistency across platforms",
     ],
     tags: ["Figma", "Photoshop", "Canva", "Branding"],
   },

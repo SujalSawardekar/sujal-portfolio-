@@ -35,7 +35,7 @@ export const projects = [
         solution: "Executed a complete mobile redesign focused on improved readability and data-first visual hierarchy.",
         tools: ["Figma", "Adobe XD", "Mobile Design", "Prototyping"],
         outcome: "Significantly enhanced mobile UX with clearer data presentation and faster navigation flow.",
-        image: "/images/project-3.jpg",
+        image: "/images/crickanalyzer-hero.jpg",
         link: "#",
     },
 

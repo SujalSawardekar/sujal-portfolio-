@@ -40,7 +40,7 @@ export function AboutSection() {
     <section 
       id="about" 
       ref={sectionRef}
-      className={`mx-2 md:mx-6 my-6 md:my-12 rounded-[2rem] md:rounded-[2.5rem] bg-[#F4F4F5] py-12 md:py-24 px-4 md:px-8 border border-zinc-200 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+      className={`mx-auto mx-2 md:mx-6 my-6 md:my-12 rounded-[2rem] md:rounded-[2.5rem] bg-[#F4F4F5] py-12 md:py-24 px-4 md:px-8 border border-zinc-200 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
     >
       <div className="mx-auto max-w-7xl">
         {/* Header Block */}

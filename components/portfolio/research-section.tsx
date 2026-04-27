@@ -11,7 +11,7 @@ export function ResearchSection() {
     <section 
       id="research" 
       ref={sectionRef}
-      className={`mx-2 md:mx-6 my-4 rounded-[2rem] md:rounded-[2.5rem] bg-[#0c0c0e] py-12 px-4 md:px-8 border border-white/5 transition-all duration-1000 relative overflow-hidden ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+      className={`mx-auto mx-2 md:mx-6 my-4 rounded-[2rem] md:rounded-[2.5rem] bg-[#0c0c0e] py-12 px-4 md:px-8 border border-white/5 transition-all duration-1000 relative overflow-hidden ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
     >
       {/* Background Decoration */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
@@ -88,8 +88,8 @@ export function ResearchSection() {
             </div>
 
             {/* Footer Label */}
-            <div className="pt-8 border-t border-white/10 w-full">
-              <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-zinc-400">
+            <div className="pt-8 border-t border-white/10 w-full overflow-hidden">
+              <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-zinc-400 block whitespace-nowrap">
                 Published in <span className="text-indigo-400">{researchData.publication}</span> • {researchData.date}
               </span>
             </div>

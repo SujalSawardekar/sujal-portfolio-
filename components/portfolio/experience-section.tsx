@@ -49,7 +49,7 @@ export function ExperienceSection() {
     <section 
       id="experience" 
       ref={sectionRef}
-      className="mx-2 md:mx-6 my-6 md:my-12 rounded-[2rem] md:rounded-[2.5rem] bg-[#18181B] py-12 md:py-24 px-4 md:px-8 border border-white/5 relative overflow-hidden"
+      className="mx-auto mx-2 md:mx-6 my-6 md:my-12 rounded-[2rem] md:rounded-[2.5rem] bg-[#18181B] py-12 md:py-24 px-4 md:px-8 border border-white/5 relative overflow-hidden"
     >
       {/* Grid Lineart Overlay */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{

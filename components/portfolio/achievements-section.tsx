@@ -82,7 +82,7 @@ export function AchievementsSection() {
     <section 
       id="achievements" 
       ref={sectionRef}
-      className={`mx-2 md:mx-6 my-6 md:my-12 rounded-[2rem] md:rounded-[2.5rem] bg-[#09090b] py-12 md:py-24 px-4 md:px-8 border border-white/5 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+      className={`mx-auto mx-2 md:mx-6 my-6 md:my-12 rounded-[2rem] md:rounded-[2.5rem] bg-[#09090b] py-12 md:py-24 px-4 md:px-8 border border-white/5 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
     >
       <div className="mx-auto max-w-6xl">
         {/* Section header */}

@@ -38,7 +38,7 @@ export function SkillsSection() {
     <section
       id="skills"
       ref={sectionRef}
-      className="mx-2 md:mx-6 my-6 md:my-12 rounded-[2rem] md:rounded-[2.5rem] bg-[#F4F4F5] py-12 md:py-24 px-4 md:px-8 border border-zinc-200 relative overflow-hidden"
+      className="mx-auto mx-2 md:mx-6 my-6 md:my-12 rounded-[2rem] md:rounded-[2.5rem] bg-[#F4F4F5] py-12 md:py-24 px-4 md:px-8 border border-zinc-200 relative overflow-hidden"
     >
       <div className="relative z-10 mx-auto max-w-5xl mb-20 flex flex-col items-center text-center">
         <span className="sk-head text-[10px] font-bold uppercase tracking-[0.3em] text-indigo-600 mb-6 block">

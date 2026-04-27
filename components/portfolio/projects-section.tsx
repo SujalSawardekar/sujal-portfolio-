@@ -122,7 +122,7 @@ function StickyProjectsList({ projects }: { projects: any[] }) {
   })
 
   return (
-    <main ref={container} className="relative flex w-full flex-col items-center justify-center pb-[5vh] pt-0">
+    <div ref={container} className="relative flex w-full flex-col items-center justify-center pb-[5vh] pt-0">
       {projects.map((project, i) => {
         const targetScale = Math.max(0.85, 1 - (projects.length - i - 1) * 0.05)
         
@@ -137,7 +137,7 @@ function StickyProjectsList({ projects }: { projects: any[] }) {
           />
         )
       })}
-    </main>
+    </div>
   )
 }
 
@@ -147,7 +147,7 @@ export function ProjectsSection() {
   return (
     <section 
       id="work" 
-      className="relative w-full bg-[#F4F4F5] pt-32 pb-24 rounded-[2.5rem] mx-6 my-12 border border-zinc-200"
+      className="relative mx-auto mx-2 md:mx-6 my-12 rounded-[2.5rem] bg-[#F4F4F5] pt-32 pb-24 border border-zinc-200"
     >
       <div className="mx-auto max-w-5xl flex flex-col items-center text-center px-6 mb-8">
         <span className="mb-4 block text-[10px] font-bold tracking-[0.3em] text-indigo-500 uppercase">

@@ -7,11 +7,11 @@ export const projects = [
         slug: "amppere-cable",
         title: "Amppere Cable",
         category: "Website Redesign",
-        problem: "The existing website lacked modern UX standards, with poor responsive layout and inconsistent visual hierarchy.",
-        solution: "Delivered a full responsive redesign with improved UX, restructured layout, and cohesive social media creatives.",
+        problem: "Existing website lacked usability, visual hierarchy, and brand consistency.",
+        solution: "Redesigned the platform with improved typography, spacing, and color usage for better readability.",
         tools: ["Figma", "WordPress", "Photoshop", "Canva"],
-        outcome: "Improved user engagement and brand consistency across web and social media channels.",
-        image: "/images/project-1.jpg",
+        outcome: "Achieved a more professional look and improved overall user experience and brand consistency.",
+        image: "/images/Hero Photo/project-1.jpg",
         link: "#",
     },
     {
@@ -19,11 +19,11 @@ export const projects = [
         slug: "nexus-engineering",
         title: "Nexus Engineering",
         category: "Designed Web App",
-        problem: "The existing website lacked modern UX standards, with poor responsive layout across multiple device sizes.",
-        solution: "Delivered a full responsive redesign with improved UX, restructured layout, and cohesive social media creatives.",
+        problem: "The goal was to design a responsive web application from scratch with structured UX and intuitive navigation that works across multiple device sizes.",
+        solution: "Created detailed wireframes and high-fidelity UI in Figma, focusing on usability and clear user flows. Developed cohesive visual assets to ensure consistent branding across web and social platforms.",
         tools: ["Figma", "WordPress", "Photoshop", "Canva"],
-        outcome: "Improved user engagement and brand consistency across web and social media channels.",
-        image: "/images/project-nexus-2.png",
+        outcome: "Delivered a professional design system and visual identity that significantly improved user engagement and brand perception.",
+        image: "/images/Hero Photo/project-nexus-2.png",
         link: "#",
     },
     {
@@ -31,12 +31,36 @@ export const projects = [
         slug: "crickanalyzer",
         title: "CrickAnalyzer",
         category: "Mobile Optimization",
-        problem: "The cricket analytics app had poor mobile readability, cluttered navigation, and inconsistent design patterns.",
-        solution: "Executed a complete mobile redesign focused on improved readability and data-first visual hierarchy.",
+        problem: "The platform needed optimization for mobile usability and readability on smaller screens.",
+        solution: "Improved information architecture and typography specifically tailored for mobile devices.",
         tools: ["Figma", "Adobe XD", "Mobile Design", "Prototyping"],
-        outcome: "Significantly enhanced mobile UX with clearer data presentation and faster navigation flow.",
-        image: "/images/crickanalyzer-hero.jpg",
+        outcome: "Enhanced mobile user experience, making data more accessible and readable on the go.",
+        image: "/images/Hero Photo/crickanalyzer-app.jpg",
         link: "#",
+    },
+    {
+        type: 'uiux',
+        slug: "design-sphere",
+        title: "Design Sphere",
+        category: "Portfolio Platform",
+        problem: "Need for a fast-developed, interactive portfolio platform that showcases high-end design capabilities.",
+        solution: "Developed the platform using Webflow and Spline 3D, implementing interactive animations and high-fidelity visual assets.",
+        tools: ["Webflow", "Spline 3D", "UI Design"],
+        outcome: "Delivered a high-fidelity interactive platform that showcases 3D and modern UI design seamlessly.",
+        image: "/images/Hero Photo/design-sphere-app.jpg",
+        link: "https://designsphere123.webflow.io/",
+    },
+    {
+        type: 'uiux',
+        slug: "krushi-sakhi",
+        title: "Krushi Sakhi",
+        category: "App Design",
+        problem: "Rural and semi-literate users faced barriers in accessing crop tracking, advisory services, and government schemes due to complex digital patterns.",
+        solution: "Designed user-friendly workflows with icon-based navigation and simplified UI patterns. Created wireframes, high-fidelity prototypes, and reusable components in Figma for scalable design.",
+        tools: ["Figma", "UI Design", "User Research", "Accessibility"],
+        outcome: "Significantly improved accessibility for rural users, empowering them with structured data and easy advisory access.",
+        image: "/images/Hero Photo/krushi-sakhi-app.jpg",
+        link: "https://www.figma.com/proto/sgpDp7IXX22ITz2bAdMH4d/Krushi-Sakhi?node-id=153-309&p=f&viewport=5671%2C60%2C0.78&t=A6jR1DQGvNd5b4C9-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1%3A2&show-proto-sidebar=1&page-id=0%3A1",
     },
 
     // Graphic Design Projects
@@ -138,4 +162,27 @@ export const skillData = {
             { title: "Platform Layouts", items: ["Social Media", "Landscape Video", "Vertical Video", "Square Formats"] },
         ]
     }
+}
+
+export const researchData = {
+    title: "Sujal S. Sawardekar, et al. “A Comprehensive Survey: Deep Learning for Face Recognition.”",
+    publication: "International Journal of Creative Research Thoughts (IJCRT), Vol. 14, Issue 4",
+    date: "April 2026",
+    description: "An extensive study analyzing the evolution of face recognition technologies, reviewing 19+ research papers on deep learning models including CNNs and Vision Transformers.",
+    highlights: [
+        "Reviewed 19+ research papers on deep learning models including CNNs and Vision Transformers",
+        "Analyzed challenges like occlusion, adversarial attacks, and real-world deployment gaps",
+        "Benchmarking on various datasets and model architectures",
+        "Discussion on ethical AI and bias mitigation"
+    ],
+    links: [
+        { label: "View Paper", url: "/Research/IJCRT2604906.pdf", icon: "file-text" },
+        { label: "Certificate", url: "/Research/IJCRT_Certificate_IJCRT_306395.pdf", icon: "award" },
+        { label: "Acceptance Letter", url: "/Research/IJCRT_Confirmation_Letter_306395.pdf", icon: "mail" }
+    ],
+    stats: [
+        { label: "Citations", value: "Upcoming" },
+        { label: "Read Time", value: "15 min" },
+        { label: "Peer Reviewed", value: "Yes" }
+    ]
 }

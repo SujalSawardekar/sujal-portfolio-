@@ -8,6 +8,7 @@ import { ProjectsSection } from "@/components/portfolio/projects-section"
 import { FigmaShowcaseSection } from "@/components/portfolio/figma-showcase"
 import { AboutSection } from "@/components/portfolio/about-section"
 import { ExperienceSection } from "@/components/portfolio/experience-section"
+import { ResearchSection } from "@/components/portfolio/research-section"
 import { AchievementsSection } from "@/components/portfolio/achievements-section"
 import { SkillsSection } from "@/components/portfolio/skills-section"
 import { SocialSection } from "@/components/portfolio/social-section"
@@ -39,6 +40,7 @@ export default function PortfolioPage() {
           <ProjectsSection />
           <FigmaShowcaseSection />
           <ExperienceSection />
+          <ResearchSection />
           <AchievementsSection />
           <SkillsSection />
           <SocialSection />

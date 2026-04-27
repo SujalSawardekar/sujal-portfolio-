@@ -15,20 +15,21 @@ export function FigmaShowcaseSection() {
 
     const images = [
         "/figma-showcase/AC/AC (1).png",
-        "/figma-showcase/AC/AC (2).png",
-        "/figma-showcase/AC/AC (3).png",
+        "/figma-showcase/KS/Profile.png",
+        "/figma-showcase/DS/Screenshot 2026-04-27 141048.png",
         "/figma-showcase/NE/NE (1).png",
-        "/figma-showcase/NE/NE (2).png",
-        "/figma-showcase/NE/NE (3).png",
         "/figma-showcase/CA/Match Center.png",
-        "/figma-showcase/CA/Start.png",
+        "/figma-showcase/KS/Diagnosis.png",
+        "/figma-showcase/DS/Screenshot 2026-04-27 141233.png",
+        "/figma-showcase/AC/AC (2).png",
+        "/figma-showcase/NE/NE (2).png",
         "/figma-showcase/CA/Stats ( All Batter).png",
-        "/figma-showcase/AC/AC (4).png",
-        "/figma-showcase/NE/NE (4).png",
-        "/figma-showcase/AC/AC (6).png",
-        "/figma-showcase/NE/NE (5).png",
-        "/figma-showcase/CA/Stats ( All bowler -spin).png",
-        "/figma-showcase/NE/NE (6).png",
+        "/figma-showcase/KS/Profile-1.png",
+        "/figma-showcase/DS/Screenshot 2026-04-27 132832.png",
+        "/figma-showcase/NE/NE (3).png",
+        "/figma-showcase/KS/Profile-1plant.png",
+        "/figma-showcase/CA/Start.png",
+        "/figma-showcase/DS/Screenshot 2026-04-27 141701.png",
     ];
 
     const row1 = images.slice(0, 8);
@@ -46,6 +47,14 @@ export function FigmaShowcaseSection() {
         {
             name: "Crick Analyzer",
             url: "https://www.figma.com/proto/aoWQpCDBlfYX1oh47DAOSx/Crick-analyzer--Og?page-id=0%3A1&node-id=362-12110&p=f&viewport=822%2C844%2C0.25&t=ywgxmLZid040VfP5-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=362%3A11796",
+        },
+        {
+            name: "Krushi Sakhi",
+            url: "https://www.figma.com/proto/sgpDp7IXX22ITz2bAdMH4d/Krushi-Sakhi?node-id=153-309&p=f&viewport=5671%2C60%2C0.78&t=A6jR1DQGvNd5b4C9-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1%3A2&show-proto-sidebar=1&page-id=0%3A1",
+        },
+        {
+            name: "Design Sphere",
+            url: "https://designsphere123.webflow.io/",
         },
     ];
 

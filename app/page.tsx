@@ -13,6 +13,7 @@ import { AchievementsSection } from "@/components/portfolio/achievements-section
 import { SkillsSection } from "@/components/portfolio/skills-section"
 import { SocialSection } from "@/components/portfolio/social-section"
 import { ContactSection } from "@/components/portfolio/contact-section"
+import { ArchiveSection } from "@/components/portfolio/archive-section"
 import { Preloader } from "@/components/portfolio/preloader"
 import { SmoothScroll } from "@/components/portfolio/smooth-scroll"
 import { ParallaxBackground } from "@/components/portfolio/parallax-background"
@@ -43,6 +44,7 @@ export default function PortfolioPage() {
           <ResearchSection />
           <AchievementsSection />
           <SkillsSection />
+          <ArchiveSection />
           <SocialSection />
           <ContactSection />
         </main>

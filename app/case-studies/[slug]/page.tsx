@@ -88,7 +88,7 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                     </header>
 
                     {/* Hero Image */}
-                    <div className="relative mb-32 aspect-[21/9] w-full overflow-hidden rounded-[2.5rem] bg-secondary shadow-2xl">
+                    <div className="relative mb-20 aspect-video w-full overflow-hidden rounded-[2.5rem] bg-secondary shadow-2xl">
                         <Image
                             src={project.image}
                             alt={`${project.title} featured image`}
@@ -99,30 +99,32 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                     </div>
 
                     {/* Content Sections */}
-                    <div className="mx-auto max-w-3xl space-y-32">
+                    <div className="mx-auto max-w-4xl space-y-20">
                         <section className="relative">
-                            <div className="absolute -left-12 top-0 text-[100px] font-bold text-primary/5 select-none leading-none">01</div>
-                            <h2 className="mb-8 text-4xl font-bold tracking-tight">The Challenge</h2>
-                            <p className="text-xl leading-relaxed text-muted-foreground font-light">
+                            <div className="absolute -left-8 top-0 text-[80px] font-bold text-primary/5 select-none leading-none">01</div>
+                            <h2 className="mb-6 text-3xl font-bold tracking-tight">The Challenge</h2>
+                            <p className="text-lg leading-relaxed text-muted-foreground font-light whitespace-pre-wrap">
                                 {project.problem}
                             </p>
                         </section>
 
                         <section className="relative">
-                            <div className="absolute -left-12 top-0 text-[100px] font-bold text-primary/5 select-none leading-none">02</div>
-                            <h2 className="mb-8 text-4xl font-bold tracking-tight">The Solution</h2>
-                            <p className="text-xl leading-relaxed text-muted-foreground font-light">
+                            <div className="absolute -left-8 top-0 text-[80px] font-bold text-primary/5 select-none leading-none">02</div>
+                            <h2 className="mb-6 text-3xl font-bold tracking-tight">The Solution</h2>
+                            <p className="text-lg leading-relaxed text-muted-foreground font-light whitespace-pre-wrap">
                                 {project.solution}
                             </p>
                         </section>
 
                         {/* Interactive Gallery */}
-                        <ProjectGallery images={showcaseImages} />
+                        <div className="py-4">
+                            <ProjectGallery images={showcaseImages} />
+                        </div>
 
                         <section className="relative">
-                            <div className="absolute -left-12 top-0 text-[100px] font-bold text-primary/5 select-none leading-none">03</div>
-                            <h2 className="mb-8 text-4xl font-bold tracking-tight">The Outcome</h2>
-                            <p className="text-xl leading-relaxed text-muted-foreground font-light">
+                            <div className="absolute -left-8 top-0 text-[80px] font-bold text-primary/5 select-none leading-none">03</div>
+                            <h2 className="mb-6 text-3xl font-bold tracking-tight">The Outcome</h2>
+                            <p className="text-lg leading-relaxed text-muted-foreground font-light whitespace-pre-wrap">
                                 {project.outcome}
                             </p>
                         </section>

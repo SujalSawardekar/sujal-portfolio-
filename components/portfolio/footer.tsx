@@ -36,6 +36,14 @@ export function Footer() {
               className="text-xs font-bold uppercase tracking-[0.15em] hover:text-indigo-600 transition-colors whitespace-nowrap">
               Dribbble
             </a>
+            <a href="https://medium.com/@sujalsawardekar27" target="_blank" rel="noreferrer"
+              className="text-xs font-bold uppercase tracking-[0.15em] hover:text-indigo-600 transition-colors whitespace-nowrap">
+              Medium
+            </a>
+            <a href="https://www.instagram.com/graphics.by_ss/" target="_blank" rel="noreferrer"
+              className="text-xs font-bold uppercase tracking-[0.15em] hover:text-indigo-600 transition-colors whitespace-nowrap">
+              Instagram
+            </a>
           </div>
 
           {/* Back to top */}

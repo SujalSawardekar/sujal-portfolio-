@@ -61,13 +61,13 @@ function StickyProjectCard({
         className={`group relative flex w-full max-w-5xl origin-top flex-col gap-8 overflow-hidden rounded-[2.5rem] bg-white p-6 border-t-[1px] border-zinc-200/80 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] lg:min-h-[500px] lg:max-h-[700px] lg:flex-row lg:gap-12 lg:p-10 ${isReversed ? "lg:flex-row-reverse" : ""}`}
       >
         <div 
-          className="group relative w-full overflow-hidden rounded-2xl lg:w-[55%] aspect-[16/10] bg-zinc-50 shrink-0"
+          className="group relative w-full overflow-hidden rounded-3xl lg:w-[55%] aspect-[16/10] bg-zinc-100 shrink-0 border border-zinc-200/50"
         >
           <Image
             src={project.image}
             alt={project.title}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-white/10 transition-opacity duration-500 group-hover:opacity-0" />
           
@@ -93,12 +93,12 @@ function StickyProjectCard({
 
           <div className="space-y-4 mb-8">
             <h4 className="text-xs font-bold tracking-widest text-zinc-400 uppercase">Challenge</h4>
-            <p className="text-sm leading-relaxed text-zinc-500 font-light">
-               {project.problem}
+            <p className="text-sm leading-relaxed text-zinc-500 font-light line-clamp-3">
+               {project.shortDescription || project.problem}
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 mt-auto">
+          <div className="flex flex-wrap items-center justify-between gap-6 mt-auto pt-6 border-t border-zinc-100">
             <div className="flex flex-wrap gap-2">
               {project.tools.slice(0, 3).map((tool: string) => (
                 <span key={tool} className="rounded-full border border-zinc-100 bg-zinc-50 px-4 py-1.5 text-[10px] font-bold text-zinc-500 uppercase tracking-widest transition-colors hover:bg-indigo-50 hover:text-indigo-600">
@@ -106,6 +106,15 @@ function StickyProjectCard({
                 </span>
               ))}
             </div>
+            <a 
+              href={project.prototypeLink || project.videoUrl || `/case-studies/${project.slug}`}
+              target={(project.prototypeLink || project.videoUrl) ? "_blank" : "_self"}
+              rel="noreferrer"
+              className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-zinc-200 bg-white px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest text-zinc-900 transition-all hover:border-indigo-600 hover:bg-indigo-600 hover:text-white hover:shadow-md"
+            >
+              {project.prototypeLink ? "View Prototype" : "View Project"} 
+              <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
           </div>
         </div>
       </motion.div>

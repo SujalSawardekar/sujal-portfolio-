@@ -6,11 +6,11 @@ import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 
 const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#work" },
-  { label: "Research", href: "#research" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/#about" },
+  { label: "Projects", href: "/#work" },
+  { label: "Research", href: "/#research" },
+  { label: "Experience", href: "/#experience" },
+  { label: "Contact", href: "/#contact" },
 ]
 
 export function Navbar() {
@@ -23,7 +23,7 @@ export function Navbar() {
       setIsScrolled(window.scrollY > 50)
 
       let currentSection = ""
-      const sections = navLinks.map((link) => link.href.slice(1))
+      const sections = navLinks.map((link) => link.href.split('#')[1])
       for (const section of [...sections].reverse()) {
         const el = document.getElementById(section)
         if (el) {
@@ -77,7 +77,7 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               className={`px-5 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors duration-300 ${
-                activeSection === link.href.slice(1) 
+                activeSection === link.href.split('#')[1] 
                 ? isScrolled ? "text-indigo-600" : "text-white" 
                 : isScrolled 
                   ? "text-zinc-500/50 hover:text-zinc-900" 

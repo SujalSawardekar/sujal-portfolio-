@@ -88,9 +88,14 @@ export function ResearchSection() {
             </div>
 
             {/* Footer Label */}
-            <div className="pt-8 border-t border-white/10 w-full overflow-hidden">
-              <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-zinc-400 block whitespace-nowrap">
+            <div className="pt-8 border-t border-white/10 w-full flex justify-center">
+              {/* Desktop version - Full text */}
+              <span className="hidden md:block text-xs font-bold uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">
                 Published in <span className="text-indigo-400">{researchData.publication}</span> • {researchData.date}
+              </span>
+              {/* Mobile version - Shorter text to fit on one line without scrolling */}
+              <span className="md:hidden text-[9px] font-bold uppercase tracking-wider text-zinc-400 whitespace-nowrap">
+                Published in <span className="text-indigo-400">IJCRT, Vol. 14, Issue 4</span> • {researchData.date}
               </span>
             </div>
           </div>

@@ -127,18 +127,33 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                             </p>
                         </section>
 
-                        {project.link !== "#" && (
+                        {(project.link !== "#" || (project.prototypeLink && project.prototypeLink !== "#" && project.prototypeLink !== "")) && (
                             <section className="pt-20 border-t border-border/50 text-center">
                                 <span className="block text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em] mb-8">Ready to see more?</span>
-                                <a
-                                    href={project.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group inline-flex items-center gap-4 rounded-full bg-primary px-12 py-6 text-lg font-bold text-primary-foreground transition-all hover:bg-primary/90 hover:scale-105 shadow-2xl shadow-primary/20"
-                                >
-                                    View Live Project
-                                    <ArrowUpRight size={22} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                                </a>
+                                <div className="flex flex-wrap justify-center gap-6">
+                                    {project.link !== "#" && (
+                                        <a
+                                            href={project.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="group inline-flex items-center gap-4 rounded-full bg-primary px-12 py-6 text-sm font-bold text-primary-foreground transition-all hover:bg-primary/90 hover:scale-105 shadow-2xl shadow-primary/20"
+                                        >
+                                            View Live Project
+                                            <ArrowUpRight size={20} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                                        </a>
+                                    )}
+                                    {project.prototypeLink && project.prototypeLink !== "#" && project.prototypeLink !== "" && (
+                                        <a
+                                            href={project.prototypeLink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="group inline-flex items-center gap-4 rounded-full bg-secondary px-12 py-6 text-sm font-bold text-secondary-foreground transition-all hover:bg-secondary/90 hover:scale-105 shadow-2xl shadow-secondary/20"
+                                        >
+                                            View Prototype
+                                            <ArrowUpRight size={20} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                                        </a>
+                                    )}
+                                </div>
                             </section>
                         )}
                     </div>

@@ -5,7 +5,7 @@ import { Menu, X, ArrowUpRight } from "lucide-react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 
-const navLinks = [
+const uiuxLinks = [
   { label: "About", href: "/#about" },
   { label: "Projects", href: "/#work" },
   { label: "Research", href: "/#research" },
@@ -13,10 +13,24 @@ const navLinks = [
   { label: "Contact", href: "/#contact" },
 ]
 
-export function Navbar() {
+const visualLinks = [
+  { label: "About", href: "/#about-visual" },
+  { label: "Video Work", href: "/#video-work" },
+  { label: "Graphic Design", href: "/#graphic-design" },
+  { label: "Client Projects", href: "/#client-projects" },
+  { label: "Contact", href: "/#contact-visual" },
+]
+
+interface NavbarProps {
+  mode?: "uiux" | "visual"
+}
+
+export function Navbar({ mode = "uiux" }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("")
+
+  const navLinks = mode === "visual" ? visualLinks : uiuxLinks
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,18 +57,23 @@ export function Navbar() {
       document.body.style.overflow = "unset"
     }
 
+    // Run once on load to set initial active section
+    handleScroll()
+
     window.addEventListener("scroll", handleScroll)
     return () => {
       window.removeEventListener("scroll", handleScroll)
       document.body.style.overflow = "unset"
     }
-  }, [isMenuOpen])
+  }, [isMenuOpen, navLinks])
 
   return (
     <header className="fixed top-6 left-0 right-0 z-[999] px-6 pointer-events-none">
       <nav className={`mx-auto flex max-w-fit items-center gap-8 rounded-full p-1.5 transition-all duration-500 pointer-events-auto ${
         isScrolled 
-        ? "bg-white/70 backdrop-blur-lg border border-zinc-200/50 scale-95 shadow-xl shadow-zinc-200/20" 
+        ? mode === "uiux"
+          ? "bg-white/70 backdrop-blur-lg border border-zinc-200/50 scale-95 shadow-xl shadow-zinc-200/20" 
+          : "bg-zinc-950/80 backdrop-blur-lg border border-stone-800 scale-95 shadow-xl shadow-black/50"
         : "glass-20 border border-white/10 scale-100"
       }`}>
         {/* Logo */}
@@ -64,7 +83,7 @@ export function Navbar() {
               src="/Sujal Logo 2.png"
               alt="Graphics by SS"
               fill
-              className={`object-contain transition-all duration-500 ${isScrolled ? "invert opacity-80" : ""}`}
+              className={`object-contain transition-all duration-500 ${isScrolled && mode === "uiux" ? "invert opacity-80" : "opacity-80"}`}
               priority
             />
           </div>
@@ -78,9 +97,11 @@ export function Navbar() {
               href={link.href}
               className={`px-5 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors duration-300 ${
                 activeSection === link.href.split('#')[1] 
-                ? isScrolled ? "text-indigo-600" : "text-white" 
+                ? isScrolled 
+                  ? mode === "uiux" ? "text-indigo-600" : "text-stone-200" 
+                  : "text-white" 
                 : isScrolled 
-                  ? "text-zinc-500/50 hover:text-zinc-900" 
+                  ? mode === "uiux" ? "text-zinc-500/50 hover:text-zinc-900" : "text-stone-500 hover:text-stone-200"
                   : "text-white/50 hover:text-white"
               }`}
             >
@@ -97,7 +118,9 @@ export function Navbar() {
             rel="noopener noreferrer"
             className={`hidden sm:flex items-center gap-2 rounded-full px-5 py-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
               isScrolled 
-              ? "bg-indigo-600 text-white hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/20" 
+              ? mode === "uiux"
+                ? "bg-indigo-600 text-white hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/20" 
+                : "bg-stone-100 text-black hover:bg-stone-300 hover:shadow-lg hover:shadow-white/10"
               : "bg-white text-black hover:bg-zinc-200"
             }`}
           >
@@ -108,7 +131,7 @@ export function Navbar() {
           {/* Mobile Menu Trigger */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`flex md:hidden items-center justify-center p-2 transition-transform hover:scale-110 ${isScrolled ? "text-zinc-900" : "text-white"}`}
+            className={`flex md:hidden items-center justify-center p-2 transition-transform hover:scale-110 ${isScrolled && mode === "uiux" ? "text-zinc-900" : "text-white"}`}
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={20} /> : <Menu size={20} />}

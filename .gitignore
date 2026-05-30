@@ -8,3 +8,8 @@ node_modules/
 .next/
 .env*.local
 .DS_Store
+
+# Ignore large videos that break GitHub push
+public/Work/Video/Branding Reel (2).mp4
+public/Work/Video/Cinematic Reel (1).mp4
+public/Work/Social Media Creative/Social Media Creative/Reel/3.mp4

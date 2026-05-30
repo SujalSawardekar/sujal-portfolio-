@@ -72,6 +72,21 @@ export const projects = [
         link: "https://www.figma.com/proto/sgpDp7IXX22ITz2bAdMH4d/Krushi-Sakhi?node-id=153-309&p=f&viewport=5671%2C60%2C0.78&t=A6jR1DQGvNd5b4C9-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1%3A2&show-proto-sidebar=1&page-id=0%3A1",
         prototypeLink: "https://www.figma.com/proto/sgpDp7IXX22ITz2bAdMH4d/Krushi-Sakhi?node-id=153-309&p=f&viewport=5671%2C60%2C0.78&t=A6jR1DQGvNd5b4C9-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1%3A2&show-proto-sidebar=1&page-id=0%3A1",
     },
+    {
+        type: 'uiux',
+        slug: "naac-system",
+        title: "NAAC Accreditation System",
+        category: "Web Portal Design",
+        shortDescription: "A multi-tier compliance portal designed to streamline college accreditation, documentation workflows, and automated quality metric audits.",
+        problem: "Colleges undergoing NAAC accreditation face a massive documentation burden. Coordinating multiple departments, verifying hundreds of metrics, and formatting audit files manually leads to heavy errors, delays, and critical compliance gaps.",
+        solution: "Designed a clean, secure dashboard that organizes metrics based on NAAC criteria. Integrated real-time audit progress, secure document upload chambers, user role definitions (HOD, IQAC Coordinator, Principal), and interactive data visualization for accreditation preparedness.",
+        tools: ["Figma", "UI Design", "Data Vis", "Accreditation Workflow"],
+        outcome: "Significantly simplified documentation compliance, providing administrative heads with a birds-eye view of accreditation readiness and replacing manual verification with streamlined digital pathways.",
+        image: "/images/Hero Photo/project-nexus-2.png",
+        link: "#",
+        prototypeLink: "https://www.figma.com/proto/G3uplAC5c2bNY9LSYYkw0Y/NEXUS-ENGINEERING--Copy-?node-id=176-7767&p=f&viewport=-895%2C65%2C0.11&t=22YxXfg9hfeQSyb1-1",
+    },
+
 
     // Graphic Design Projects
     {

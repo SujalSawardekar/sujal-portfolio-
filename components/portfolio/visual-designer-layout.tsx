@@ -505,7 +505,7 @@ export function VisualDesignerLayout() {
             skills={["Cinematic Editing", "Sound Design", "Color Grading", "Visual Narrative"]}
             deliverables={["Cinematic Reel", "Atmospheric Edit", "Grading Blueprint"]}
             ctaText="Watch Project →"
-            videoUrl="/Work/Video/Cinematic-Reel-1.mp4"
+            videoUrl="/Work/Video/Cinematic-Reel-1-v2.mp4"
             link={videoPortfolioLink}
           />
 
@@ -623,7 +623,7 @@ export function VisualDesignerLayout() {
             skills={["Photoshop", "Brand Communication", "Ad Compositing", "Grid Systems"]}
             deliverables={["Instagram Campaigns", "Motion Creatives Series", "Digital Ad Sets"]}
             ctaText="View Collection →"
-            thumbnail="/Work/Social Media Creative/Social Media Creative/Motion graphic 2.mp4"
+            thumbnail="/Work/Social Media Creative/Social Media Creative/Motion-graphic-2.mp4"
             link="https://drive.google.com/drive/folders/1x16mObp1-CgdI1S1yTziiC97aMAJl_rm?usp=drive_link"
           />
 

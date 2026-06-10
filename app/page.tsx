@@ -23,7 +23,7 @@ import { AnimatePresence } from "framer-motion"
 
 export default function PortfolioPage() {
   const [isLoaded, setIsLoaded] = useState(false)
-  const [portfolioMode, setPortfolioMode] = useState<"uiux" | "visual">("uiux")
+  const [portfolioMode, setPortfolioMode] = useState<"uiux" | "visual">("visual")
 
   useEffect(() => {
     setIsLoaded(true)

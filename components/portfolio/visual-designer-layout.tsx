@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, type FormEvent } from "react"
+import { useState, useRef, type FormEvent } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { ArrowUpRight, Play, Eye, Compass, Film, LayoutGrid, Users, Send, Linkedin, Instagram, FolderOpen, FileText } from "lucide-react"
+import { ArrowUpRight, Play, Pause, Volume2, VolumeX, Eye, Compass, Film, LayoutGrid, Users, Send, Linkedin, Instagram, FolderOpen, FileText } from "lucide-react"
 import { useIntersection } from "@/hooks/use-intersection"
 import { sendContactMessage } from "@/app/actions/contact"
 
@@ -165,6 +165,30 @@ function VideoCard({
   link
 }: VideoCardProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [isMuted, setIsMuted] = useState(true)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  const togglePlay = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause()
+        setIsPlaying(false)
+      } else {
+        videoRef.current.play()
+        setIsPlaying(true)
+        setIsMuted(false)
+      }
+    }
+  }
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsMuted(!isMuted)
+  }
 
   return (
     <div 
@@ -175,10 +199,11 @@ function VideoCard({
       {/* Background Video playing on loop */}
       <div className="absolute inset-0 z-0 bg-zinc-950">
         <video 
+          ref={videoRef}
           src={videoUrl}
           autoPlay
           loop
-          muted
+          muted={isMuted}
           playsInline
           className="w-full h-full object-cover opacity-60 group-hover:opacity-85 group-hover:scale-[1.03] transition-all duration-700"
         />
@@ -190,23 +215,36 @@ function VideoCard({
         <span className="text-[9px] font-mono bg-stone-100/10 border border-stone-800/80 px-3 py-1 rounded-full text-stone-200 uppercase tracking-widest backdrop-blur-md">
           {category}
         </span>
-        <span className="text-[9px] font-mono text-stone-400 uppercase tracking-wider backdrop-blur-sm px-2.5 py-0.5 rounded bg-black/40">
-          {client}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-[9px] font-mono text-stone-400 uppercase tracking-wider backdrop-blur-sm px-2.5 py-0.5 rounded bg-black/40">
+            {client}
+          </span>
+          <button 
+            onClick={toggleMute}
+            className="w-6 h-6 rounded-full bg-black/60 border border-white/10 flex items-center justify-center backdrop-blur-md hover:bg-black/80 transition-colors text-stone-200 cursor-pointer"
+          >
+            {isMuted ? <VolumeX size={10} /> : <Volume2 size={10} />}
+          </button>
+        </div>
       </div>
 
       {/* Hover Center Indicator */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-        <motion.div 
+      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+        <motion.button 
+          onClick={togglePlay}
           animate={{ 
-            scale: isHovered ? 1 : 0.8,
-            opacity: isHovered ? 1 : 0
+            scale: isHovered || !isPlaying ? 1 : 0.8,
+            opacity: isHovered || !isPlaying ? 1 : 0
           }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="w-12 h-12 bg-indigo-500 text-white rounded-full flex items-center justify-center backdrop-blur-sm shadow-[0_0_30px_rgba(99,102,241,0.4)]"
+          className="w-12 h-12 bg-indigo-500 text-white rounded-full flex items-center justify-center backdrop-blur-sm shadow-[0_0_30px_rgba(99,102,241,0.4)] hover:bg-indigo-400 transition-colors pointer-events-auto cursor-pointer"
         >
-          <Play size={16} fill="white" className="ml-0.5" />
-        </motion.div>
+          {isPlaying ? (
+            <Pause size={16} fill="white" />
+          ) : (
+            <Play size={16} fill="white" className="ml-0.5" />
+          )}
+        </motion.button>
       </div>
 
       {/* Floating Footer Detail */}
@@ -467,7 +505,7 @@ export function VisualDesignerLayout() {
             skills={["Cinematic Editing", "Sound Design", "Color Grading", "Visual Narrative"]}
             deliverables={["Cinematic Reel", "Atmospheric Edit", "Grading Blueprint"]}
             ctaText="Watch Project →"
-            videoUrl="/Work/Video/Cinematic Reel (1).mp4"
+            videoUrl="/Work/Video/Cinematic-Reel-1.mp4"
             link={videoPortfolioLink}
           />
 
@@ -479,7 +517,7 @@ export function VisualDesignerLayout() {
             skills={["Video Editing", "Pacing & Flow", "Color Correcting", "Audio Curation"]}
             deliverables={["Mood Timeline", "Audio Sequence", "Color Profile"]}
             ctaText="Watch Project →"
-            videoUrl="/Work/Video/Cinematic Reel (2).mp4"
+            videoUrl="/Work/Video/Cinematic-Reel-2.mp4"
             link={videoPortfolioLink}
           />
 
@@ -491,7 +529,7 @@ export function VisualDesignerLayout() {
             skills={["Motion Graphics", "Branding Design", "Video Editing", "Typography Motion"]}
             deliverables={["Branded Edit", "Commercial Reel", "Motion Guidelines"]}
             ctaText="Watch Project →"
-            videoUrl="/Work/Video/Branding Reel (1).mp4"
+            videoUrl="/Work/Video/Branding-Reel-1.mp4"
             link={videoPortfolioLink}
           />
 
@@ -503,7 +541,7 @@ export function VisualDesignerLayout() {
             skills={["Motion Design", "Visual Hooks", "Premiere Pro", "Commercial Editing"]}
             deliverables={["Ad Campaign Edit", "Commercial Asset", "Typography Kit"]}
             ctaText="Watch Project →"
-            videoUrl="/Work/Video/Branding Reel (2).mp4"
+            videoUrl="/Work/Video/Branding-Reel-2.mp4"
             link={videoPortfolioLink}
           />
 
@@ -515,7 +553,7 @@ export function VisualDesignerLayout() {
             skills={["Video Editing", "Sound Curation", "Commercial Layouts", "Branding Dynamics"]}
             deliverables={["Product Reel", "Social Format Edit", "Sound Design Template"]}
             ctaText="Watch Project →"
-            videoUrl="/Work/Video/Branding Reel (3).mp4"
+            videoUrl="/Work/Video/Branding-Reel-3.mp4"
             link={videoPortfolioLink}
           />
         </div>

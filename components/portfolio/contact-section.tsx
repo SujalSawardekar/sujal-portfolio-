@@ -48,9 +48,9 @@ export function ContactSection({ mode }: ContactSectionProps) {
   // === VISUAL MODE SOCIALS ===
   const visualSocialLinks = [
     { label: "Resume", icon: FileText, value: "Download CV", href: "/resume.pdf" },
-    { label: "Behance", icon: FolderOpen, value: "View Portfolio", href: "https://www.behance.net/" },
-    { label: "LinkedIn", icon: Linkedin, value: "Connect on LI", href: "https://www.linkedin.com/in/sujal-sawardekar-557342270/" },
-    { label: "Instagram", icon: Instagram, value: "Follow Graphics", href: "https://www.instagram.com/sujal_sawardekar_/" },
+    { label: "Behance", icon: FolderOpen, value: "View Portfolio", href: "https://www.behance.net/sujalsawardekar" },
+    { label: "LinkedIn", icon: Linkedin, value: "Connect on LI", href: "https://www.linkedin.com/in/sujalsawardekar27/" },
+    { label: "Instagram", icon: Instagram, value: "Follow Graphics", href: "https://www.instagram.com/graphics.by_ss/" },
     { label: "Email", icon: Mail, value: "Write an Email", href: "mailto:sujalsawardekar27@gmail.com" }
   ]
 

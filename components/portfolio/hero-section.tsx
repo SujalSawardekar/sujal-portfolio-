@@ -323,11 +323,21 @@ export function HeroSection({ mode, setMode }: HeroSectionProps) {
                     <span className="text-[12vw] sm:text-[9vw] lg:text-[7.5vw] font-extrabold tracking-tighter">HELLO</span>
                   </h1>
 
-                  <div className="mt-6 inline-flex items-center gap-2 bg-stone-900/50 backdrop-blur-md border border-stone-850 px-6 py-2.5 rounded-full">
+                  <div className="mt-6 inline-flex items-center gap-2 bg-stone-900/50 backdrop-blur-md border border-stone-850 px-6 py-2.5 rounded-full mb-2">
                     <span className="text-stone-300 font-mono font-medium text-xs tracking-widest uppercase">
                       Creative Visual Designer
                     </span>
                   </div>
+
+                  <a 
+                    href="#contact-visual" 
+                    className="mt-6 group relative inline-flex items-center gap-4 rounded-full bg-indigo-600/20 border border-indigo-500/30 pl-6 pr-2 py-2 backdrop-blur-md hover:bg-indigo-600/40 hover:scale-105 transition-all duration-300 pointer-events-auto cursor-pointer shadow-[0_0_30px_rgba(99,102,241,0.15)]"
+                  >
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">Let's Connect</span>
+                    <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center transition-colors">
+                       <ArrowRight size={14} className="text-white group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </a>
                 </motion.div>
               </div>
             </div>

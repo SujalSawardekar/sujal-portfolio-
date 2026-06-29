@@ -10,7 +10,7 @@ interface AboutSectionProps {
 
 // === ORIGINAL UI/UX CONSTANTS ===
 const originalStats = [
-  { value: "8.07", label: "CGPA" },
+  { value: "8.39", label: "CGPA" },
   { value: "5+", label: "Years Experience" },
   { value: "20+", label: "Projects" },
   { value: "2x", label: "SIH Finalist" },
@@ -47,7 +47,7 @@ export function AboutSection({ mode }: AboutSectionProps) {
     {
       icon: GraduationCap,
       label: "CGPA",
-      value: "8.07",
+      value: "8.39",
       desc: "Academic Excellence"
     },
     {

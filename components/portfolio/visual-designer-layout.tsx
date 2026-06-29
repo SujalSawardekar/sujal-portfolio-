@@ -554,7 +554,7 @@ export function VisualDesignerLayout() {
           {[
             { label: "EXPERIENCE", value: "3+ Years", desc: "Freelance & Agency" },
             { label: "DELIVERED", value: "40+ Assets", desc: "Premium Campaigns" },
-            { label: "ACADEMICS", value: "8.07 CGPA", desc: "Design & Tech" }
+            { label: "ACADEMICS", value: "8.39 CGPA", desc: "Design & Tech" }
           ].map((stat, idx) => (
             <motion.div 
               key={idx}

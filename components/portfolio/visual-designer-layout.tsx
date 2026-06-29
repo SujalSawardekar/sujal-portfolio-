@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, type FormEvent } from "react"
+import { useState, useRef, useEffect, type FormEvent } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowUpRight, Play, Pause, Volume2, VolumeX, Eye, Compass, Film, LayoutGrid, Users, Send, Linkedin, Instagram, FolderOpen, FileText, X } from "lucide-react"
 import { useIntersection } from "@/hooks/use-intersection"
@@ -51,7 +51,9 @@ function ProjectCard({
             autoPlay
             loop
             muted
+            defaultMuted
             playsInline
+            preload="auto"
             className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700"
           />
         ) : (
@@ -211,6 +213,13 @@ function VideoCard({
   const [isModalOpen, setIsModalOpen] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
+    }
+  }, [videoUrl]);
+
   const togglePlay = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
@@ -248,7 +257,9 @@ function VideoCard({
           autoPlay
           loop
           muted={isMuted}
+          defaultMuted
           playsInline
+          preload="auto"
           className="w-full h-full object-cover opacity-60 group-hover:opacity-85 group-hover:scale-[1.03] transition-all duration-700"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/10 pointer-events-none" />
@@ -813,7 +824,7 @@ export function VisualDesignerLayout() {
                   skills={["Cinematic Editing", "Sound Design", "Color Grading", "Visual Narrative"]}
                   deliverables={["Cinematic Reel", "Atmospheric Edit", "Grading Blueprint"]}
                   ctaText="Watch Project →"
-                  videoUrl="/Work/Video/Cinematic-Reel-1-v2.mp4"
+                  videoUrl="/Work/Video/Cinematic-Reel-1.mp4"
                   link={videoPortfolioLink}
                 />
 

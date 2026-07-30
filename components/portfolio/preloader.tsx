@@ -9,31 +9,51 @@ export function Preloader() {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
+    let isPageLoaded = false
+
+    const handleLoad = () => {
+      isPageLoaded = true
+    }
+
+    if (document.readyState === "complete") {
+      isPageLoaded = true
+    } else {
+      window.addEventListener("load", handleLoad)
+    }
+
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval)
           return 100
         }
-        return prev + 2
+
+        if (isPageLoaded) {
+          return prev + 10 > 100 ? 100 : prev + 10
+        } else {
+          if (prev >= 90) {
+            return prev + 0.5 < 95 ? prev + 0.5 : 95
+          }
+          return prev + 2
+        }
       })
-    }, 35)
-
-    const handleLoad = () => {
-      setTimeout(() => setLoading(false), 2800)
-    }
-
-    if (document.readyState === "complete") {
-      handleLoad()
-    } else {
-      window.addEventListener("load", handleLoad)
-    }
+    }, 25)
 
     return () => {
       clearInterval(interval)
       window.removeEventListener("load", handleLoad)
     }
   }, [])
+
+  // Fade out loader when progress hits 100%
+  useEffect(() => {
+    if (progress >= 100) {
+      const timeoutId = setTimeout(() => {
+        setLoading(false)
+      }, 300)
+      return () => clearTimeout(timeoutId)
+    }
+  }, [progress])
 
   return (
     <AnimatePresence mode="wait">

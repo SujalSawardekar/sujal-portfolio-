@@ -9,17 +9,20 @@ export function Preloader() {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    let isPageLoaded = false
+    let isPageLoaded = typeof document !== "undefined" && document.readyState === "complete"
 
     const handleLoad = () => {
       isPageLoaded = true
     }
 
-    if (document.readyState === "complete") {
-      isPageLoaded = true
-    } else {
+    if (!isPageLoaded) {
       window.addEventListener("load", handleLoad)
     }
+
+    // Safety fallback: Never trap the user, always finish smoothly within ~1s
+    const fallbackTimeout = setTimeout(() => {
+      isPageLoaded = true
+    }, 850)
 
     const interval = setInterval(() => {
       setProgress((prev) => {
@@ -29,18 +32,24 @@ export function Preloader() {
         }
 
         if (isPageLoaded) {
-          return prev + 10 > 100 ? 100 : prev + 10
+          const next = prev + 8
+          return next >= 100 ? 100 : next
         } else {
-          if (prev >= 90) {
-            return prev + 0.5 < 95 ? prev + 0.5 : 95
+          // Progress steadily towards 95% and never stall
+          if (prev >= 95) {
+            return prev + 1 >= 100 ? 100 : prev + 1
           }
-          return prev + 2
+          if (prev >= 80) {
+            return prev + 2
+          }
+          return prev + 4
         }
       })
     }, 25)
 
     return () => {
       clearInterval(interval)
+      clearTimeout(fallbackTimeout)
       window.removeEventListener("load", handleLoad)
     }
   }, [])
@@ -50,10 +59,22 @@ export function Preloader() {
     if (progress >= 100) {
       const timeoutId = setTimeout(() => {
         setLoading(false)
-      }, 300)
+      }, 200)
       return () => clearTimeout(timeoutId)
     }
   }, [progress])
+
+  // Prevent background scrolling while preloader is active
+  useEffect(() => {
+    if (loading) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [loading])
 
   return (
     <AnimatePresence mode="wait">
@@ -81,7 +102,7 @@ export function Preloader() {
           <motion.div
             className="flex flex-col items-center gap-4 w-56"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { delay: 0.5 } }}
+            animate={{ opacity: 1, transition: { delay: 0.2 } }}
           >
             <div className="relative h-[1px] w-full bg-white/10 rounded-full overflow-hidden">
               <motion.div
@@ -93,7 +114,7 @@ export function Preloader() {
             </div>
 
             <span className="font-sans font-bold text-sm tabular-nums text-white/40 tracking-widest">
-              {String(Math.min(progress, 100)).padStart(2, "0")} %
+              {String(Math.min(Math.round(progress), 100)).padStart(2, "0")} %
             </span>
           </motion.div>
         </motion.div>

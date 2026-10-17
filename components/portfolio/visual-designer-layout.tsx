@@ -33,10 +33,28 @@ function ProjectCard({
 }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const { ref: containerRef, isVisible } = useIntersection({
+    threshold: 0.05,
+    rootMargin: "150px",
+    triggerOnce: false,
+  })
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    video.muted = true
+    if (isVisible) {
+      video.play().catch(() => {})
+    } else {
+      video.pause()
+    }
+  }, [isVisible])
 
   return (
     <>
     <div 
+      ref={containerRef}
       onClick={() => galleryImages?.length ? setIsModalOpen(true) : window.open(link, '_blank')}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -47,13 +65,12 @@ function ProjectCard({
       <div className="w-full relative aspect-[16/10] bg-[#0a0502] rounded-[2rem] overflow-hidden shadow-2xl ring-1 ring-white/5 group-hover:ring-amber-500/30 transition-all duration-500">
         {thumbnail.endsWith('.mp4') ? (
           <video 
+            ref={videoRef}
             src={thumbnail}
-            autoPlay
             loop
             muted
-            defaultMuted
             playsInline
-            preload="auto"
+            preload="metadata"
             className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700"
           />
         ) : (
@@ -212,13 +229,24 @@ function VideoCard({
   const [isMuted, setIsMuted] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const { ref: containerRef, isVisible } = useIntersection({
+    threshold: 0.05,
+    rootMargin: "150px",
+    triggerOnce: false,
+  })
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.defaultMuted = true;
-      videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
+    const video = videoRef.current
+    if (!video) return
+
+    video.muted = isMuted
+
+    if (isVisible && isPlaying) {
+      video.play().catch(() => {})
+    } else {
+      video.pause()
     }
-  }, [videoUrl]);
+  }, [isVisible, isPlaying, isMuted, videoUrl])
 
   const togglePlay = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -228,7 +256,7 @@ function VideoCard({
         videoRef.current.pause()
         setIsPlaying(false)
       } else {
-        videoRef.current.play()
+        videoRef.current.play().catch(() => {})
         setIsPlaying(true)
         setIsMuted(false)
       }
@@ -238,12 +266,17 @@ function VideoCard({
   const toggleMute = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    setIsMuted(!isMuted)
+    const nextMuted = !isMuted
+    setIsMuted(nextMuted)
+    if (videoRef.current) {
+      videoRef.current.muted = nextMuted
+    }
   }
 
   return (
     <>
     <div 
+      ref={containerRef}
       onClick={() => galleryImages?.length ? setIsModalOpen(true) : window.open(link, '_blank')}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -254,12 +287,10 @@ function VideoCard({
         <video 
           ref={videoRef}
           src={videoUrl}
-          autoPlay
           loop
           muted={isMuted}
-          defaultMuted
           playsInline
-          preload="auto"
+          preload="metadata"
           className="w-full h-full object-cover opacity-60 group-hover:opacity-85 group-hover:scale-[1.03] transition-all duration-700"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/10 pointer-events-none" />

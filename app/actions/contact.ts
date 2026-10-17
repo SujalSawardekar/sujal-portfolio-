@@ -37,7 +37,7 @@ export async function sendContactMessage(formData: {
             from: 'Portfolio Contact <onboarding@resend.dev>',
             to: ['sujalsawardekar27@gmail.com'],
             subject: `New Portfolio Message: ${formData.subject}`,
-            reply_to: formData.email,
+            replyTo: formData.email,
             html: `
                 <h2>New Contact Form Submission</h2>
                 <p><strong>Name:</strong> ${formData.name}</p>

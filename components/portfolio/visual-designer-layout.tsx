@@ -665,6 +665,7 @@ function VideoCard({
 }
 
 export function VisualDesignerLayout() {
+  const router = useRouter()
   const { ref: aboutRef, isVisible: aboutVisible } = useIntersection()
   const { ref: videoRef, isVisible: videoVisible } = useIntersection()
   const { ref: graphicRef, isVisible: graphicVisible } = useIntersection()
@@ -685,45 +686,10 @@ export function VisualDesignerLayout() {
   const [showAllGraphic, setShowAllGraphic] = useState(false)
   const [showAllVideo, setShowAllVideo] = useState(false)
   const [showAllAI, setShowAllAI] = useState(false)
-  const [selectedClient, setSelectedClient] = useState<{
-    name: string
-    type: string
-    overview: string
-    thumbnail: string
-    skills: string[]
-    deliverables: string[]
-    link: string
-    aspect: string
-    width: string
-    galleryImages?: string[]
-  } | null>(null)
 
   const lenis = useLenis()
 
-  // Scroll lock when client modal is expanded
-  useEffect(() => {
-    if (!selectedClient) return
 
-    const originalOverflow = document.body.style.overflow
-    const originalHtmlOverflow = document.documentElement.style.overflow
-    const originalOverscroll = document.body.style.overscrollBehavior
-    
-    document.body.style.overflow = "hidden"
-    document.documentElement.style.overflow = "hidden"
-    document.body.style.overscrollBehavior = "none"
-
-    if (lenis?.stop) lenis.stop()
-    const winLenis = (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
-    if (winLenis?.stop) winLenis.stop()
-
-    return () => {
-      document.body.style.overflow = originalOverflow
-      document.documentElement.style.overflow = originalHtmlOverflow
-      document.body.style.overscrollBehavior = originalOverscroll
-      if (lenis?.start) lenis.start()
-      if (winLenis?.start) winLenis.start()
-    }
-  }, [selectedClient, lenis])
 
   const handleContactSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -1486,16 +1452,14 @@ export function VisualDesignerLayout() {
               onClick={() => {
                 if (client.slug) {
                   router.push(`/case-studies/${client.slug}`)
-                } else if (client.galleryImages?.length) {
-                  setSelectedClient(client)
                 } else if (client.link) {
                   window.open(client.link, '_blank')
                 }
               }}
               className="bg-[#022c22]/40 border border-[#064e3b] rounded-none p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center text-left hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all duration-500 group cursor-pointer"
             >
-              {/* Product Preview Thumbnail - Custom Portrait / Landscape framing */}
-              <div className={`w-full ${client.width} ${client.aspect} bg-zinc-900 rounded-none overflow-hidden shrink-0 border border-stone-900/60 shadow-xl relative`}>
+              {/* Uniform Standardized Product Preview Thumbnail */}
+              <div className="w-full md:w-[260px] aspect-[16/10] bg-zinc-900 rounded-none overflow-hidden shrink-0 border border-stone-900/60 shadow-xl relative">
                 <img 
                   src={client.thumbnail} 
                   alt={client.name} 

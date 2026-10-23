@@ -786,36 +786,66 @@ export function VisualDesignerLayout() {
     },
     {
       name: "Shreeman Legend Suite",
+      slug: "music-posters-collection",
       type: "Creator Entertainment Branding",
       overview: "Designed visually engaging song cover art, music mashup posters, and stream launch graphics optimizing audience click-rates.",
       thumbnail: "/Work/Music poster/Music poster/Shreeman zara zara copy.jpg",
       skills: ["Photoshop", "Digital Compositing", "High-Intensity Layouts"],
       deliverables: ["Song Posters", "Mashup Art", "Stream Graphics"],
       link: "https://drive.google.com/drive/folders/1TzdMf2CGGZcVOnUueLoWJlrPbyqHUycw?usp=sharing",
-      aspect: "aspect-square",
-      width: "md:w-[220px]"
+      aspect: "aspect-[16/10]",
+      width: "md:w-[260px]",
+      galleryImages: [
+        "/Work/Music poster/Music poster/SHREEMAN LEGEND 4.jpg",
+        "/Work/Music poster/Music poster/Shreeman zara zara copy.jpg",
+        "/Work/Music poster/Music poster/KANCHO Project (3) (1).jpg",
+        "/Work/Music poster/Music poster/21st century copy.jpg",
+        "/Work/Music poster/Music poster/Music Poster (1).png",
+        "/Work/Music poster/Music poster/Music Poster (2).png",
+        "/Work/Music poster/Music poster/Music Poster (6).png",
+        "/Work/Music poster/Music poster/IMG_20230727_011925_0310.jpg"
+      ]
     },
     {
       name: "Brochures & Layout Design",
+      slug: "brochures-layout-design",
       type: "Brand Print & Typography Assets",
       overview: "Engineered sleek travel poster remakes and corporate website brochures maintaining a clean typographic grid system.",
       thumbnail: "/Work/Brochure-/Brochure/ATG WEBSITE BROCHURE 1.jpg",
       skills: ["Layout Grid", "Typographic Pacing", "Print Composition"],
       deliverables: ["Corporate Brochure", "Remake Travel Poster", "Brand Assets"],
       link: "https://drive.google.com/drive/folders/1TzdMf2CGGZcVOnUueLoWJlrPbyqHUycw?usp=sharing",
-      aspect: "aspect-square",
-      width: "md:w-[220px]"
+      aspect: "aspect-[16/10]",
+      width: "md:w-[260px]",
+      galleryImages: [
+        "/Work/Brochure-/Brochure/ATG WEBSITE BROCHURE 1.png",
+        "/Work/Brochure-/Brochure/ATG WEBSITE BROCHURE 1.jpg",
+        "/Work/Brochure-/Brochure/ATG TRAVEL POSTER REMAKE .jpg",
+        "/Work/Brochure-/Brochure/20221118_224050_0000.png"
+      ]
     },
     {
       name: "Kaivalya & Ritvik",
+      slug: "youtube-thumbnails-strategy",
       type: "Digital Marketing Assets",
       overview: "Created high-contrast teaser thumbnails, meetup covers, and gaming composite banners engineered to maximize click-through rate (CTR).",
       thumbnail: "/Work/Youtube thumbnails/Youtube thumbnails/Ritvik Thumbnail.jpg",
       skills: ["Digital Art", "Color Contrast Curation", "Thumbnails Strategy"],
       deliverables: ["Teaser Thumbnail", "Gaming Composite Banner", "Creator Cover Art"],
       link: "https://drive.google.com/drive/folders/1TzdMf2CGGZcVOnUueLoWJlrPbyqHUycw?usp=sharing",
-      aspect: "aspect-square",
-      width: "md:w-[220px]"
+      aspect: "aspect-[16/10]",
+      width: "md:w-[260px]",
+      galleryImages: [
+        "/Work/Youtube thumbnails/Youtube thumbnails/Ritvik Thumbnail.jpg",
+        "/Work/Youtube thumbnails/Youtube thumbnails/meetup thumbnail copy 2.jpg",
+        "/Work/Youtube thumbnails/Youtube thumbnails/sahil copy 1.jpg",
+        "/Work/Youtube thumbnails/Youtube thumbnails/Thumbnail Manali kaivalya Teaser.jpg",
+        "/Work/Youtube thumbnails/Youtube thumbnails/YT thumbnail SS Story.jpg",
+        "/Work/Youtube thumbnails/Youtube thumbnails/Thumbnail ritvik 2.jpg",
+        "/Work/Youtube thumbnails/Youtube thumbnails/All fonts] copy.jpg",
+        "/Work/Youtube thumbnails/Youtube thumbnails/mashup 2.jpg",
+        "/Work/Youtube thumbnails/Youtube thumbnails/meetup copy.jpg"
+      ]
     }
   ]
 
@@ -1446,71 +1476,72 @@ export function VisualDesignerLayout() {
 
         {/* Cinematic list of client cards */}
         <div className="space-y-8">
-          {clientProjects.map((client, idx) => (
-            <div 
-              key={idx}
-              onClick={() => {
-                if (client.slug) {
-                  router.push(`/case-studies/${client.slug}`)
-                } else if (client.link) {
-                  window.open(client.link, '_blank')
-                }
-              }}
-              className="bg-[#022c22]/40 border border-[#064e3b] rounded-none p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center text-left hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all duration-500 group cursor-pointer"
-            >
-              {/* Uniform Standardized Product Preview Thumbnail */}
-              <div className="w-full md:w-[260px] aspect-[16/10] bg-zinc-900 rounded-none overflow-hidden shrink-0 border border-stone-900/60 shadow-xl relative">
-                <img 
-                  src={client.thumbnail} 
-                  alt={client.name} 
-                  className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-500" 
-                />
-                {client.galleryImages && (
-                  <div className="absolute bottom-2 right-2 px-2.5 py-1 bg-black/80 backdrop-blur-md border border-white/10 text-[9px] font-mono text-emerald-400 font-bold uppercase tracking-wider">
-                    {client.galleryImages.length} Assets
-                  </div>
-                )}
-              </div>
-
-              {/* Client specifications and deliverables */}
-              <div className="flex-1 flex flex-col justify-between space-y-4">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-2xl font-serif text-stone-100 font-medium group-hover:text-emerald-300 transition-colors">
-                      {client.name}
-                    </h3>
-                    <span className="text-[9px] font-mono text-stone-500 uppercase tracking-wider">{client.type}</span>
-                  </div>
-                  <p className="text-xs font-light text-stone-400 leading-relaxed">
-                    {client.overview}
-                  </p>
+          {clientProjects.map((client, idx) => {
+            const cardHref = client.slug ? `/case-studies/${client.slug}` : (client.link || "#")
+            const isExternal = !client.slug && client.link
+            
+            return (
+              <Link 
+                key={idx}
+                href={cardHref}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                className="bg-[#022c22]/40 border border-[#064e3b] rounded-none p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center text-left hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all duration-500 group cursor-pointer block"
+              >
+                {/* Uniform Standardized Product Preview Thumbnail */}
+                <div className="w-full md:w-[260px] aspect-[16/10] bg-zinc-900 rounded-none overflow-hidden shrink-0 border border-stone-900/60 shadow-xl relative">
+                  <img 
+                    src={client.thumbnail} 
+                    alt={client.name} 
+                    className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-500" 
+                  />
+                  {client.galleryImages && (
+                    <div className="absolute bottom-2 right-2 px-2.5 py-1 bg-black/80 backdrop-blur-md border border-white/10 text-[9px] font-mono text-emerald-400 font-bold uppercase tracking-wider">
+                      {client.galleryImages.length} Assets
+                    </div>
+                  )}
                 </div>
 
-                <div className="flex flex-wrap gap-1.5">
-                  {client.skills.map((s, i) => (
-                    <span key={i} className="text-[8px] font-mono bg-zinc-950 border border-stone-900 px-2 py-0.5 rounded-none text-stone-500 font-medium">
-                      {s}
-                    </span>
-                  ))}
-                </div>
+                {/* Client specifications and deliverables */}
+                <div className="flex-1 flex flex-col justify-between space-y-4 w-full">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-2xl font-serif text-stone-100 font-medium group-hover:text-emerald-300 transition-colors">
+                        {client.name}
+                      </h3>
+                      <span className="text-[9px] font-mono text-stone-500 uppercase tracking-wider">{client.type}</span>
+                    </div>
+                    <p className="text-xs font-light text-stone-400 leading-relaxed">
+                      {client.overview}
+                    </p>
+                  </div>
 
-                <div className="pt-2 border-t border-stone-900 flex justify-between items-center">
-                  <div className="flex flex-wrap gap-3">
-                    {client.deliverables.slice(0, 2).map((del, i) => (
-                      <span key={i} className="text-[9px] font-mono text-stone-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                        {del}
+                  <div className="flex flex-wrap gap-1.5">
+                    {client.skills.map((s, i) => (
+                      <span key={i} className="text-[8px] font-mono bg-zinc-950 border border-stone-900 px-2 py-0.5 rounded-none text-stone-500 font-medium">
+                        {s}
                       </span>
                     ))}
                   </div>
 
-                  <span className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400 group-hover:text-emerald-300">
-                    View Case Study <ArrowUpRight size={13} />
-                  </span>
+                  <div className="pt-2 border-t border-stone-900 flex justify-between items-center">
+                    <div className="flex flex-wrap gap-3">
+                      {client.deliverables.slice(0, 2).map((del, i) => (
+                        <span key={i} className="text-[9px] font-mono text-stone-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                          {del}
+                        </span>
+                      ))}
+                    </div>
+
+                    <span className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400 group-hover:text-emerald-300">
+                      View Case Study <ArrowUpRight size={13} />
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </Link>
+            )
+          })}
         </div>
 
 

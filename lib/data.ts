@@ -103,8 +103,6 @@ export const projects = [
         link: "https://www.ampperecable.in/",
         prototypeLink: "https://www.instagram.com/ampperecable/",
         galleryImages: [
-            "/Social_media_creatives_presentation.jpg",
-            "/figma-showcase/AC/amppere-campaign-cover.jpg",
             "/Work/Video/Branding-Reel-4.mp4",
             "/Work/Ai Video/15 March  Post 07- Amppere Cable.mp4",
             "/Work/Ai Video/18 October -Dhanatryodashi Diwali 10).mp4",
@@ -164,7 +162,6 @@ export const projects = [
         link: "https://www.nexusengineering.in/",
         prototypeLink: "https://www.nexusengineering.in/",
         galleryImages: [
-            "/Social_media_creatives_presentation NE.jpg",
             "/Work/Ai Video/Post 1.mp4",
             "/Work/Social Media Creative/Nexus Enginner/Motion Graphic/4 Sep m (1).mp4",
             "/Work/Social Media Creative/Nexus Enginner/reel/11 Sep R1.mp4",

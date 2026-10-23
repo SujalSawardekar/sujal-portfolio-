@@ -33,7 +33,7 @@ export function ProjectGallery({ images, hideHeader = false }: ProjectGalleryPro
                             key={index}
                             layoutId={`img-${index}`}
                             onClick={() => setSelectedImage(item)}
-                            className="group relative break-inside-avoid rounded-2xl overflow-hidden border border-border/50 bg-secondary/10 cursor-zoom-in transition-all hover:border-primary/40 hover:shadow-2xl"
+                            className="group relative break-inside-avoid rounded-lg overflow-hidden border border-border/50 bg-secondary/10 cursor-zoom-in transition-all hover:border-primary/40 hover:shadow-2xl"
                         >
                             {isVideo ? (
                                 <video 

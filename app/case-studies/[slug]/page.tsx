@@ -105,7 +105,7 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                     </header>
 
                     {/* Hero Media */}
-                    <div className="relative mb-14 aspect-video w-full overflow-hidden rounded-[2.5rem] bg-secondary shadow-2xl">
+                    <div className="relative mb-14 aspect-video w-full overflow-hidden rounded-xl bg-secondary shadow-2xl">
                         {isVideoThumbnail ? (
                             <video
                                 src={project.image}

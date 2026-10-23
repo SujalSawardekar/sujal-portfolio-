@@ -728,8 +728,6 @@ export function VisualDesignerLayout() {
       aspect: "aspect-[16/10]",
       width: "md:w-[260px]",
       galleryImages: [
-        "/Social_media_creatives_presentation.jpg",
-        "/figma-showcase/AC/amppere-campaign-cover.jpg",
         "/Work/Video/Branding-Reel-4.mp4",
         "/Work/Ai Video/15 March  Post 07- Amppere Cable.mp4",
         "/Work/Ai Video/18 October -Dhanatryodashi Diwali 10).mp4",
@@ -787,7 +785,6 @@ export function VisualDesignerLayout() {
       aspect: "aspect-[16/10]",
       width: "md:w-[260px]",
       galleryImages: [
-        "/Social_media_creatives_presentation NE.jpg",
         "/Work/Ai Video/Post 1.mp4",
         "/Work/Social Media Creative/Nexus Enginner/Motion Graphic/4 Sep m (1).mp4",
         "/Work/Social Media Creative/Nexus Enginner/reel/11 Sep R1.mp4",
@@ -1528,10 +1525,10 @@ export function VisualDesignerLayout() {
                 href={cardHref}
                 target={isExternal ? "_blank" : undefined}
                 rel={isExternal ? "noopener noreferrer" : undefined}
-                className="bg-[#022c22]/40 border border-[#064e3b] rounded-none p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center text-left hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all duration-500 group cursor-pointer block"
+                className="bg-[#022c22]/40 border border-[#064e3b] rounded-lg p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center text-left hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all duration-500 group cursor-pointer block"
               >
                 {/* Uniform Standardized Product Preview Thumbnail */}
-                <div className="w-full md:w-[260px] aspect-[16/10] bg-zinc-900 rounded-none overflow-hidden shrink-0 border border-stone-900/60 shadow-xl relative">
+                <div className="w-full md:w-[260px] aspect-[16/10] bg-zinc-900 rounded-lg overflow-hidden shrink-0 border border-stone-900/60 shadow-xl relative">
                   <img 
                     src={client.thumbnail} 
                     alt={client.name} 

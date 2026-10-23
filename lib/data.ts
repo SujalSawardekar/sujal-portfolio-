@@ -234,19 +234,19 @@ export const projects = [
         solution: "Created dynamic motion graphic sequences and high-contrast social layout grids optimized for Instagram feeds and stories, maintaining strong brand consistency across variations.",
         tools: ["Photoshop", "After Effects", "Brand Communication", "Social Strategy"],
         outcome: "Consistently delivered higher click-through rates and organic engagement across promotional campaigns for startup clients.",
-        image: "/Work/Social Media Creative/Social Media Creative/01.jpg",
+        image: "/Work/Social Media Creative/Amppere Cable/01.jpg",
         link: "https://drive.google.com/drive/folders/1x16mObp1-CgdI1S1yTziiC97aMAJl_rm?usp=drive_link",
         prototypeLink: "",
         galleryImages: [
-            "/Work/Social Media Creative/Social Media Creative/Motion-graphic-2.mp4",
-            "/Work/Social Media Creative/Social Media Creative/01.jpg",
-            "/Work/Social Media Creative/Social Media Creative/02.jpg",
-            "/Work/Social Media Creative/Social Media Creative/03.jpg",
-            "/Work/Social Media Creative/Social Media Creative/04.jpg",
-            "/Work/Social Media Creative/Social Media Creative/05.jpg",
-            "/Work/Social Media Creative/Social Media Creative/06.jpg",
-            "/Work/Social Media Creative/Social Media Creative/08.jpg",
-            "/Work/Social Media Creative/Social Media Creative/Motion graphic 6.mp4"
+            "/Work/Social Media Creative/Amppere Cable/Motion-graphic-2.mp4",
+            "/Work/Social Media Creative/Amppere Cable/01.jpg",
+            "/Work/Social Media Creative/Amppere Cable/02.jpg",
+            "/Work/Social Media Creative/Amppere Cable/03.jpg",
+            "/Work/Social Media Creative/Amppere Cable/04.jpg",
+            "/Work/Social Media Creative/Amppere Cable/05.jpg",
+            "/Work/Social Media Creative/Amppere Cable/06.jpg",
+            "/Work/Social Media Creative/Amppere Cable/08.jpg",
+            "/Work/Social Media Creative/Amppere Cable/Motion graphic 6.mp4"
         ]
     },
     {

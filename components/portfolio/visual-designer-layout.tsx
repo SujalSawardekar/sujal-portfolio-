@@ -1036,7 +1036,7 @@ export function VisualDesignerLayout() {
             overview="Designed bold, high-contrast, cinematic music promotional posters with digital compositing and entertainment-focused art direction."
             skills={["Photoshop", "Typography", "Poster Composition", "Creative Gradients"]}
             deliverables={["Poster Showcase", "Digital Release Covers", "Cover Art Assets"]}
-            ctaText="View Case Study →"
+            ctaText="View Project →"
             thumbnail="/Work/Music poster/Music poster/SHREEMAN LEGEND 4.jpg"
             link="https://drive.google.com/drive/folders/1X37uwj5eE6t7bpSzWUbHWHI9qN3HL_dV?usp=drive_link"
             galleryImages={[
@@ -1059,19 +1059,19 @@ export function VisualDesignerLayout() {
             overview="Designed promotional creatives, social campaign visuals, and motion creatives focused on product-centric communications and audience engagement."
             skills={["Photoshop", "Brand Communication", "Ad Compositing", "Grid Systems"]}
             deliverables={["Instagram Campaigns", "Motion Creatives Series", "Digital Ad Sets"]}
-            ctaText="View Case Study →"
-            thumbnail="/Work/Social Media Creative/Social Media Creative/Motion-graphic-2.mp4"
+            ctaText="View Project →"
+            thumbnail="/Work/Social Media Creative/Amppere Cable/Motion-graphic-2.mp4"
             link="https://drive.google.com/drive/folders/1x16mObp1-CgdI1S1yTziiC97aMAJl_rm?usp=drive_link"
             galleryImages={[
-              "/Work/Social Media Creative/Social Media Creative/Motion-graphic-2.mp4",
-              "/Work/Social Media Creative/Social Media Creative/01.jpg",
-              "/Work/Social Media Creative/Social Media Creative/02.jpg",
-              "/Work/Social Media Creative/Social Media Creative/03.jpg",
-              "/Work/Social Media Creative/Social Media Creative/04.jpg",
-              "/Work/Social Media Creative/Social Media Creative/05.jpg",
-              "/Work/Social Media Creative/Social Media Creative/06.jpg",
-              "/Work/Social Media Creative/Social Media Creative/08.jpg",
-              "/Work/Social Media Creative/Social Media Creative/Motion graphic 6.mp4"
+              "/Work/Social Media Creative/Amppere Cable/Motion-graphic-2.mp4",
+              "/Work/Social Media Creative/Amppere Cable/01.jpg",
+              "/Work/Social Media Creative/Amppere Cable/02.jpg",
+              "/Work/Social Media Creative/Amppere Cable/03.jpg",
+              "/Work/Social Media Creative/Amppere Cable/04.jpg",
+              "/Work/Social Media Creative/Amppere Cable/05.jpg",
+              "/Work/Social Media Creative/Amppere Cable/06.jpg",
+              "/Work/Social Media Creative/Amppere Cable/08.jpg",
+              "/Work/Social Media Creative/Amppere Cable/Motion graphic 6.mp4"
             ]}
           />
 
@@ -1083,7 +1083,7 @@ export function VisualDesignerLayout() {
             overview="Designed eye-catching gaming composites, teaser covers, and meetup thumbnails engineered to maximize organic reach and click-through rates."
             skills={["Digital Compositing", "CTR Optimization", "Photoshop", "Color Contrast"]}
             deliverables={["Teaser Thumbnail", "Gaming Composite Banner", "Creator Cover Art"]}
-            ctaText="View Case Study →"
+            ctaText="View Project →"
             thumbnail="/Work/Youtube thumbnails/Youtube thumbnails/Ritvik Thumbnail.jpg"
             link="https://drive.google.com/drive/folders/1mWOfKMrknar9OeIAWtskxuF3P7h5TuTu?usp=drive_link"
             galleryImages={[
@@ -1107,7 +1107,7 @@ export function VisualDesignerLayout() {
             overview="Formulated geometric grid layouts, corporate website brochures, and print assets aligned with cohesive brand systems."
             skills={["Layout Grid", "Print Composition", "Typography Pacing", "Vector Layout"]}
             deliverables={["Corporate Brochure", "Remake Travel Poster", "Brand Assets"]}
-            ctaText="View Case Study →"
+            ctaText="View Project →"
             thumbnail="/Work/Brochure-/Brochure/ATG WEBSITE BROCHURE 1.jpg"
             link="https://drive.google.com/drive/folders/11jY9M7vTnSf88f1wvD6fUM4i_UIpYaO4?usp=drive_link"
             galleryImages={[
@@ -1574,7 +1574,7 @@ export function VisualDesignerLayout() {
                     </div>
 
                     <span className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400 group-hover:text-emerald-300">
-                      View Case Study <ArrowUpRight size={13} />
+                      View Project <ArrowUpRight size={13} />
                     </span>
                   </div>
                 </div>

@@ -27,6 +27,62 @@ export default function PortfolioPage() {
 
   useEffect(() => {
     setIsLoaded(true)
+
+    if (typeof window === "undefined") return
+
+    const handleRouteSync = () => {
+      const url = new URL(window.location.href)
+      const modeParam = url.searchParams.get("mode") as "uiux" | "visual" | null
+      const hash = window.location.hash.replace("#", "")
+
+      const uiuxSections = ["work", "about", "figma-showcase", "experience", "research", "achievements", "skills", "archive", "contact"]
+      const visualSections = ["about-visual", "graphic-design", "video-work", "ai-video-work", "client-projects", "contact-visual"]
+
+      let targetMode: "uiux" | "visual" | null = null
+      if (modeParam === "uiux" || modeParam === "visual") {
+        targetMode = modeParam
+      } else if (uiuxSections.includes(hash)) {
+        targetMode = "uiux"
+      } else if (visualSections.includes(hash)) {
+        targetMode = "visual"
+      }
+
+      if (targetMode) {
+        setPortfolioMode(targetMode)
+      }
+
+      if (hash) {
+        const scrollToSection = () => {
+          const el = document.getElementById(hash)
+          if (el) {
+            const lenis = (window as unknown as { lenis?: { scrollTo: (target: string | HTMLElement, opts?: object) => void } }).lenis
+            if (lenis?.scrollTo) {
+              lenis.scrollTo(el, { offset: -70, duration: 1.2 })
+            } else {
+              el.scrollIntoView({ behavior: "smooth", block: "start" })
+            }
+            return true
+          }
+          return false
+        }
+
+        // Multiple staggered attempts to guarantee scroll after layout mounts
+        if (!scrollToSection()) {
+          setTimeout(scrollToSection, 100)
+          setTimeout(scrollToSection, 300)
+          setTimeout(scrollToSection, 600)
+        }
+      }
+    }
+
+    handleRouteSync()
+    window.addEventListener("popstate", handleRouteSync)
+    window.addEventListener("hashchange", handleRouteSync)
+
+    return () => {
+      window.removeEventListener("popstate", handleRouteSync)
+      window.removeEventListener("hashchange", handleRouteSync)
+    }
   }, [])
 
   return (

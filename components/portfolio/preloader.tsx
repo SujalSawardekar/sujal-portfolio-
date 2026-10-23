@@ -9,6 +9,12 @@ export function Preloader() {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
+    // Skip preloader if already seen in current session
+    if (typeof window !== "undefined" && sessionStorage.getItem("hasLoadedOnce") === "true") {
+      setLoading(false)
+      return
+    }
+
     let isPageLoaded = typeof document !== "undefined" && document.readyState === "complete"
 
     const handleLoad = () => {
@@ -59,6 +65,9 @@ export function Preloader() {
     if (progress >= 100) {
       const timeoutId = setTimeout(() => {
         setLoading(false)
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem("hasLoadedOnce", "true")
+        }
       }, 200)
       return () => clearTimeout(timeoutId)
     }

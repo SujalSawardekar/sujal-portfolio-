@@ -42,6 +42,7 @@ export function ProjectGallery({ images, hideHeader = false }: ProjectGalleryPro
                                     loop
                                     muted
                                     playsInline
+                                    preload="metadata"
                                     className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.02] block"
                                 />
                             ) : (
@@ -49,7 +50,8 @@ export function ProjectGallery({ images, hideHeader = false }: ProjectGalleryPro
                                     src={item} 
                                     alt={`Design view ${index + 1}`} 
                                     loading="lazy"
-                                    className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.02] block" 
+                                    decoding="async"
+                                    className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.02] block bg-zinc-900/50" 
                                 />
                             )}
                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">

@@ -16,6 +16,17 @@ interface CaseStudyProps {
     }>
 }
 
+export async function generateMetadata({ params }: CaseStudyProps) {
+    const resolvedParams = await params
+    const project = projects.find((p) => p.slug === resolvedParams.slug)
+    if (!project) return { title: "Project Not Found" }
+    const typeLabel = project.type === "graphic" ? "Project Showcase" : "Case Study"
+    return {
+        title: `${project.title} | ${typeLabel} — Sujal Sawardekar`,
+        description: project.shortDescription || project.problem.slice(0, 160)
+    }
+}
+
 export function generateStaticParams() {
     return projects.map((p) => ({ slug: p.slug }))
 }
@@ -40,7 +51,28 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
     const projectWithGallery = project as typeof project & { galleryImages?: string[] }
     const showcaseImages = projectWithGallery.galleryImages || showcaseMapping[project.slug] || []
 
-    const backHref = project.type === "graphic" ? "/#graphic-design" : "/#work"
+    // Precise section target for all projects to guarantee back-navigation goes to exact section
+    const sectionTargetMap: Record<string, { mode: "uiux" | "visual"; sectionId: string }> = {
+        "amppere-cable": { mode: "uiux", sectionId: "work" },
+        "nexus-engineering": { mode: "uiux", sectionId: "work" },
+        "crickanalyzer": { mode: "uiux", sectionId: "work" },
+        "design-sphere": { mode: "uiux", sectionId: "work" },
+        "krushi-sakhi": { mode: "uiux", sectionId: "work" },
+        "naac-system": { mode: "uiux", sectionId: "work" },
+        "amppere-cable-branding": { mode: "visual", sectionId: "client-projects" },
+        "nexus-engineering-identity": { mode: "visual", sectionId: "client-projects" },
+        "music-posters-collection": { mode: "visual", sectionId: "client-projects" },
+        "social-media-campaigns": { mode: "visual", sectionId: "graphic-design" },
+        "youtube-thumbnails-strategy": { mode: "visual", sectionId: "graphic-design" },
+        "brochures-layout-design": { mode: "visual", sectionId: "graphic-design" },
+    }
+
+    const target = sectionTargetMap[project.slug] || {
+        mode: project.type === "graphic" ? "visual" : "uiux",
+        sectionId: project.type === "graphic" ? "graphic-design" : "work"
+    }
+
+    const backHref = `/?mode=${target.mode}#${target.sectionId}`
     const isVideoThumbnail = project.image.endsWith(".mp4")
 
     return (
@@ -53,7 +85,7 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                     {/* Back button */}
                     <Link
                         href={backHref}
-                        className="group mb-12 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                        className="group mb-12 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary cursor-pointer"
                     >
                         <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
                         Back to Portfolio

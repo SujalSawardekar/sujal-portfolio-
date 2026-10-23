@@ -24,7 +24,8 @@ export function ProjectGallery({ images, hideHeader = false }: ProjectGalleryPro
                 </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {/* Natural Masonry Layout: sized according to content proportions */}
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
                 {images.map((item, index) => {
                     const isVideo = item.endsWith(".mp4")
                     return (
@@ -32,7 +33,7 @@ export function ProjectGallery({ images, hideHeader = false }: ProjectGalleryPro
                             key={index}
                             layoutId={`img-${index}`}
                             onClick={() => setSelectedImage(item)}
-                            className="group relative aspect-[4/3] rounded-2xl overflow-hidden border border-border/50 bg-secondary/10 cursor-zoom-in transition-all hover:border-primary/40 hover:shadow-2xl"
+                            className="group relative break-inside-avoid rounded-2xl overflow-hidden border border-border/50 bg-secondary/10 cursor-zoom-in transition-all hover:border-primary/40 hover:shadow-2xl"
                         >
                             {isVideo ? (
                                 <video 
@@ -41,14 +42,14 @@ export function ProjectGallery({ images, hideHeader = false }: ProjectGalleryPro
                                     loop
                                     muted
                                     playsInline
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                    className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.02] block"
                                 />
                             ) : (
-                                <Image 
+                                <img 
                                     src={item} 
                                     alt={`Design view ${index + 1}`} 
-                                    fill 
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105" 
+                                    loading="lazy"
+                                    className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.02] block" 
                                 />
                             )}
                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">

@@ -15,9 +15,9 @@ const uiuxLinks = [
 
 const visualLinks = [
   { label: "About", href: "/#about-visual" },
-  { label: "Graphic Design", href: "/#graphic-design" },
-  { label: "Video Work", href: "/#video-work" },
-  { label: "Client Projects", href: "/#client-projects" },
+  { label: "Graphics", href: "/#graphic-design" },
+  { label: "Motion", href: "/#video-work" },
+  { label: "Clients", href: "/#client-projects" },
   { label: "Contact", href: "/#contact-visual" },
 ]
 

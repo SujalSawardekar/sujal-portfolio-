@@ -669,6 +669,45 @@ export function VisualDesignerLayout() {
   const [showAllGraphic, setShowAllGraphic] = useState(false)
   const [showAllVideo, setShowAllVideo] = useState(false)
   const [showAllAI, setShowAllAI] = useState(false)
+  const [selectedClient, setSelectedClient] = useState<{
+    name: string
+    type: string
+    overview: string
+    thumbnail: string
+    skills: string[]
+    deliverables: string[]
+    link: string
+    aspect: string
+    width: string
+    galleryImages?: string[]
+  } | null>(null)
+
+  const lenis = useLenis()
+
+  // Scroll lock when client modal is expanded
+  useEffect(() => {
+    if (!selectedClient) return
+
+    const originalOverflow = document.body.style.overflow
+    const originalHtmlOverflow = document.documentElement.style.overflow
+    const originalOverscroll = document.body.style.overscrollBehavior
+    
+    document.body.style.overflow = "hidden"
+    document.documentElement.style.overflow = "hidden"
+    document.body.style.overscrollBehavior = "none"
+
+    if (lenis?.stop) lenis.stop()
+    const winLenis = (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
+    if (winLenis?.stop) winLenis.stop()
+
+    return () => {
+      document.body.style.overflow = originalOverflow
+      document.documentElement.style.overflow = originalHtmlOverflow
+      document.body.style.overscrollBehavior = originalOverscroll
+      if (lenis?.start) lenis.start()
+      if (winLenis?.start) winLenis.start()
+    }
+  }, [selectedClient, lenis])
 
   const handleContactSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -695,6 +734,49 @@ export function VisualDesignerLayout() {
   ]
 
   const clientProjects = [
+    {
+      name: "Amppere Cable Industrial Branding",
+      type: "Heavy Industrial Brand Identity & Motion",
+      overview: "Formulated a robust, high-contrast industrial identity, promotional product motion ads, social media campaigns, and engineering collateral for Amppere Cable.",
+      thumbnail: "/figma-showcase/AC/AC (1).png",
+      skills: ["Brand Identity", "Motion Graphics", "Industrial Catalog", "Photoshop", "Ad Compositing"],
+      deliverables: ["Product Promo Video", "Brand Guidelines", "Catalog Assets", "Social Creatives"],
+      link: "https://www.ampperecable.in/",
+      aspect: "aspect-[16/10]",
+      width: "md:w-[260px]",
+      galleryImages: [
+        "/Work/Ai Video/15 March  Post 07- Amppere Cable.mp4",
+        "/figma-showcase/AC/AC (1).png",
+        "/figma-showcase/AC/AC (2).png",
+        "/figma-showcase/AC/AC (3).png",
+        "/figma-showcase/AC/AC (4).png",
+        "/figma-showcase/AC/AC (5).png",
+        "/figma-showcase/AC/AC (6).png"
+      ]
+    },
+    {
+      name: "Nexus Engineering Core Identity",
+      type: "Safety Systems & Corporate Visual Identity",
+      overview: "Architected a dual-color safety branding program, proposal brochures, site safety banners, and professional corporate digital media for Nexus Engineering.",
+      thumbnail: "/figma-showcase/NE/NE (1).png",
+      skills: ["Corporate Branding", "Print Brochures", "Safety Graphics", "Grid Systems", "Illustrator"],
+      deliverables: ["Corporate Brochure", "Stationery System", "Identity Guidelines", "Safety Collateral"],
+      link: "https://www.nexusengineering.in/",
+      aspect: "aspect-[16/10]",
+      width: "md:w-[260px]",
+      galleryImages: [
+        "/figma-showcase/NE/NE (1).png",
+        "/figma-showcase/NE/NE (2).png",
+        "/figma-showcase/NE/NE (3).png",
+        "/figma-showcase/NE/NE (4).png",
+        "/figma-showcase/NE/NE (5).png",
+        "/figma-showcase/NE/NE (6).png",
+        "/figma-showcase/NE/NE A (1).png",
+        "/figma-showcase/NE/NE A (2).png",
+        "/figma-showcase/NE/NE G (1).png",
+        "/figma-showcase/NE/NE S (1).png"
+      ]
+    },
     {
       name: "Shreeman Legend Suite",
       type: "Creator Entertainment Branding",
@@ -1356,22 +1438,34 @@ export function VisualDesignerLayout() {
           {clientProjects.map((client, idx) => (
             <div 
               key={idx}
-              className="bg-[#022c22]/40 border border-[#064e3b] rounded-[2rem] p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center text-left hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all duration-500 group"
+              onClick={() => {
+                if (client.galleryImages?.length) {
+                  setSelectedClient(client)
+                } else if (client.link) {
+                  window.open(client.link, '_blank')
+                }
+              }}
+              className="bg-[#022c22]/40 border border-[#064e3b] rounded-none p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center text-left hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all duration-500 group cursor-pointer"
             >
               {/* Product Preview Thumbnail - Custom Portrait / Landscape framing */}
-              <div className={`w-full ${client.width} ${client.aspect} bg-zinc-900 rounded-2xl overflow-hidden shrink-0 border border-stone-900/60 shadow-xl`}>
+              <div className={`w-full ${client.width} ${client.aspect} bg-zinc-900 rounded-none overflow-hidden shrink-0 border border-stone-900/60 shadow-xl relative`}>
                 <img 
                   src={client.thumbnail} 
                   alt={client.name} 
                   className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-500" 
                 />
+                {client.galleryImages && (
+                  <div className="absolute bottom-2 right-2 px-2.5 py-1 bg-black/80 backdrop-blur-md border border-white/10 text-[9px] font-mono text-emerald-400 font-bold uppercase tracking-wider">
+                    {client.galleryImages.length} Assets
+                  </div>
+                )}
               </div>
 
               {/* Client specifications and deliverables */}
               <div className="flex-1 flex flex-col justify-between space-y-4">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-2xl font-serif text-stone-100 font-medium group-hover:text-stone-300 transition-colors">
+                    <h3 className="text-2xl font-serif text-stone-100 font-medium group-hover:text-emerald-300 transition-colors">
                       {client.name}
                     </h3>
                     <span className="text-[9px] font-mono text-stone-500 uppercase tracking-wider">{client.type}</span>
@@ -1383,7 +1477,7 @@ export function VisualDesignerLayout() {
 
                 <div className="flex flex-wrap gap-1.5">
                   {client.skills.map((s, i) => (
-                    <span key={i} className="text-[8px] font-mono bg-zinc-950 border border-stone-900 px-2 py-0.5 rounded text-stone-500 font-medium">
+                    <span key={i} className="text-[8px] font-mono bg-zinc-950 border border-stone-900 px-2 py-0.5 rounded-none text-stone-500 font-medium">
                       {s}
                     </span>
                   ))}
@@ -1393,25 +1487,108 @@ export function VisualDesignerLayout() {
                   <div className="flex flex-wrap gap-3">
                     {client.deliverables.slice(0, 2).map((del, i) => (
                       <span key={i} className="text-[9px] font-mono text-stone-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-stone-500" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                         {del}
                       </span>
                     ))}
                   </div>
 
-                  <a 
-                    href={client.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-8 h-8 rounded-full border border-stone-850 bg-zinc-900 flex items-center justify-center text-stone-400 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all duration-300 cursor-pointer"
-                  >
-                    <ArrowUpRight size={12} />
-                  </a>
+                  <span className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400 group-hover:text-emerald-300">
+                    Explore Assets <ArrowUpRight size={13} />
+                  </span>
                 </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Client Gallery Modal */}
+        <AnimatePresence>
+          {selectedClient && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              data-lenis-prevent
+              className="fixed inset-0 z-[9999] flex items-center justify-center bg-zinc-950/95 backdrop-blur-xl p-4 pt-20 sm:p-8 sm:pt-24 touch-none"
+              onClick={() => setSelectedClient(null)}
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+            >
+              <motion.div 
+                initial={{ y: 20, opacity: 0, scale: 0.98 }}
+                animate={{ y: 0, opacity: 1, scale: 1 }}
+                exit={{ y: 20, opacity: 0, scale: 0.98 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                data-lenis-prevent
+                className="w-full max-w-5xl max-h-[85vh] flex flex-col relative bg-[#04120c] rounded-none ring-1 ring-emerald-500/20 overflow-hidden shadow-[0_0_100px_rgba(16,185,129,0.1)] overscroll-contain"
+                onClick={(e) => e.stopPropagation()}
+                onWheel={(e) => e.stopPropagation()}
+                onTouchMove={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="p-4 sm:p-5 md:px-7 flex items-center justify-between border-b border-emerald-500/10 shrink-0 bg-black/40">
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-serif text-white">{selectedClient.name}</h3>
+                    <p className="text-[10px] font-mono text-emerald-400 mt-1 uppercase tracking-widest">{selectedClient.type}</p>
+                  </div>
+                  <button 
+                    onClick={() => setSelectedClient(null)}
+                    className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-stone-300 transition-colors cursor-pointer"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+                
+                {/* Gallery Grid */}
+                <div 
+                  data-lenis-prevent
+                  className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-7 custom-scrollbar bg-[#020a06] overscroll-contain"
+                  onWheel={(e) => e.stopPropagation()}
+                  onTouchMove={(e) => e.stopPropagation()}
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 w-full">
+                    {selectedClient.galleryImages?.map((media, idx) => (
+                      <div key={idx} className="w-full aspect-[4/3] bg-zinc-950/60 overflow-hidden ring-1 ring-white/10 group/item flex items-center justify-center relative">
+                        {media.endsWith('.mp4') ? (
+                          <video 
+                            src={media} 
+                            controls
+                            autoPlay 
+                            loop 
+                            muted 
+                            playsInline 
+                            className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-500" 
+                          />
+                        ) : (
+                          <img 
+                            src={media} 
+                            alt={`${selectedClient.name} ${idx}`} 
+                            className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-500" 
+                            loading="lazy" 
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Footer */}
+                <div className="p-4 sm:p-6 md:px-8 border-t border-emerald-500/10 flex flex-col sm:flex-row justify-between items-center gap-4 bg-black/40 shrink-0">
+                  <p className="text-xs text-stone-400 font-mono tracking-widest uppercase">{selectedClient.galleryImages?.length} Media Assets</p>
+                  <a 
+                    href={selectedClient.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500 hover:text-black px-4 py-2 text-[10px] font-mono font-bold uppercase tracking-wider transition-all"
+                  >
+                    Visit Official Site <ArrowUpRight size={13} />
+                  </a>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Global Section CTA - Redirects to drive */}
         <div className="mt-16 text-left">

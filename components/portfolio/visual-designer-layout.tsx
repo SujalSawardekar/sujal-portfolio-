@@ -179,7 +179,7 @@ function ProjectCard({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           data-lenis-prevent
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-zinc-950/95 backdrop-blur-xl p-4 pt-20 sm:p-8 sm:pt-24 touch-none"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-zinc-950/95 backdrop-blur-xl p-3 sm:p-6 touch-none"
           onClick={() => setIsModalOpen(false)}
           onWheel={(e) => e.stopPropagation()}
           onTouchMove={(e) => e.stopPropagation()}
@@ -501,7 +501,7 @@ function VideoCard({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           data-lenis-prevent
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 pt-20 sm:p-6 sm:pt-24 touch-none"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-3 sm:p-6 touch-none"
           onClick={() => setIsZoomOpen(false)}
           onWheel={(e) => e.stopPropagation()}
           onTouchMove={(e) => e.stopPropagation()}
@@ -583,7 +583,7 @@ function VideoCard({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           data-lenis-prevent
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 pt-20 sm:p-8 sm:pt-24 touch-none"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-3 sm:p-6 touch-none"
           onClick={() => setIsModalOpen(false)}
           onWheel={(e) => e.stopPropagation()}
           onTouchMove={(e) => e.stopPropagation()}
@@ -1533,7 +1533,7 @@ export function VisualDesignerLayout() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               data-lenis-prevent
-              className="fixed inset-0 z-[9999] flex items-center justify-center bg-zinc-950/95 backdrop-blur-xl p-4 pt-20 sm:p-8 sm:pt-24 touch-none"
+              className="fixed inset-0 z-[9999] flex items-center justify-center bg-zinc-950/95 backdrop-blur-xl p-3 sm:p-6 touch-none"
               onClick={() => setSelectedClient(null)}
               onWheel={(e) => e.stopPropagation()}
               onTouchMove={(e) => e.stopPropagation()}

@@ -7,19 +7,22 @@ import { motion, AnimatePresence } from "framer-motion"
 
 interface ProjectGalleryProps {
     images: string[]
+    hideHeader?: boolean
 }
 
-export function ProjectGallery({ images }: ProjectGalleryProps) {
+export function ProjectGallery({ images, hideHeader = false }: ProjectGalleryProps) {
     const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
     if (!images || images.length === 0) return null
 
     return (
-        <section className="my-24 space-y-12">
-            <div className="flex flex-col gap-2">
-                <h2 className="text-3xl font-bold tracking-tight">Design & Media Exploration</h2>
-                <p className="text-muted-foreground font-light text-lg">A detailed look into collateral, campaign visuals, and creative media assets.</p>
-            </div>
+        <section className={`${hideHeader ? "my-6" : "my-24"} space-y-8`}>
+            {!hideHeader && (
+                <div className="flex flex-col gap-2">
+                    <h2 className="text-3xl font-bold tracking-tight">Design & Media Exploration</h2>
+                    <p className="text-muted-foreground font-light text-lg">A detailed look into collateral, campaign visuals, and creative media assets.</p>
+                </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {images.map((item, index) => {

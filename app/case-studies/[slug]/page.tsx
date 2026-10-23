@@ -60,39 +60,52 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                     </Link>
 
                     {/* Header */}
-                    <header className="mb-20">
+                    <header className="mb-14">
                         <div className="max-w-4xl">
-                            <span className="mb-4 block text-sm font-bold tracking-[0.3em] text-primary uppercase">
+                            <span className="mb-3 block text-sm font-bold tracking-[0.3em] text-primary uppercase">
                                 {project.category}
                             </span>
-                            <h1 className="mb-12 text-6xl md:text-8xl font-bold leading-[0.9] tracking-tighter">
+                            <h1 className="mb-8 text-5xl md:text-7xl font-bold leading-[0.95] tracking-tighter">
                                 {project.title}
                             </h1>
                         </div>
 
-                        {/* Project Info Bar */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10 border-y border-border/50">
-                            <div>
-                                <span className="block text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Role</span>
-                                <span className="text-sm font-medium">UI/UX Designer</span>
-                            </div>
-                            <div>
-                                <span className="block text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Duration</span>
-                                <span className="text-sm font-medium">2 Months</span>
-                            </div>
-                            <div className="col-span-2">
-                                <span className="block text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Tools</span>
-                                <div className="flex flex-wrap gap-2">
-                                    {project.tools.map((tool) => (
-                                        <span key={tool} className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">{tool}</span>
-                                    ))}
+                        {/* Project Info Bar - Just Tools for Graphic & Visual */}
+                        {project.type === "graphic" ? (
+                            <div className="py-6 border-y border-border/50">
+                                <div>
+                                    <span className="block text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3">Tools</span>
+                                    <div className="flex flex-wrap gap-2">
+                                        {project.tools.map((tool) => (
+                                            <span key={tool} className="text-xs font-medium text-primary bg-primary/10 px-3.5 py-1.5 rounded-full">{tool}</span>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        ) : (
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10 border-y border-border/50">
+                                <div>
+                                    <span className="block text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Role</span>
+                                    <span className="text-sm font-medium">UI/UX Designer</span>
+                                </div>
+                                <div>
+                                    <span className="block text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Duration</span>
+                                    <span className="text-sm font-medium">2 Months</span>
+                                </div>
+                                <div className="col-span-2">
+                                    <span className="block text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Tools</span>
+                                    <div className="flex flex-wrap gap-2">
+                                        {project.tools.map((tool) => (
+                                            <span key={tool} className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">{tool}</span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </header>
 
                     {/* Hero Media */}
-                    <div className="relative mb-20 aspect-video w-full overflow-hidden rounded-[2.5rem] bg-secondary shadow-2xl">
+                    <div className="relative mb-14 aspect-video w-full overflow-hidden rounded-[2.5rem] bg-secondary shadow-2xl">
                         {isVideoThumbnail ? (
                             <video
                                 src={project.image}
@@ -113,67 +126,106 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                         )}
                     </div>
 
-                    {/* Content Sections */}
-                    <div className="mx-auto max-w-4xl space-y-20">
-                        <section className="relative">
-                            <div className="absolute -left-8 top-0 text-[80px] font-bold text-primary/5 select-none leading-none">01</div>
-                            <h2 className="mb-6 text-3xl font-bold tracking-tight">The Challenge</h2>
-                            <p className="text-lg leading-relaxed text-muted-foreground font-light whitespace-pre-wrap">
-                                {project.problem}
-                            </p>
-                        </section>
+                    {/* Content / Visuals Showcase */}
+                    {project.type === "graphic" ? (
+                        /* Pure Visuals for Graphic Design & Client Projects */
+                        <div className="mx-auto max-w-5xl space-y-12">
+                            <div className="py-2">
+                                <ProjectGallery images={showcaseImages} hideHeader={true} />
+                            </div>
 
-                        <section className="relative">
-                            <div className="absolute -left-8 top-0 text-[80px] font-bold text-primary/5 select-none leading-none">02</div>
-                            <h2 className="mb-6 text-3xl font-bold tracking-tight">The Solution</h2>
-                            <p className="text-lg leading-relaxed text-muted-foreground font-light whitespace-pre-wrap">
-                                {project.solution}
-                            </p>
-                        </section>
-
-                        {/* Interactive Gallery */}
-                        <div className="py-4">
-                            <ProjectGallery images={showcaseImages} />
+                            {(project.link !== "#" || (project.prototypeLink && project.prototypeLink !== "#" && project.prototypeLink !== "")) && (
+                                <section className="pt-16 border-t border-border/50 text-center">
+                                    <div className="flex flex-wrap justify-center gap-6">
+                                        {project.link !== "#" && (
+                                            <a
+                                                href={project.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="group inline-flex items-center gap-4 rounded-full bg-primary px-10 py-5 text-sm font-bold text-primary-foreground transition-all hover:bg-primary/90 hover:scale-105 shadow-2xl shadow-primary/20"
+                                            >
+                                                Visit Official Link
+                                                <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                                            </a>
+                                        )}
+                                        {project.prototypeLink && project.prototypeLink !== "#" && project.prototypeLink !== "" && project.prototypeLink !== project.link && (
+                                            <a
+                                                href={project.prototypeLink}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="group inline-flex items-center gap-4 rounded-full bg-secondary px-10 py-5 text-sm font-bold text-secondary-foreground transition-all hover:bg-secondary/90 hover:scale-105 shadow-2xl shadow-secondary/20"
+                                            >
+                                                External Channel
+                                                <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                                            </a>
+                                        )}
+                                    </div>
+                                </section>
+                            )}
                         </div>
-
-                        <section className="relative">
-                            <div className="absolute -left-8 top-0 text-[80px] font-bold text-primary/5 select-none leading-none">03</div>
-                            <h2 className="mb-6 text-3xl font-bold tracking-tight">The Outcome</h2>
-                            <p className="text-lg leading-relaxed text-muted-foreground font-light whitespace-pre-wrap">
-                                {project.outcome}
-                            </p>
-                        </section>
-
-                        {(project.link !== "#" || (project.prototypeLink && project.prototypeLink !== "#" && project.prototypeLink !== "")) && (
-                            <section className="pt-20 border-t border-border/50 text-center">
-                                <span className="block text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em] mb-8">Ready to see more?</span>
-                                <div className="flex flex-wrap justify-center gap-6">
-                                    {project.link !== "#" && (
-                                        <a
-                                            href={project.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="group inline-flex items-center gap-4 rounded-full bg-primary px-12 py-6 text-sm font-bold text-primary-foreground transition-all hover:bg-primary/90 hover:scale-105 shadow-2xl shadow-primary/20"
-                                        >
-                                            View Live Project
-                                            <ArrowUpRight size={20} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                                        </a>
-                                    )}
-                                    {project.prototypeLink && project.prototypeLink !== "#" && project.prototypeLink !== "" && (
-                                        <a
-                                            href={project.prototypeLink}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="group inline-flex items-center gap-4 rounded-full bg-secondary px-12 py-6 text-sm font-bold text-secondary-foreground transition-all hover:bg-secondary/90 hover:scale-105 shadow-2xl shadow-secondary/20"
-                                        >
-                                            View Prototype
-                                            <ArrowUpRight size={20} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                                        </a>
-                                    )}
-                                </div>
+                    ) : (
+                        /* Standard UX Case Study Narrative */
+                        <div className="mx-auto max-w-4xl space-y-20">
+                            <section className="relative">
+                                <div className="absolute -left-8 top-0 text-[80px] font-bold text-primary/5 select-none leading-none">01</div>
+                                <h2 className="mb-6 text-3xl font-bold tracking-tight">The Challenge</h2>
+                                <p className="text-lg leading-relaxed text-muted-foreground font-light whitespace-pre-wrap">
+                                    {project.problem}
+                                </p>
                             </section>
-                        )}
-                    </div>
+
+                            <section className="relative">
+                                <div className="absolute -left-8 top-0 text-[80px] font-bold text-primary/5 select-none leading-none">02</div>
+                                <h2 className="mb-6 text-3xl font-bold tracking-tight">The Solution</h2>
+                                <p className="text-lg leading-relaxed text-muted-foreground font-light whitespace-pre-wrap">
+                                    {project.solution}
+                                </p>
+                            </section>
+
+                            {/* Interactive Gallery */}
+                            <div className="py-4">
+                                <ProjectGallery images={showcaseImages} />
+                            </div>
+
+                            <section className="relative">
+                                <div className="absolute -left-8 top-0 text-[80px] font-bold text-primary/5 select-none leading-none">03</div>
+                                <h2 className="mb-6 text-3xl font-bold tracking-tight">The Outcome</h2>
+                                <p className="text-lg leading-relaxed text-muted-foreground font-light whitespace-pre-wrap">
+                                    {project.outcome}
+                                </p>
+                            </section>
+
+                            {(project.link !== "#" || (project.prototypeLink && project.prototypeLink !== "#" && project.prototypeLink !== "")) && (
+                                <section className="pt-20 border-t border-border/50 text-center">
+                                    <span className="block text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em] mb-8">Ready to see more?</span>
+                                    <div className="flex flex-wrap justify-center gap-6">
+                                        {project.link !== "#" && (
+                                            <a
+                                                href={project.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="group inline-flex items-center gap-4 rounded-full bg-primary px-12 py-6 text-sm font-bold text-primary-foreground transition-all hover:bg-primary/90 hover:scale-105 shadow-2xl shadow-primary/20"
+                                            >
+                                                View Live Project
+                                                <ArrowUpRight size={20} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                                            </a>
+                                        )}
+                                        {project.prototypeLink && project.prototypeLink !== "#" && project.prototypeLink !== "" && (
+                                            <a
+                                                href={project.prototypeLink}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="group inline-flex items-center gap-4 rounded-full bg-secondary px-12 py-6 text-sm font-bold text-secondary-foreground transition-all hover:bg-secondary/90 hover:scale-105 shadow-2xl shadow-secondary/20"
+                                            >
+                                                View Prototype
+                                                <ArrowUpRight size={20} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                                            </a>
+                                        )}
+                                    </div>
+                                </section>
+                            )}
+                        </div>
+                    )}
 
                 </article>
             </main>

@@ -99,10 +99,11 @@ export const projects = [
         solution: "Engineered a high-contrast black-and-red visual identity program. Deployed 3D-assisted promotional reels, festive campaign motion graphics, branded social media creatives, and heavy-duty product catalog assets that reinforced technical authority across all channels.",
         tools: ["Photoshop", "Premiere Pro", "After Effects", "Brand Identity", "Motion Graphics"],
         outcome: "Delivered 25+ high-impact media assets including motion reels, festive campaign videos, and social graphics, dramatically enhancing brand recognition across distributors and digital prospects.",
-        image: "/figma-showcase/AC/AC (1).png",
+        image: "/figma-showcase/AC/amppere-campaign-cover.jpg",
         link: "https://www.ampperecable.in/",
         prototypeLink: "https://www.instagram.com/ampperecable/",
         galleryImages: [
+            "/figma-showcase/AC/amppere-campaign-cover.jpg",
             "/Work/Video/Branding-Reel-4.mp4",
             "/Work/Ai Video/15 March  Post 07- Amppere Cable.mp4",
             "/Work/Ai Video/18 October -Dhanatryodashi Diwali 10).mp4",

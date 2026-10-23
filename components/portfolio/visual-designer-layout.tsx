@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, type FormEvent } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { useLenis } from "lenis/react"
 import { ArrowUpRight, Play, Pause, Volume2, VolumeX, Eye, Compass, Film, LayoutGrid, Users, Send, Linkedin, Instagram, FolderOpen, FileText, X, Maximize2 } from "lucide-react"
 import { useIntersection } from "@/hooks/use-intersection"
 import { sendContactMessage } from "@/app/actions/contact"
@@ -51,30 +52,41 @@ function ProjectCard({
     }
   }, [isVisible])
 
+  const lenis = useLenis()
+
   // Bulletproof body & Lenis scroll lock when modal is expanded
   useEffect(() => {
     if (!isModalOpen) return
 
     const originalOverflow = document.body.style.overflow
     const originalHtmlOverflow = document.documentElement.style.overflow
+    const originalOverscroll = document.body.style.overscrollBehavior
     
     document.body.style.overflow = "hidden"
     document.documentElement.style.overflow = "hidden"
+    document.body.style.overscrollBehavior = "none"
 
-    // Stop Lenis smooth scroll if present on window
-    const lenis = (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
+    // Stop Lenis instance immediately
     if (lenis?.stop) {
       lenis.stop()
+    }
+    const winLenis = (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
+    if (winLenis?.stop) {
+      winLenis.stop()
     }
 
     return () => {
       document.body.style.overflow = originalOverflow
       document.documentElement.style.overflow = originalHtmlOverflow
+      document.body.style.overscrollBehavior = originalOverscroll
       if (lenis?.start) {
         lenis.start()
       }
+      if (winLenis?.start) {
+        winLenis.start()
+      }
     }
-  }, [isModalOpen])
+  }, [isModalOpen, lenis])
 
   return (
     <>
@@ -166,6 +178,7 @@ function ProjectCard({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          data-lenis-prevent
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-zinc-950/95 backdrop-blur-xl p-4 pt-20 sm:p-8 sm:pt-24 touch-none"
           onClick={() => setIsModalOpen(false)}
           onWheel={(e) => e.stopPropagation()}
@@ -176,6 +189,7 @@ function ProjectCard({
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: 20, opacity: 0, scale: 0.98 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            data-lenis-prevent
             className="w-full max-w-5xl max-h-[85vh] flex flex-col relative bg-[#0a0502] rounded-none ring-1 ring-white/10 overflow-hidden shadow-[0_0_100px_rgba(245,158,11,0.05)] overscroll-contain"
             onClick={(e) => e.stopPropagation()}
             onWheel={(e) => e.stopPropagation()}
@@ -197,6 +211,7 @@ function ProjectCard({
             
             {/* Gallery - Balanced Grid without awkward bottom whitespace */}
             <div 
+              data-lenis-prevent
               className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-7 custom-scrollbar bg-[#050201] overscroll-contain"
               onWheel={(e) => e.stopPropagation()}
               onTouchMove={(e) => e.stopPropagation()}
@@ -294,30 +309,40 @@ function VideoCard({
     }
   }, [isZoomOpen, isMuted])
 
+  const lenis = useLenis()
+
   // Bulletproof body & Lenis scroll lock when zoom/expanded modal or gallery modal is open
   useEffect(() => {
     if (!isZoomOpen && !isModalOpen) return
 
     const originalOverflow = document.body.style.overflow
     const originalHtmlOverflow = document.documentElement.style.overflow
+    const originalOverscroll = document.body.style.overscrollBehavior
     
     document.body.style.overflow = "hidden"
     document.documentElement.style.overflow = "hidden"
+    document.body.style.overscrollBehavior = "none"
 
-    // Stop Lenis smooth scroll if present on window
-    const lenis = (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
     if (lenis?.stop) {
       lenis.stop()
+    }
+    const winLenis = (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
+    if (winLenis?.stop) {
+      winLenis.stop()
     }
 
     return () => {
       document.body.style.overflow = originalOverflow
       document.documentElement.style.overflow = originalHtmlOverflow
+      document.body.style.overscrollBehavior = originalOverscroll
       if (lenis?.start) {
         lenis.start()
       }
+      if (winLenis?.start) {
+        winLenis.start()
+      }
     }
-  }, [isZoomOpen, isModalOpen])
+  }, [isZoomOpen, isModalOpen, lenis])
 
   const togglePlay = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -475,6 +500,7 @@ function VideoCard({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          data-lenis-prevent
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 pt-20 sm:p-6 sm:pt-24 touch-none"
           onClick={() => setIsZoomOpen(false)}
           onWheel={(e) => e.stopPropagation()}
@@ -485,6 +511,7 @@ function VideoCard({
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 15 }}
             transition={{ type: "spring", damping: 28, stiffness: 350 }}
+            data-lenis-prevent
             className="bg-[#050814] border border-[#1a1b38] rounded-none w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden relative shadow-[0_0_80px_rgba(99,102,241,0.25)] my-auto overscroll-contain"
             onClick={(e) => e.stopPropagation()}
             onWheel={(e) => e.stopPropagation()}
@@ -516,7 +543,10 @@ function VideoCard({
             </div>
 
             {/* Enlarged Video Viewport - Non-curved rectangular video */}
-            <div className="flex-1 bg-black/95 flex items-center justify-center p-2 sm:p-4 min-h-0 overflow-hidden">
+            <div 
+              data-lenis-prevent
+              className="flex-1 bg-black/95 flex items-center justify-center p-2 sm:p-4 min-h-0 overflow-hidden"
+            >
               <video 
                 ref={zoomVideoRef}
                 src={videoUrl}
@@ -552,6 +582,7 @@ function VideoCard({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          data-lenis-prevent
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 pt-20 sm:p-8 sm:pt-24 touch-none"
           onClick={() => setIsModalOpen(false)}
           onWheel={(e) => e.stopPropagation()}
@@ -562,6 +593,7 @@ function VideoCard({
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: 20, opacity: 0, scale: 0.98 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            data-lenis-prevent
             className="bg-[#050814] border border-[#1a1b38] rounded-none w-full max-w-6xl max-h-[85vh] flex flex-col overflow-hidden relative shadow-[0_0_80px_rgba(99,102,241,0.2)] overscroll-contain"
             onClick={(e) => e.stopPropagation()}
             onWheel={(e) => e.stopPropagation()}
@@ -581,6 +613,7 @@ function VideoCard({
             </div>
             
             <div 
+              data-lenis-prevent
               className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 custom-scrollbar bg-[#02040a]/60 overscroll-contain"
               onWheel={(e) => e.stopPropagation()}
               onTouchMove={(e) => e.stopPropagation()}

@@ -7,6 +7,9 @@ import { ArrowUpRight, Play, Pause, Volume2, VolumeX, Eye, Compass, Film, Layout
 import { useIntersection } from "@/hooks/use-intersection"
 import { sendContactMessage } from "@/app/actions/contact"
 
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+
 interface ProjectCardProps {
   title: string
   category: string
@@ -18,6 +21,7 @@ interface ProjectCardProps {
   thumbnail: string
   link: string
   galleryImages?: string[]
+  caseStudySlug?: string
 }
 
 function ProjectCard({
@@ -30,8 +34,10 @@ function ProjectCard({
   ctaText,
   thumbnail,
   link,
-  galleryImages
+  galleryImages,
+  caseStudySlug
 }: ProjectCardProps) {
+  const router = useRouter()
   const [isHovered, setIsHovered] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -88,11 +94,21 @@ function ProjectCard({
     }
   }, [isModalOpen, lenis])
 
+  const handleCardClick = () => {
+    if (caseStudySlug) {
+      router.push(`/case-studies/${caseStudySlug}`)
+    } else if (galleryImages?.length) {
+      setIsModalOpen(true)
+    } else if (link) {
+      window.open(link, '_blank')
+    }
+  }
+
   return (
     <>
     <div 
       ref={containerRef}
-      onClick={() => galleryImages?.length ? setIsModalOpen(true) : window.open(link, '_blank')}
+      onClick={handleCardClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className="flex flex-col gap-6 text-left group cursor-pointer"
@@ -736,6 +752,7 @@ export function VisualDesignerLayout() {
   const clientProjects = [
     {
       name: "Amppere Cable Industrial Branding",
+      slug: "amppere-cable-branding",
       type: "Heavy Industrial Brand Identity & Motion",
       overview: "Formulated a robust, high-contrast industrial identity, promotional product motion ads, social media campaigns, and engineering collateral for Amppere Cable.",
       thumbnail: "/figma-showcase/AC/AC (1).png",
@@ -778,6 +795,7 @@ export function VisualDesignerLayout() {
     },
     {
       name: "Nexus Engineering Core Identity",
+      slug: "nexus-engineering-identity",
       type: "Safety Systems & Corporate Visual Identity",
       overview: "Architected a dual-color safety branding program, proposal brochures, site safety banners, and professional corporate digital media for Nexus Engineering.",
       thumbnail: "/figma-showcase/NE/NE (1).png",
@@ -979,10 +997,11 @@ export function VisualDesignerLayout() {
             title="Music Poster & Cover Art Collection"
             category="Music Posters"
             client="Shreeman Legend & Independent"
+            caseStudySlug="music-posters-collection"
             overview="Designed bold, high-contrast, cinematic music promotional posters with digital compositing and entertainment-focused art direction."
             skills={["Photoshop", "Typography", "Poster Composition", "Creative Gradients"]}
             deliverables={["Poster Showcase", "Digital Release Covers", "Cover Art Assets"]}
-            ctaText="View Collection →"
+            ctaText="View Case Study →"
             thumbnail="/Work/Music poster/Music poster/SHREEMAN LEGEND 4.jpg"
             link="https://drive.google.com/drive/folders/1X37uwj5eE6t7bpSzWUbHWHI9qN3HL_dV?usp=drive_link"
             galleryImages={[
@@ -1001,10 +1020,11 @@ export function VisualDesignerLayout() {
             title="Social Media Campaigns Collection"
             category="Social Media Creatives"
             client="Startups & Creators"
+            caseStudySlug="social-media-campaigns"
             overview="Designed promotional creatives, social campaign visuals, and motion creatives focused on product-centric communications and audience engagement."
             skills={["Photoshop", "Brand Communication", "Ad Compositing", "Grid Systems"]}
             deliverables={["Instagram Campaigns", "Motion Creatives Series", "Digital Ad Sets"]}
-            ctaText="View Collection →"
+            ctaText="View Case Study →"
             thumbnail="/Work/Social Media Creative/Social Media Creative/Motion-graphic-2.mp4"
             link="https://drive.google.com/drive/folders/1x16mObp1-CgdI1S1yTziiC97aMAJl_rm?usp=drive_link"
             galleryImages={[
@@ -1024,10 +1044,11 @@ export function VisualDesignerLayout() {
             title="High-Convert YouTube Thumbnails"
             category="YouTube Thumbnails"
             client="Ritvik, Kaivalya, & Creators"
+            caseStudySlug="youtube-thumbnails-strategy"
             overview="Designed eye-catching gaming composites, teaser covers, and meetup thumbnails engineered to maximize organic reach and click-through rates."
             skills={["Digital Compositing", "CTR Optimization", "Photoshop", "Color Contrast"]}
             deliverables={["Teaser Thumbnail", "Gaming Composite Banner", "Creator Cover Art"]}
-            ctaText="View Collection →"
+            ctaText="View Case Study →"
             thumbnail="/Work/Youtube thumbnails/Youtube thumbnails/Ritvik Thumbnail.jpg"
             link="https://drive.google.com/drive/folders/1mWOfKMrknar9OeIAWtskxuF3P7h5TuTu?usp=drive_link"
             galleryImages={[
@@ -1047,10 +1068,11 @@ export function VisualDesignerLayout() {
             title="Brochures & Layout Design"
             category="Brochures & Layouts"
             client="Independent Layouts"
+            caseStudySlug="brochures-layout-design"
             overview="Formulated geometric grid layouts, corporate website brochures, and print assets aligned with cohesive brand systems."
             skills={["Layout Grid", "Print Composition", "Typography Pacing", "Vector Layout"]}
             deliverables={["Corporate Brochure", "Remake Travel Poster", "Brand Assets"]}
-            ctaText="View Collection →"
+            ctaText="View Case Study →"
             thumbnail="/Work/Brochure-/Brochure/ATG WEBSITE BROCHURE 1.jpg"
             link="https://drive.google.com/drive/folders/11jY9M7vTnSf88f1wvD6fUM4i_UIpYaO4?usp=drive_link"
             galleryImages={[
@@ -1462,7 +1484,9 @@ export function VisualDesignerLayout() {
             <div 
               key={idx}
               onClick={() => {
-                if (client.galleryImages?.length) {
+                if (client.slug) {
+                  router.push(`/case-studies/${client.slug}`)
+                } else if (client.galleryImages?.length) {
                   setSelectedClient(client)
                 } else if (client.link) {
                   window.open(client.link, '_blank')
@@ -1517,7 +1541,7 @@ export function VisualDesignerLayout() {
                   </div>
 
                   <span className="inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400 group-hover:text-emerald-300">
-                    Explore Assets <ArrowUpRight size={13} />
+                    View Case Study <ArrowUpRight size={13} />
                   </span>
                 </div>
               </div>

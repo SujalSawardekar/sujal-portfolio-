@@ -37,22 +37,26 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
         "krushi-sakhi": ["Diagnosis.png", "Profile-1.png", "Profile-1plant.png", "Profile.png"].map(img => `/figma-showcase/KS/${img}`),
     }
 
-    const showcaseImages = showcaseMapping[project.slug] || []
+    const projectWithGallery = project as typeof project & { galleryImages?: string[] }
+    const showcaseImages = projectWithGallery.galleryImages || showcaseMapping[project.slug] || []
+
+    const backHref = project.type === "graphic" ? "/#graphic-design" : "/#work"
+    const isVideoThumbnail = project.image.endsWith(".mp4")
 
     return (
         <SmoothScroll>
             <CustomCursor />
-            <Navbar />
+            <Navbar mode={project.type === "graphic" ? "visual" : "uiux"} />
             <main className="min-h-screen bg-background text-foreground pt-32 pb-20">
                 <article className="mx-auto max-w-5xl px-6">
 
                     {/* Back button */}
                     <Link
-                        href="/#work"
+                        href={backHref}
                         className="group mb-12 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
                     >
                         <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-                        Back to Projects
+                        Back to Portfolio
                     </Link>
 
                     {/* Header */}
@@ -87,15 +91,26 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                         </div>
                     </header>
 
-                    {/* Hero Image */}
+                    {/* Hero Media */}
                     <div className="relative mb-20 aspect-video w-full overflow-hidden rounded-[2.5rem] bg-secondary shadow-2xl">
-                        <Image
-                            src={project.image}
-                            alt={`${project.title} featured image`}
-                            fill
-                            className="object-cover"
-                            priority
-                        />
+                        {isVideoThumbnail ? (
+                            <video
+                                src={project.image}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <Image
+                                src={project.image}
+                                alt={`${project.title} featured image`}
+                                fill
+                                className="object-cover"
+                                priority
+                            />
+                        )}
                     </div>
 
                     {/* Content Sections */}

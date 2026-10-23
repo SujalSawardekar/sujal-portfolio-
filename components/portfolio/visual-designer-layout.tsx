@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, type FormEvent } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { ArrowUpRight, Play, Pause, Volume2, VolumeX, Eye, Compass, Film, LayoutGrid, Users, Send, Linkedin, Instagram, FolderOpen, FileText, X } from "lucide-react"
+import { ArrowUpRight, Play, Pause, Volume2, VolumeX, Eye, Compass, Film, LayoutGrid, Users, Send, Linkedin, Instagram, FolderOpen, FileText, X, Maximize2 } from "lucide-react"
 import { useIntersection } from "@/hooks/use-intersection"
 import { sendContactMessage } from "@/app/actions/contact"
 
@@ -51,6 +51,31 @@ function ProjectCard({
     }
   }, [isVisible])
 
+  // Bulletproof body & Lenis scroll lock when modal is expanded
+  useEffect(() => {
+    if (!isModalOpen) return
+
+    const originalOverflow = document.body.style.overflow
+    const originalHtmlOverflow = document.documentElement.style.overflow
+    
+    document.body.style.overflow = "hidden"
+    document.documentElement.style.overflow = "hidden"
+
+    // Stop Lenis smooth scroll if present on window
+    const lenis = (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
+    if (lenis?.stop) {
+      lenis.stop()
+    }
+
+    return () => {
+      document.body.style.overflow = originalOverflow
+      document.documentElement.style.overflow = originalHtmlOverflow
+      if (lenis?.start) {
+        lenis.start()
+      }
+    }
+  }, [isModalOpen])
+
   return (
     <>
     <div 
@@ -61,8 +86,8 @@ function ProjectCard({
       className="flex flex-col gap-6 text-left group cursor-pointer"
     >
       
-      {/* Sleek Borderless Thumbnail */}
-      <div className="w-full relative aspect-[16/10] bg-[#0a0502] rounded-[2rem] overflow-hidden shadow-2xl ring-1 ring-white/5 group-hover:ring-amber-500/30 transition-all duration-500">
+      {/* Sleek Non-Curved Thumbnail */}
+      <div className="w-full relative aspect-[16/10] bg-[#0a0502] rounded-none overflow-hidden shadow-2xl ring-1 ring-white/5 group-hover:ring-amber-500/30 transition-all duration-500">
         {thumbnail.endsWith('.mp4') ? (
           <video 
             ref={videoRef}
@@ -134,61 +159,71 @@ function ProjectCard({
       </div>
     </div>
 
-    {/* Uncluttered Modal Design */}
+    {/* Uncluttered Modal Design - Non-curved edges */}
     <AnimatePresence>
       {isModalOpen && (
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-zinc-950/95 backdrop-blur-xl p-4 md:p-8"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-zinc-950/95 backdrop-blur-xl p-4 pt-20 sm:p-8 sm:pt-24 touch-none"
           onClick={() => setIsModalOpen(false)}
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
         >
           <motion.div 
             initial={{ y: 20, opacity: 0, scale: 0.98 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: 20, opacity: 0, scale: 0.98 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="w-full max-w-4xl max-h-[90vh] flex flex-col relative bg-[#0a0502] rounded-[2rem] ring-1 ring-white/10 overflow-hidden shadow-[0_0_100px_rgba(245,158,11,0.05)]"
+            className="w-full max-w-5xl max-h-[85vh] flex flex-col relative bg-[#0a0502] rounded-none ring-1 ring-white/10 overflow-hidden shadow-[0_0_100px_rgba(245,158,11,0.05)] overscroll-contain"
             onClick={(e) => e.stopPropagation()}
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
           >
             {/* Minimalist Header */}
-            <div className="p-6 md:px-10 flex items-center justify-between border-b border-white/5 shrink-0 bg-black/20">
+            <div className="p-4 sm:p-5 md:px-7 flex items-center justify-between border-b border-white/5 shrink-0 bg-black/40">
               <div>
                 <h3 className="text-xl md:text-2xl font-serif text-white">{title}</h3>
                 <p className="text-[10px] font-mono text-stone-400 mt-1 uppercase tracking-widest">{category}</p>
               </div>
               <button 
                 onClick={() => setIsModalOpen(false)}
-                className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-stone-300 transition-colors"
+                className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-stone-300 transition-colors cursor-pointer"
               >
                 <X size={18} />
               </button>
             </div>
             
-            {/* Uncluttered Gallery - Masonry Grid Layout */}
-            <div className="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar bg-[#050201]">
-              <div className="columns-2 md:columns-3 gap-6 space-y-6 max-w-6xl mx-auto">
+            {/* Gallery - Balanced Grid without awkward bottom whitespace */}
+            <div 
+              className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-7 custom-scrollbar bg-[#050201] overscroll-contain"
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 w-full">
                 {galleryImages?.map((img, idx) => (
-                  img.endsWith('.mp4') ? (
-                    <video key={idx} src={img} autoPlay loop muted playsInline className="w-full rounded-2xl shadow-xl hover:scale-[1.02] transition-transform duration-500 ring-1 ring-white/5" />
-                  ) : (
-                    <img key={idx} src={img} alt={`${title} ${idx}`} className="w-full h-auto rounded-2xl shadow-xl hover:scale-[1.02] transition-transform duration-500 ring-1 ring-white/5 inline-block" loading="lazy" />
-                  )
+                  <div key={idx} className="w-full aspect-square bg-zinc-950/60 overflow-hidden ring-1 ring-white/10 group/item flex items-center justify-center">
+                    {img.endsWith('.mp4') ? (
+                      <video src={img} autoPlay loop muted playsInline className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-500" />
+                    ) : (
+                      <img src={img} alt={`${title} ${idx}`} className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-500" loading="lazy" />
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
 
             {/* Minimalist Footer */}
-            <div className="p-6 md:px-10 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 bg-black/20 shrink-0">
+            <div className="p-4 sm:p-6 md:px-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 bg-black/40 shrink-0">
               <p className="text-xs text-stone-500 font-mono tracking-widest uppercase">{galleryImages?.length} Designs</p>
               <a 
                 href={link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 text-[10px] font-mono font-bold uppercase tracking-widest text-amber-500 hover:text-amber-400 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full bg-amber-500/10 border border-amber-500/40 text-amber-400 hover:bg-amber-500 hover:text-black px-4 py-2 text-[10px] font-mono font-bold uppercase tracking-wider transition-all"
               >
-                View inside Google Drive <ArrowUpRight size={14} />
+                View More Projects <ArrowUpRight size={13} />
               </a>
             </div>
           </motion.div>
@@ -225,36 +260,73 @@ function VideoCard({
   galleryImages
 }: VideoCardProps) {
   const [isHovered, setIsHovered] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(true)
+  const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isZoomOpen, setIsZoomOpen] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
-  const { ref: containerRef, isVisible } = useIntersection({
+  const zoomVideoRef = useRef<HTMLVideoElement>(null)
+  const { ref: containerRef } = useIntersection({
     threshold: 0.05,
     rootMargin: "150px",
     triggerOnce: false,
   })
 
+  // Play on hover, pause on leave (unless user toggled manual play)
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
 
     video.muted = isMuted
 
-    if (isVisible && isPlaying) {
+    if (isHovered || isPlaying) {
       video.play().catch(() => {})
     } else {
       video.pause()
     }
-  }, [isVisible, isPlaying, isMuted, videoUrl])
+  }, [isHovered, isPlaying, isMuted, videoUrl])
+
+  // Continuous playback when zoomed/expanded
+  useEffect(() => {
+    if (isZoomOpen && zoomVideoRef.current) {
+      zoomVideoRef.current.muted = isMuted
+      zoomVideoRef.current.play().catch(() => {})
+    }
+  }, [isZoomOpen, isMuted])
+
+  // Bulletproof body & Lenis scroll lock when zoom/expanded modal or gallery modal is open
+  useEffect(() => {
+    if (!isZoomOpen && !isModalOpen) return
+
+    const originalOverflow = document.body.style.overflow
+    const originalHtmlOverflow = document.documentElement.style.overflow
+    
+    document.body.style.overflow = "hidden"
+    document.documentElement.style.overflow = "hidden"
+
+    // Stop Lenis smooth scroll if present on window
+    const lenis = (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis
+    if (lenis?.stop) {
+      lenis.stop()
+    }
+
+    return () => {
+      document.body.style.overflow = originalOverflow
+      document.documentElement.style.overflow = originalHtmlOverflow
+      if (lenis?.start) {
+        lenis.start()
+      }
+    }
+  }, [isZoomOpen, isModalOpen])
 
   const togglePlay = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
     if (videoRef.current) {
-      if (isPlaying) {
+      if (isPlaying || isHovered) {
         videoRef.current.pause()
         setIsPlaying(false)
+        setIsHovered(false)
       } else {
         videoRef.current.play().catch(() => {})
         setIsPlaying(true)
@@ -271,18 +343,41 @@ function VideoCard({
     if (videoRef.current) {
       videoRef.current.muted = nextMuted
     }
+    if (zoomVideoRef.current) {
+      zoomVideoRef.current.muted = nextMuted
+    }
+  }
+
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {})
+    }
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+    if (!isPlaying && videoRef.current) {
+      videoRef.current.pause()
+    }
   }
 
   return (
     <>
     <div 
       ref={containerRef}
-      onClick={() => galleryImages?.length ? setIsModalOpen(true) : window.open(link, '_blank')}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onClick={(e) => {
+        if (galleryImages?.length) {
+          setIsModalOpen(true)
+        } else {
+          togglePlay(e)
+        }
+      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className="bg-[#050814]/90 border border-[#1a1b38] rounded-[2.5rem] p-6 flex flex-col justify-between hover:border-indigo-500/50 hover:shadow-[0_0_40px_rgba(99,102,241,0.15)] transition-all duration-500 group relative aspect-[9/16] overflow-hidden shadow-2xl cursor-pointer"
     >
-      {/* Background Video playing on loop */}
+      {/* Background Video - plays on mouse hover */}
       <div className="absolute inset-0 z-0 bg-zinc-950">
         <video 
           ref={videoRef}
@@ -291,25 +386,41 @@ function VideoCard({
           muted={isMuted}
           playsInline
           preload="metadata"
-          className="w-full h-full object-cover opacity-60 group-hover:opacity-85 group-hover:scale-[1.03] transition-all duration-700"
+          className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-500"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/10 pointer-events-none" />
+        {/* Subtle bottom gradient only to keep typography legible without dimming the video */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/10 pointer-events-none" />
       </div>
 
       {/* Floating Header */}
       <div className="relative z-10 flex items-center justify-between">
-        <span className="text-[9px] font-mono bg-stone-100/10 border border-stone-800/80 px-3 py-1 rounded-full text-stone-200 uppercase tracking-widest backdrop-blur-md">
+        <span className="text-[9px] font-mono bg-black/60 border border-stone-800/80 px-3 py-1 rounded-full text-stone-200 uppercase tracking-widest backdrop-blur-md">
           {category}
         </span>
-        <div className="flex items-center gap-2">
-          <span className="text-[9px] font-mono text-stone-400 uppercase tracking-wider backdrop-blur-sm px-2.5 py-0.5 rounded bg-black/40">
+        <div className="flex items-center gap-1.5">
+          <span className="text-[9px] font-mono text-stone-300 uppercase tracking-wider backdrop-blur-sm px-3 py-1 rounded-full bg-black/60 border border-white/10">
             {client}
           </span>
           <button 
-            onClick={toggleMute}
-            className="w-6 h-6 rounded-full bg-black/60 border border-white/10 flex items-center justify-center backdrop-blur-md hover:bg-black/80 transition-colors text-stone-200 cursor-pointer"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              setIsZoomOpen(true)
+            }}
+            aria-label="Zoom video"
+            title="Zoom / Full View"
+            className="w-7 h-7 rounded-full bg-black/70 border border-white/10 flex items-center justify-center backdrop-blur-md hover:bg-indigo-600 hover:border-indigo-500 transition-colors text-stone-200 cursor-pointer"
           >
-            {isMuted ? <VolumeX size={10} /> : <Volume2 size={10} />}
+            <Maximize2 size={11} />
+          </button>
+          <button 
+            type="button"
+            onClick={toggleMute}
+            aria-label={isMuted ? "Unmute video" : "Mute video"}
+            className="w-7 h-7 rounded-full bg-black/70 border border-white/10 flex items-center justify-center backdrop-blur-md hover:bg-black hover:border-white/20 transition-colors text-stone-200 cursor-pointer"
+          >
+            {isMuted ? <VolumeX size={12} /> : <Volume2 size={12} />}
           </button>
         </div>
       </div>
@@ -317,63 +428,123 @@ function VideoCard({
       {/* Hover Center Indicator */}
       <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
         <motion.button 
+          type="button"
           onClick={togglePlay}
+          aria-label={isHovered || isPlaying ? "Pause video" : "Play video"}
           animate={{ 
-            scale: isHovered || !isPlaying ? 1 : 0.8,
-            opacity: isHovered || !isPlaying ? 1 : 0
+            scale: isHovered || isPlaying ? 1 : 0.8,
+            opacity: isHovered || isPlaying ? 1 : 0
           }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="w-12 h-12 bg-indigo-500 text-white rounded-full flex items-center justify-center backdrop-blur-sm shadow-[0_0_30px_rgba(99,102,241,0.4)] hover:bg-indigo-400 transition-colors pointer-events-auto cursor-pointer"
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="w-14 h-14 bg-indigo-600/90 hover:bg-indigo-500 text-white rounded-full flex items-center justify-center backdrop-blur-md shadow-[0_0_30px_rgba(99,102,241,0.5)] border border-white/20 transition-all pointer-events-auto cursor-pointer"
         >
-          {isPlaying ? (
-            <Pause size={16} fill="white" />
+          {isHovered || isPlaying ? (
+            <Pause size={18} fill="white" />
           ) : (
-            <Play size={16} fill="white" className="ml-0.5" />
+            <Play size={18} fill="white" className="ml-0.5" />
           )}
         </motion.button>
       </div>
 
       {/* Floating Footer Detail */}
-      <div className="relative z-10 mt-auto pt-6 flex flex-col gap-4">
-        <div className="space-y-2">
-          <h3 className="text-xl md:text-2xl font-serif text-stone-100 tracking-tight font-medium drop-shadow-md">
+      <div className="relative z-10 mt-auto pt-3 flex flex-col gap-2.5">
+        <div className="space-y-1">
+          <h3 className="text-lg md:text-xl font-serif text-stone-100 tracking-tight font-medium drop-shadow-md">
             {title}
           </h3>
-          <p className="text-xs font-light text-stone-300 leading-relaxed line-clamp-3 max-w-sm drop-shadow">
+          <p className="text-[11px] font-light text-stone-200/90 leading-snug line-clamp-2 max-w-sm drop-shadow">
             {overview}
           </p>
         </div>
 
         {/* Skills Tag Row */}
-        <div className="flex flex-wrap gap-1.5 pt-1">
+        <div className="flex flex-wrap gap-1.5 pt-0.5">
           {skills.slice(0, 3).map((skill, idx) => (
-            <span key={idx} className="text-[8px] font-mono bg-black/60 border border-stone-900/60 px-2.5 py-1 rounded text-stone-300 backdrop-blur-sm">
+            <span key={idx} className="text-[8px] font-mono bg-black/70 border border-stone-800/80 px-2.5 py-1 rounded text-stone-300 backdrop-blur-sm">
               {skill}
             </span>
           ))}
         </div>
-
-        {/* Action Button */}
-        <button 
-          onClick={(e) => {
-            if (galleryImages?.length) {
-              e.preventDefault()
-              e.stopPropagation()
-              setIsModalOpen(true)
-            } else {
-              e.stopPropagation()
-              window.open(link, '_blank')
-            }
-          }}
-          className="inline-flex w-full items-center justify-between gap-6 rounded-full bg-zinc-950/90 border border-stone-850 pl-5 pr-1.5 py-1.5 hover:bg-indigo-500 hover:text-white hover:border-indigo-500 hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] transition-all duration-300 group/btn cursor-pointer backdrop-blur-md"
-        >
-          <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-left">{galleryImages?.length ? "View Gallery" : ctaText}</span>
-          <div className="w-8 h-8 rounded-full bg-stone-850 group-hover:bg-white/20 flex items-center justify-center shrink-0 transition-colors">
-            <ArrowUpRight size={12} className="text-stone-300 group-hover:text-white transition-colors" />
-          </div>
-        </button>
       </div>
     </div>
+
+    {/* Zoom / Full Preview Video Modal - Straight/Uncurved rectangle video */}
+    <AnimatePresence>
+      {isZoomOpen && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 pt-20 sm:p-6 sm:pt-24 touch-none"
+          onClick={() => setIsZoomOpen(false)}
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
+        >
+          <motion.div 
+            initial={{ scale: 0.95, opacity: 0, y: 15 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: 15 }}
+            transition={{ type: "spring", damping: 28, stiffness: 350 }}
+            className="bg-[#050814] border border-[#1a1b38] rounded-none w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden relative shadow-[0_0_80px_rgba(99,102,241,0.25)] my-auto overscroll-contain"
+            onClick={(e) => e.stopPropagation()}
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between border-b border-[#1a1b38] shrink-0 bg-[#02040a]">
+              <div>
+                <h3 className="text-base sm:text-lg font-serif text-stone-100">{title}</h3>
+                <p className="text-[9px] font-mono text-indigo-400 uppercase tracking-wider">{category} • {client}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button 
+                  type="button"
+                  onClick={toggleMute}
+                  className="w-8 h-8 rounded-full bg-zinc-900 border border-stone-800 flex items-center justify-center text-stone-300 hover:text-white hover:bg-stone-800 transition-colors cursor-pointer"
+                  title={isMuted ? "Unmute" : "Mute"}
+                >
+                  {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => setIsZoomOpen(false)}
+                  className="w-8 h-8 rounded-full bg-zinc-900 border border-stone-800 flex items-center justify-center text-stone-400 hover:text-white hover:bg-stone-800 transition-colors cursor-pointer"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            </div>
+
+            {/* Enlarged Video Viewport - Non-curved rectangular video */}
+            <div className="flex-1 bg-black/95 flex items-center justify-center p-2 sm:p-4 min-h-0 overflow-hidden">
+              <video 
+                ref={zoomVideoRef}
+                src={videoUrl}
+                controls
+                autoPlay
+                playsInline
+                loop
+                muted={isMuted}
+                className="max-h-[54vh] sm:max-h-[60vh] w-auto max-w-full rounded-none shadow-2xl object-contain border border-stone-800/40"
+              />
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-4 py-2.5 sm:px-6 sm:py-3 border-t border-[#1a1b38] flex flex-row justify-between items-center gap-2 bg-[#02040a] shrink-0">
+              <p className="text-[11px] text-stone-400 font-light truncate max-w-xs">{overview}</p>
+              <a 
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-indigo-600 text-white px-4 py-1.5 font-bold text-[10px] uppercase tracking-wider hover:bg-indigo-500 transition-colors shrink-0 shadow-[0_0_15px_rgba(99,102,241,0.3)]"
+              >
+                View More Projects <ArrowUpRight size={12} />
+              </a>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
 
     <AnimatePresence>
       {isModalOpen && (
@@ -381,51 +552,59 @@ function VideoCard({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 md:p-8"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 pt-20 sm:p-8 sm:pt-24 touch-none"
           onClick={() => setIsModalOpen(false)}
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
         >
           <motion.div 
-            initial={{ y: 50, opacity: 0, scale: 0.95 }}
+            initial={{ y: 20, opacity: 0, scale: 0.98 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={{ y: 20, opacity: 0, scale: 0.95 }}
+            exit={{ y: 20, opacity: 0, scale: 0.98 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="bg-[#050814] border border-[#1a1b38] rounded-[2rem] w-full max-w-6xl max-h-[90vh] flex flex-col overflow-hidden relative"
+            className="bg-[#050814] border border-[#1a1b38] rounded-none w-full max-w-6xl max-h-[85vh] flex flex-col overflow-hidden relative shadow-[0_0_80px_rgba(99,102,241,0.2)] overscroll-contain"
             onClick={(e) => e.stopPropagation()}
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
           >
-            <div className="p-6 md:p-8 flex items-center justify-between border-b border-[#1a1b38] shrink-0">
+            <div className="p-4 sm:p-6 md:p-8 flex items-center justify-between border-b border-[#1a1b38] shrink-0 bg-[#02040a]">
               <div>
-                <h3 className="text-2xl md:text-3xl font-serif text-stone-100">{title}</h3>
-                <p className="text-xs font-mono text-stone-400 mt-2 uppercase tracking-wider">{category}</p>
+                <h3 className="text-xl md:text-2xl font-serif text-stone-100">{title}</h3>
+                <p className="text-xs font-mono text-stone-400 mt-1 uppercase tracking-wider">{category}</p>
               </div>
               <button 
                 onClick={() => setIsModalOpen(false)}
-                className="w-10 h-10 rounded-full bg-zinc-900 border border-stone-800 flex items-center justify-center text-stone-400 hover:text-white hover:bg-stone-800 transition-colors"
+                className="w-9 h-9 rounded-full bg-zinc-900 border border-stone-800 flex items-center justify-center text-stone-400 hover:text-white hover:bg-stone-800 transition-colors cursor-pointer"
               >
-                <X size={20} />
+                <X size={18} />
               </button>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-6 md:p-8 custom-scrollbar">
+            <div 
+              className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 custom-scrollbar bg-[#02040a]/60 overscroll-contain"
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+            >
               <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
                 {galleryImages?.map((img, idx) => (
                   img.endsWith('.mp4') ? (
-                    <video key={idx} src={img} autoPlay loop muted playsInline className="w-full rounded-xl border border-stone-800 mb-6 shadow-xl" />
+                    <video key={idx} src={img} autoPlay loop muted playsInline className="w-full rounded-none border border-stone-800 mb-6 shadow-xl" />
                   ) : (
-                    <img key={idx} src={img} alt={`${title} ${idx}`} className="w-full h-auto rounded-xl border border-stone-800 mb-6 shadow-xl" loading="lazy" />
+                    <img key={idx} src={img} alt={`${title} ${idx}`} className="w-full h-auto rounded-none border border-stone-800 mb-6 shadow-xl" loading="lazy" />
                   )
                 ))}
               </div>
             </div>
 
-            <div className="p-6 md:px-8 border-t border-[#1a1b38] flex flex-col sm:flex-row justify-between items-center gap-4 bg-[#02040a] shrink-0">
+            <div className="p-4 sm:p-6 md:px-8 border-t border-[#1a1b38] flex flex-col sm:flex-row justify-between items-center gap-4 bg-[#02040a] shrink-0">
               <p className="text-xs text-stone-400 font-light">Showing {galleryImages?.length} videos/designs</p>
               <a 
                 href={link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-4 rounded-full bg-indigo-500 text-white px-6 py-2.5 font-bold text-xs uppercase tracking-widest hover:bg-indigo-400 transition-colors shadow-[0_0_20px_rgba(99,102,241,0.2)]"
+                className="inline-flex items-center gap-2 rounded-full bg-indigo-600 text-white px-5 py-2 font-bold text-[10px] uppercase tracking-wider hover:bg-indigo-500 transition-colors shadow-[0_0_15px_rgba(99,102,241,0.3)]"
               >
-                View Full Folder <ArrowUpRight size={14} />
+                View More Projects <ArrowUpRight size={13} />
               </a>
             </div>
           </motion.div>
@@ -780,9 +959,15 @@ export function VisualDesignerLayout() {
           <p className="text-stone-400 font-light text-sm max-w-2xl leading-relaxed">
             Motion-focused visual storytelling crafted through cinematic edits, promotional films, and branded digital experiences.
           </p>
-          <div className="flex flex-wrap gap-2 pt-2 select-none">
+          <div className="flex flex-wrap items-center gap-3 pt-3 select-none">
+            {/* Prominent interactive hint */}
+            <div className="inline-flex items-center gap-2 border border-indigo-500/40 bg-indigo-500/10 px-4 py-2 rounded-full text-indigo-300 font-mono text-xs font-semibold shadow-[0_0_20px_rgba(99,102,241,0.2)] animate-pulse">
+              <span className="w-2 h-2 rounded-full bg-indigo-400" />
+              <span>Hover over any card to play video</span>
+            </div>
+
             {["Cinematic Reels", "Branding Videos", "Promotional Films", "Motion Graphics", "Cinematic Editing"].map((pill, i) => (
-              <span key={i} className="text-[8px] font-mono border border-[#1a1b38] bg-[#050814] px-3.5 py-1.5 rounded-full text-indigo-300/80 font-medium shadow-[0_0_15px_rgba(99,102,241,0.05)]">
+              <span key={i} className="text-xs font-mono border border-[#1a1b38] bg-[#050814] px-4 py-2 rounded-full text-indigo-200/90 font-medium shadow-[0_0_15px_rgba(99,102,241,0.06)] hover:border-indigo-500/40 transition-colors">
                 • {pill}
               </span>
             ))}
@@ -791,38 +976,38 @@ export function VisualDesignerLayout() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <VideoCard 
-            title="Branding Reel (Volume I)"
-            category="Branding Video"
-            client="Brand Campaign"
-            overview="Crafted high-fidelity commercial brand motion videos emphasizing brand identity, clean typography transitions, and product focus."
-            skills={["Motion Graphics", "Branding Design", "Video Editing", "Typography Motion"]}
-            deliverables={["Branded Edit", "Commercial Reel", "Motion Guidelines"]}
+            title="GYM Product Advertising"
+            category="Commercial Ad"
+            client="Fitness Campaign"
+            overview="High-energy commercial fitness ad with impact cuts, dynamic motion, and synced sound."
+            skills={["Commercial Editing", "Sound Design", "Color Grading", "Motion Graphics"]}
+            deliverables={["Promotional Film", "Social Ad Cut", "Sound Sync"]}
             ctaText="Watch Project →"
-            videoUrl="/Work/Video/Branding-Reel-1.mp4"
+            videoUrl="/Work/Video/Sujal Projects/GYM product Advertising.mp4"
             link={videoPortfolioLink}
           />
 
           <VideoCard 
-            title="Branding Reel (Volume II)"
-            category="Branding Video"
-            client="Brand Campaign"
-            overview="Promotional commercial reel engineered for digital advertising, focusing on high engagement hooks and clean cuts."
-            skills={["Motion Design", "Visual Hooks", "Premiere Pro", "Commercial Editing"]}
-            deliverables={["Ad Campaign Edit", "Commercial Asset", "Typography Kit"]}
+            title="Lotus Industry"
+            category="Corporate Film"
+            client="Assignment Project"
+            overview="Practice assignment showcase capturing precision machinery and corporate brand pacing."
+            skills={["Corporate Storytelling", "Pacing & Flow", "Color Correction", "Cinematic Motion"]}
+            deliverables={["Corporate Reel", "Showcase Feature", "Branded Cut"]}
             ctaText="Watch Project →"
-            videoUrl="/Work/Video/Branding-Reel-2.mp4"
+            videoUrl="/Work/Video/Sujal Projects/Lotus Industry_1.mp4"
             link={videoPortfolioLink}
           />
 
           <VideoCard 
-            title="Branding Reel (Volume III)"
-            category="Branding Video"
-            client="Brand Campaign"
-            overview="Industrial promotional reel blending product attributes, rhythmic editing cues, and strategic brand positioning."
-            skills={["Video Editing", "Sound Curation", "Commercial Layouts", "Branding Dynamics"]}
-            deliverables={["Product Reel", "Social Format Edit", "Sound Design Template"]}
+            title="Sales & Marketing Business"
+            category="Promotional Film"
+            client="Business Campaign"
+            overview="Strategic promotional edit combining crisp typography with engaging motion visuals."
+            skills={["Motion Graphics", "Typography Motion", "Commercial Editing", "Visual Hooks"]}
+            deliverables={["B2B Video", "Marketing Asset", "Motion Kit"]}
             ctaText="Watch Project →"
-            videoUrl="/Work/Video/Branding-Reel-3.mp4"
+            videoUrl="/Work/Video/Sujal Projects/Sales & Marketing Busniess.mp4"
             link={videoPortfolioLink}
           />
 
@@ -833,13 +1018,37 @@ export function VisualDesignerLayout() {
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:col-span-3 overflow-hidden"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:col-span-3"
               >
                 <VideoCard 
-                  title="Branding Reel (Volume IV)"
-                  category="Branding Video"
-                  client="Brand Campaign"
-                  overview="Dynamic branding edit focusing on high-impact visual storytelling and seamless motion transitions."
+                  title="Brand Commercial Reel"
+                  category="Brand Campaign"
+                  client="Commercial Project"
+                  overview="High-fidelity commercial edit with precision typography and rhythmic pacing."
+                  skills={["Motion Graphics", "Branding Design", "Video Editing", "Typography Motion"]}
+                  deliverables={["Branded Edit", "Commercial Reel", "Motion Guidelines"]}
+                  ctaText="Watch Project →"
+                  videoUrl="/Work/Video/Branding-Reel-1.mp4"
+                  link={videoPortfolioLink}
+                />
+
+                <VideoCard 
+                  title="Industrial Brand Showcase"
+                  category="Brand Identity"
+                  client="Industrial Partner"
+                  overview="Dynamic product positioning blending rhythmic sound design with crisp visual cuts."
+                  skills={["Video Editing", "Sound Curation", "Commercial Layouts", "Branding Dynamics"]}
+                  deliverables={["Product Reel", "Social Format Edit", "Sound Design Template"]}
+                  ctaText="Watch Project →"
+                  videoUrl="/Work/Video/Branding-Reel-3.mp4"
+                  link={videoPortfolioLink}
+                />
+
+                <VideoCard 
+                  title="Dynamic Motion Reel"
+                  category="Motion Graphics"
+                  client="Digital Campaign"
+                  overview="High-impact visual storytelling engineered for digital advertising and social engagement."
                   skills={["Motion Graphics", "Branding Design", "Premiere Pro", "Visual Hooks"]}
                   deliverables={["Commercial Asset", "Social Format Edit"]}
                   ctaText="Watch Project →"
@@ -848,10 +1057,10 @@ export function VisualDesignerLayout() {
                 />
 
                 <VideoCard 
-                  title="Cinematic Reel (Volume I)"
-                  category="Cinematic Reel"
-                  client="Independent Project"
-                  overview="Edited an immersive cinematic sequence focused on atmospheric storytelling, dynamic sound landscapes, and premium color tones."
+                  title="Atmospheric Cinematic Film"
+                  category="Cinematic Edit"
+                  client="Independent Film"
+                  overview="Immersive cinematic sequence with rich color grading and evocative soundscapes."
                   skills={["Cinematic Editing", "Sound Design", "Color Grading", "Visual Narrative"]}
                   deliverables={["Cinematic Reel", "Atmospheric Edit", "Grading Blueprint"]}
                   ctaText="Watch Project →"
@@ -860,14 +1069,26 @@ export function VisualDesignerLayout() {
                 />
 
                 <VideoCard 
-                  title="Cinematic Reel (Volume II)"
-                  category="Cinematic Reel"
-                  client="Independent Project"
-                  overview="A cinematic exploration blending smooth motion curves, sound identity curation, and visual flow pacing."
+                  title="Visual Flow & Sound Symphony"
+                  category="Cinematic Edit"
+                  client="Creative Showcase"
+                  overview="Cinematic pacing study combining smooth camera curves with curated audio design."
                   skills={["Video Editing", "Pacing & Flow", "Color Correcting", "Audio Curation"]}
                   deliverables={["Mood Timeline", "Audio Sequence", "Color Profile"]}
                   ctaText="Watch Project →"
                   videoUrl="/Work/Video/Cinematic-Reel-2.mp4"
+                  link={videoPortfolioLink}
+                />
+
+                <VideoCard 
+                  title="Ranka Builder Showcase"
+                  category="Commercial Reel"
+                  client="Ranka Builder"
+                  overview="Architectural commercial video highlighting structural elegance and space transitions."
+                  skills={["Video Editing", "Color Grading", "Architectural Pacing", "Sound Design"]}
+                  deliverables={["Commercial Asset", "Social Cut", "Promo Film"]}
+                  ctaText="Watch Project →"
+                  videoUrl="/Work/Video/Ranka Builder.mp4"
                   link={videoPortfolioLink}
                 />
               </motion.div>
@@ -889,11 +1110,11 @@ export function VisualDesignerLayout() {
             href={videoPortfolioLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-4 text-xs font-mono font-bold uppercase tracking-widest text-stone-300 hover:text-white group"
+            className="inline-flex items-center gap-3 text-xs font-mono font-bold uppercase tracking-wider text-stone-200 hover:text-white bg-[#0e1124] hover:bg-indigo-600/90 border border-[#232752] hover:border-indigo-500/80 px-6 py-3 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(99,102,241,0.1)] hover:shadow-[0_0_30px_rgba(99,102,241,0.3)] group"
           >
-            <span>Explore Drive</span>
-            <span className="w-8 h-8 rounded-full border border-stone-800 flex items-center justify-center group-hover:bg-stone-100 group-hover:text-black transition-all">
-              →
+            <span>View All Video Projects</span>
+            <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
+              <ArrowUpRight size={13} />
             </span>
           </a>
         </div>
@@ -918,9 +1139,15 @@ export function VisualDesignerLayout() {
           <p className="text-stone-400 font-light text-sm max-w-2xl leading-relaxed">
             Cutting-edge AI-generated video campaigns incorporating stable diffusion, dynamic prompt generation, and hyper-realistic motion layouts.
           </p>
-          <div className="flex flex-wrap gap-2 pt-2 select-none">
+          <div className="flex flex-wrap items-center gap-3 pt-3 select-none">
+            {/* Prominent interactive hint */}
+            <div className="inline-flex items-center gap-2 border border-indigo-500/40 bg-indigo-500/10 px-4 py-2 rounded-full text-indigo-300 font-mono text-xs font-semibold shadow-[0_0_20px_rgba(99,102,241,0.2)] animate-pulse">
+              <span className="w-2 h-2 rounded-full bg-indigo-400" />
+              <span>Hover over any card to play video</span>
+            </div>
+
             {["AI Generation", "Motion Graphics", "Prompt Engineering", "Digital Art"].map((pill, i) => (
-              <span key={i} className="text-[8px] font-mono border border-[#1a1b38] bg-[#050814] px-3.5 py-1.5 rounded-full text-indigo-300/80 font-medium shadow-[0_0_15px_rgba(99,102,241,0.05)]">
+              <span key={i} className="text-xs font-mono border border-[#1a1b38] bg-[#050814] px-4 py-2 rounded-full text-indigo-200/90 font-medium shadow-[0_0_15px_rgba(99,102,241,0.06)] hover:border-indigo-500/40 transition-colors">
                 • {pill}
               </span>
             ))}
@@ -929,34 +1156,34 @@ export function VisualDesignerLayout() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <VideoCard 
-            title="AI Dynamic Reel"
+            title="Product Reel"
             category="AI Video Generation"
-            client="Digital Campaign"
-            overview="Immersive AI-generated motion sequence exploring futuristic visual themes and rapid visual transitions."
-            skills={["AI Generation", "Stable Diffusion", "Prompt Editing"]}
-            deliverables={["Promotional Reel"]}
+            client="Tenzor Product"
+            overview="High-impact AI product reel highlighting dynamic product renders, motion curves, and precision lighting."
+            skills={["AI Generation", "Product Motion", "Visual Hooks", "Sound Design"]}
+            deliverables={["Product Reel", "Commercial Ad", "Promo Asset"]}
+            ctaText="Watch Project →"
+            videoUrl="/Work/Video/Tenzor.mp4"
+            link={videoPortfolioLink}
+          />
+          <VideoCard 
+            title="Monkey Vlogger"
+            category="AI Video Generation"
+            client="Creative Campaign"
+            overview="Immersive AI-generated motion sequence exploring futuristic visual character themes and rapid transitions."
+            skills={["AI Generation", "Character Animation", "Prompt Editing", "Visual Hooks"]}
+            deliverables={["Character Reel", "Social Video", "Promo Asset"]}
             ctaText="Watch Project →"
             videoUrl="/Work/Ai Video/Reel.mp4"
             link={videoPortfolioLink}
           />
           <VideoCard 
-            title="AI Promotional Post"
-            category="AI Video Generation"
-            client="Digital Campaign"
-            overview="Engaging social media post crafted entirely using AI visual generation and advanced motion techniques."
-            skills={["AI Generation", "Motion Graphics"]}
-            deliverables={["Social Media Hook"]}
-            ctaText="Watch Project →"
-            videoUrl="/Work/Ai Video/Post 1.mp4"
-            link={videoPortfolioLink}
-          />
-          <VideoCard 
-            title="AI Motion Reel 1"
+            title="Cybernetic Motion Reel"
             category="AI Video Generation"
             client="Digital Campaign"
             overview="Fast-paced dynamic reel focusing on hyper-realistic AI-generated elements and seamless edits."
-            skills={["AI Generation", "Visual Hooks"]}
-            deliverables={["Motion Sequence"]}
+            skills={["AI Generation", "Visual Hooks", "Dynamic Pacing", "Motion Flow"]}
+            deliverables={["Motion Sequence", "Commercial Asset", "Visual Reel"]}
             ctaText="Watch Project →"
             videoUrl="/Work/Ai Video/R1.mp4"
             link={videoPortfolioLink}
@@ -968,10 +1195,21 @@ export function VisualDesignerLayout() {
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:col-span-3 overflow-hidden"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:col-span-3"
               >
                 <VideoCard 
-                  title="AI Motion Reel 2"
+                  title="AI Promotional Campaign"
+                  category="AI Video Generation"
+                  client="Digital Campaign"
+                  overview="Engaging social media post crafted entirely using AI visual generation and advanced motion techniques."
+                  skills={["AI Generation", "Motion Graphics", "Brand Identity"]}
+                  deliverables={["Social Media Hook", "Digital Promo"]}
+                  ctaText="Watch Project →"
+                  videoUrl="/Work/Ai Video/Post 1.mp4"
+                  link={videoPortfolioLink}
+                />
+                <VideoCard 
+                  title="Generative Motion Flow"
                   category="AI Video Generation"
                   client="Digital Campaign"
                   overview="Continuation of the high-energy motion series featuring generative AI aesthetics and tight pacing."
@@ -1042,11 +1280,11 @@ export function VisualDesignerLayout() {
             href={videoPortfolioLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-4 text-xs font-mono font-bold uppercase tracking-widest text-stone-300 hover:text-white group"
+            className="inline-flex items-center gap-3 text-xs font-mono font-bold uppercase tracking-wider text-stone-200 hover:text-white bg-[#0e1124] hover:bg-indigo-600/90 border border-[#232752] hover:border-indigo-500/80 px-6 py-3 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(99,102,241,0.1)] hover:shadow-[0_0_30px_rgba(99,102,241,0.3)] group"
           >
-            <span>Explore Drive</span>
-            <span className="w-8 h-8 rounded-full border border-stone-800 flex items-center justify-center group-hover:bg-stone-100 group-hover:text-black transition-all">
-              →
+            <span>View All AI Projects</span>
+            <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
+              <ArrowUpRight size={13} />
             </span>
           </a>
         </div>

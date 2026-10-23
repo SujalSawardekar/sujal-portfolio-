@@ -33,7 +33,7 @@ export function ProjectGallery({ images, hideHeader = false }: ProjectGalleryPro
                             key={index}
                             layoutId={`img-${index}`}
                             onClick={() => setSelectedImage(item)}
-                            className="group relative break-inside-avoid rounded-lg overflow-hidden border border-border/50 bg-secondary/10 cursor-zoom-in transition-all hover:border-primary/40 hover:shadow-2xl"
+                            className="group relative break-inside-avoid rounded-[12px] overflow-hidden border border-border/50 bg-secondary/10 cursor-zoom-in transition-all hover:border-primary/40 hover:shadow-2xl"
                         >
                             {isVideo ? (
                                 <video 
@@ -84,7 +84,7 @@ export function ProjectGallery({ images, hideHeader = false }: ProjectGalleryPro
                                 <X size={22} />
                             </button>
                             
-                            <div className="relative w-full max-h-[80vh] flex items-center justify-center rounded-2xl overflow-hidden shadow-2xl bg-zinc-950/80">
+                            <div className="relative w-full max-h-[80vh] flex items-center justify-center rounded-xl overflow-hidden shadow-2xl bg-zinc-950/80">
                                 {selectedImage.endsWith(".mp4") ? (
                                     <video 
                                         src={selectedImage}
